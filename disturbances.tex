@@ -26,6 +26,17 @@ exist at the first line. For example:
 0.000 CONTINUE SOLVER BD 0.0200 0.001 0. ALL
 
 
+\section{\index{CONTINUE DISPLAY}Continue Display}
+
+time(s) CONTINUE DISPLAY new\_plot\_step(s)
+
+Changes the sampling time step used for the output of observed
+variables from that point of the simulation onwards. For example,
+reducing the output sampling to one point per second after $t=20$~s:
+
+20.000 CONTINUE DISPLAY 1.0
+
+
 \section{Set stopping criteria for voltage}
 
 Define in the data files the following record:
@@ -39,8 +50,8 @@ Define in the data files the following record:
 
 Define in the data files the following record:
 
-DCTL SIM\_MINMAXVOLT CTRL\_Name MAX\_SYNC\_SPEED(pu)
-	MIN\_SYNC\_SPEED(pu) DEADTIME(s) Stop\_Simulation(T/F) ;
+DCTL SIM\_MINMAXSPEED CTRL\_Name MAX\_SPEED(pu)
+	MIN\_SPEED(pu) DEADTIME(s) Stop\_Simulation(T/F) ;
 
 
 \section{\index{STOP}Stop}
@@ -73,7 +84,18 @@ Used to open/close the breaker (trip) of a synchronous machine or injector.
 
 For example:
 
-10.000 BREAKER INJ L\_11 0 
+10.000 BREAKER INJ L\_11 0
+
+\section{\index{BREAKER}Trip two-port}
+
+time(s) BREAKER TWOP name\_of\_twoport 0
+
+Used to disconnect a two-port component (e.g.\ an HVDC link) at both
+ends. Only opening is supported, so the breaker status must be 0.
+
+For example:
+
+10.000 BREAKER TWOP hvdc1 0
 
 \section{\index{FAULT}Three phase short-circuit (with use of resistance to
 	ground)}
@@ -105,9 +127,13 @@ time(s) VFAULT BUS name\_of\_bus Voltage\_reached\_after\_fault
 time(s) CLEAR BUS name\_of\_bus
 
 The first line is used to declare the starting of the short-circuit.
-The fault has an unknown resistance \emph{(j{*}xfault)} to the ground.
-Based on the value of the voltage reached after the fault (declared
-in pu), xfault is computed and used for simulating the fault.
+Internally, RAMSES creates a temporary shunt admittance $B_{fault}$
+at the faulted bus and iteratively adjusts it using a secant method
+until the bus voltage matches the target value (declared in pu) to
+within $\pm 0.5\,\%$. The injected currents are $i_x = B_{fault}\,v_x$
+and $i_y = -B_{fault}\,v_y$. Up to 10 correction steps are attempted;
+if convergence is not reached, the simulation halts with an error
+message.
 
 Example of a 100ms short-circuit where the voltage at the faulted
 bus reached 0.5 pu after the fault:

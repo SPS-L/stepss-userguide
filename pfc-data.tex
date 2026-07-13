@@ -53,8 +53,8 @@ where:
 \item {\tt VIMP} is the voltage imposed by the generator, in pu. If {\tt VIMP} is zero, the bus is
 treated as a PQ bus with the reactive power production set to {\tt Q}; if {\tt VIMP} is nonzero, the bus is treated as a PV bus and the {\tt Q} field is ignored
 \item {\tt SNOM} is the nominal apparent power of the generator, in MVA
-\item {\tt QMIN} is the lower reactive power limit, in Mvar. It is used only if {\tt V} is nonzero
-\item {\tt QMAX} is the upper reactive power limit, in Mvar. It is used only if {\tt V} is nonzero
+\item {\tt QMIN} is the lower reactive power limit, in Mvar. It is used only if {\tt VIMP} is nonzero
+\item {\tt QMAX} is the upper reactive power limit, in Mvar. It is used only if {\tt VIMP} is nonzero
 \item {\tt BR} is the on/off status of the generator breaker. A zero value indicates that the
 breaker is open; any other value means that the breaker is closed.
 \end{itemize}
@@ -236,7 +236,7 @@ monitored. This is a string of at most 20 characters, defined in either a LINE, 
 
 The phase angle $\phi$ corresponding to position $p$ ($1 \le p \le {\tt NBPOS}$) of the tap changer is given by:
 \begin{equation}\label{equ-pf-phivalue}
-\phi = {\tt PHAFIRST} + \frac{p-1}{{\tt NBPOS}-1} \; ({\tt NLAST} - {\tt NFIRST})
+\phi = {\tt PHAFIRST} + \frac{p-1}{{\tt NBPOS}-1} \; ({\tt PHALAST} - {\tt PHAFIRST})
 \end{equation}
 The value of $p$ is increased or decreased by one at each adjustment iteration.
 
@@ -297,7 +297,7 @@ SVC & used & ignored \\ \hline
 SLACK & used & used \\ \hline
 LFRESV & used & used \\ \hline
 LTC-V & used & ignored \\ \hline
-PHSHIFT-P & used & ignored \\ \hline
+PSHIFT-P & used & ignored \\ \hline
 \end{tabular}
 \end{table}
 

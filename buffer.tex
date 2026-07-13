@@ -40,7 +40,7 @@ where:
 
 The record describing a two-port, with keyword TWOP, includes the following fields:
 
-{\tt \hspace*{1ex} TWOP  MODEL  NAME  BUS1  BUS2 FP1  FQ1  P1  Q1  FP2  FQ2  P2  Q2 $<$two-port data$>$ ;}
+{\tt \hspace*{1ex} TWOP  MODEL  NAME  BUS1  BUS2  IND  FP1  FQ1  P1  Q1  FP2  FQ2  P2  Q2 $<$two-port data$>$ ;}
 
 where:
 \begin{itemize}
@@ -48,6 +48,7 @@ where:
 \item{\tt NAME} is the name of the two-port.  This is a string of at most 20 characters
 \item{\tt BUS1} is the name of the first bus to which the two-port is connected. This is a string of at most 8 characters defined in a BUS record
 \item{\tt BUS2} is the name of the second bus to which the two-port is connected. This is a string of at most 8 characters defined in a BUS record
+\item{\tt IND} is the synchronization indicator: {\tt S} = synchronous (both buses operate at the same frequency, e.g.\ an AC link); {\tt A} = asynchronous (the two buses may operate at different frequencies, e.g.\ an HVDC link)
 \item{\tt FP1}: please refer to synchronous machine
 \item{\tt FQ1}: please refer to synchronous machine
 \item{\tt P1}: please refer to synchronous machine

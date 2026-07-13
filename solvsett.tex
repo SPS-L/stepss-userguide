@@ -9,7 +9,24 @@
 \section{\index{GPREFRESHRATE@GP\_REFRESH\_RATE}Run-time observables refresh
 	interval}
 
-\$GP\_REFRESH\_RATE time\_interval(s) ; 
+\$GP\_REFRESH\_RATE time\_interval(s) ;
+
+
+\section{\index{OBSBUFFERSIZE@OBS\_BUFFER\_SIZE}Observable buffer size}
+
+\$OBS\_BUFFER\_SIZE size(GB) ;
+
+Internal memory reserved for storing observables during simulation.
+Default: 8~GB. Set this to less than half of the available RAM for
+large simulations.
+
+
+\section{\index{SPARSESOLVER@SPARSE\_SOLVER}Sparse solver}
+
+\$SPARSE\_SOLVER KLU/ma41 ;
+
+Selects the sparse linear solver used for Jacobian factorization.
+Default: KLU.
 
 
 \section{\index{TLOADREST@T\_LOAD\_REST}Time constant of load restoration}

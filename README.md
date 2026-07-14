@@ -50,7 +50,7 @@ After rebuilding, refresh both, and regenerate `DOC.zip` in `stepss-java-ui` so 
 
 The Java GUI documented in this guide runs on **Windows 64-bit** and requires:
 
-- A 64-bit **Java Runtime Environment** — the GUI targets Java 8 and runs on any later version
+- A 64-bit **Java Runtime Environment, version 11 or later**
 - No separate installation needed: download `stepss.jar` and run it directly; it self-extracts at startup
 
 To compile user-defined models (CODEGEN) on Windows:

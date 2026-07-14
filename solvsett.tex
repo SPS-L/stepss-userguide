@@ -123,3 +123,60 @@ assigned to each thread.
  \$NET\_FREQ\_UPD T/F ;
 
 Check \href{file:models/freq_upd_vminmax.pdf}{Network update with frequency}.
+
+
+\section{\index{CALLGP@CALL\_GP}Call Gnuplot}
+
+ \$CALL\_GP T/F ;
+
+If set to F, the observables are still written to file but Gnuplot is not
+launched. Use this for batch processing and for runs on machines without a
+display. Default: T.
+
+
+\section{\index{GPMODE@GP\_MODE}Gnuplot output mode}
+
+ \$GP\_MODE term/png ;
+
+With {\tt term} the curves are shown in an interactive Gnuplot terminal; with
+{\tt png} they are written to PNG files instead. Default: {\tt term}.
+
+
+\section{\index{ZMIN}Minimum branch impedance}
+
+ \$ZMIN value(pu) ;
+
+Lower bound imposed on the magnitude of a branch impedance. Branches with a
+smaller impedance are clamped to this value, which prevents the network
+admittance matrix from becoming singular. Default: $10^{-5}$~pu.
+
+
+\section{\index{LATSUBNETS@LAT\_SUBNETS}Latency on subnetworks}
+
+ \$LAT\_SUBNETS T/F ;
+
+Applies the latency treatment at the level of the subnetworks, in addition to
+the injectors. Default: F.
+
+
+\section{\index{BASEMDL@BASE\_MDL}Load a compiled model library}
+
+ \$BASE\_MDL filename ;
+
+Loads a compiled user-model library (MDL) at start-up, so that user-defined
+models can be used without relinking the executable.
+
+\faHandPointRight~This record is only acted upon by the Windows build made with
+the Intel compiler. On the other platforms it is accepted and silently ignored;
+there, user-defined models must be linked in with URAMSES instead.
+
+
+\section{\index{LICENSE}License key}
+
+ \$LICENSE email license\_key ;
+
+Unlocks the full version, removing the limits of the free version stated at the
+beginning of this document (1000 buses and 2~cores). The key is 64~characters
+long and is tied to the electronic mail address given in the same record. Both
+are provided by the authors; contact them as indicated in Section~\ref{ch-overview}.
+Without this record the free-version limits apply.

@@ -17,8 +17,8 @@ Jacobian update override (upd\_over):
 	\item ALL: force a full Jacobian refactorisation
 	\item NET: force a refactorisation of the network Jacobian
 	\item ABL: force an update of the injector Jacobian at every bus
-	\item IBL: do not force any Jacobian update; the bus and network Jacobians are left as the solver last set them
-	\item NOT: do not override; the solver's own bus Jacobian flags are restored
+	\item IBL: force nothing in addition, but keep the bus Jacobian updates already requested by the other disturbances applied at this time instant
+	\item NOT: override, discarding even those; the bus Jacobian flags are restored to their values on entry
 \end{itemize}
 It is mainly used to modify the settings of the solver and has to
 exist at the first line. For example:

@@ -67,9 +67,19 @@ STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran,
 
 ## License
 
-STEPSS is distributed under the **Academic Public License (APL)**: free for non-commercial use (academic research, teaching, non-profit organisations). Commercial use requires contacting the authors.
+**This guide** — the LaTeX sources, the figures and the built PDF — is licensed
+[CC BY 4.0](LICENSE). Share and adapt it freely, including commercially, with
+appropriate credit.
+
+**The software it documents is not.** STEPSS is distributed under the **Academic
+Public License**: free for non-commercial use (academic research, teaching,
+non-profit organisations); commercial use requires contacting the authors, and
+the free version is limited to 1000 buses and 2 cores. Those terms are
+reproduced in `legal.tex` and printed at the front of the guide.
 
 PFC and CODEGEN are owned by the authors. RAMSES is owned by the University of Liège (Belgium); the authors hold distribution rights.
+
+See [NOTICE](NOTICE).
 
 ## Authors
 

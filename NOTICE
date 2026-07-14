@@ -1,0 +1,36 @@
+NOTICE
+
+This repository holds the LaTeX source of the STEPSS user guide, and the PDF
+built from it.
+
+The document — CC BY 4.0
+-----------------------
+
+The user guide itself (the .tex sources, the figures, and the compiled
+stepss_doc.pdf) is licensed under the Creative Commons Attribution 4.0
+International licence. See LICENSE. You are free to share and adapt it,
+including commercially, provided you give appropriate credit.
+
+  Copyright 2026 Sustainable Power Systems Lab (SPS-L),
+                 Cyprus University of Technology
+  Authors: Dr. Petros Aristidou, Dr. Thierry Van Cutsem
+
+The same content is published as a website at https://stepss.sps-lab.org, from
+the stepss-docs repository, under the same licence.
+
+The software it documents — NOT CC BY 4.0
+-----------------------------------------
+
+STEPSS itself — PFC, RAMSES, CODEGEN and the other components — is NOT covered
+by the licence of this document. Licensing the guide under CC BY 4.0 grants no
+rights whatsoever over the software.
+
+STEPSS is distributed under the Academic Public License: free of charge for
+non-commercial use, with the free version limited to 1000 buses and 2 cores.
+PFC and CODEGEN are the property of Dr. Thierry Van Cutsem; RAMSES is the
+property of the University of Liège, Belgium.
+
+Those terms are reproduced in full in legal.tex, and appear at the front of the
+guide, where the reader is asked to accept them before using the software. That
+chapter states the licence of the software; it is not the licence of this
+document.

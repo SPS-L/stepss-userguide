@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is the LaTeX source for the STEPSS (Static and Transient Electric Power Systems Simulation) user guide — a formal reference manual covering data formats, model library, installation, and the three integrated modules: PFC (power flow), RAMSES (dynamic simulation), and CODEGEN (user-defined model compiler).
 
-Authors: Dr. Petros Aristidou, Dr. Thierry Van Cutsem. Licensed under the Academic Public License (non-commercial use).
+Authors: Dr. Petros Aristidou, Dr. Thierry Van Cutsem.
+
+This *document* is licensed CC BY 4.0 (see LICENSE). The *software* it documents is not: STEPSS is under the Academic Public License (non-commercial), whose terms are reproduced in `legal.tex`. Don't conflate the two.
 
 ## Build
 

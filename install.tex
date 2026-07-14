@@ -1,11 +1,14 @@
-{\bf \large The material of this chapter is specific to the Windows 64-bit version of STEPSS, to its Java-based Graphic User Interface (GUI) and the Intel oneAPI Fortran Compiler. 
+{\bf \large The material of this chapter is specific to the Windows 64-bit version of STEPSS, to its Java-based Graphic User Interface (GUI) and the Intel oneAPI Fortran Compiler.
 
 Before going any further, you have to read and accept the legal terms detailed at the beginning of this document.}
+
+STEPSS is not restricted to Windows. RAMSES also builds on Linux and macOS with the GNU Fortran compiler, and PyRAMSES, the Python interface, is installed with {\tt pip} on both Windows and Linux. Those routes are documented online at\\
+\hspace*{5ex}{\tt https://stepss.sps-lab.org}
 
 All needed files can be downloaded from the following \hypertarget{Google}{Google drive}:\\
 \hspace*{-7ex}{\tt https://drive.google.com/drive/folders/1HcUSD-FOx6192HURJnxltYJuKuNA8Vwz?usp=drive\_link}
 
-{\bf \large Note that the Java, Visual Studio and OneAPI files are not part of STEPSS}. They are provided only to ease the installation procedure, avoiding navigation through the Oracle, Windows and Intel Web pages.
+{\bf \large Note that the Java, Visual Studio and oneAPI files are not part of STEPSS}. They are provided only to ease the installation procedure, avoiding navigation through the Oracle, Windows and Intel Web pages.
 
 %------------------------------------------------------------------------------------------------------
 \section{Installing JAVA}
@@ -13,7 +16,7 @@ All needed files can be downloaded from the following \hypertarget{Google}{Googl
 
 STEPSS comes with a Java-based Graphical User Interface (GUI). Everything is packed in a Java archive containing a (legal) copy of all executables and libraries required to run the simulations and display the results.
 
-Using that GUI requires to have Java Version 20 installed on your computer. To check if you have Java installed, and if so, which version it is:
+Using that GUI requires a 64-bit Java Runtime Environment (JRE) installed on your computer. The GUI is built for Java~8 and runs on any later version, so a recent JRE or JDK is fine. To check if you have Java installed, and if so, which version it is:
 \begin{enumerate}
 \item open a Windows Command prompt
 \item in the latter, enter the command:\\
@@ -30,32 +33,26 @@ It should display a message similar to the one shown in Fig.~\ref{fig_install_ja
 \end{figure}
 
 
-If you have a previous version installed on your computer, it must be uninstalled following the standard Windows procedure:
+If the command is not recognised, no Java is installed. In that case, install a 64-bit JRE or JDK as follows:
 \begin{enumerate}
-\item click on Parameters
-\item select Applications
-\item locate Java
-\item click on uninstall.
-\end{enumerate}
-
-Then, install Java Version 20 as follows:
-\begin{enumerate}
-\item download the Java SE Development Kit Version 20 (for 64-bit) from the \hyperlink{Google}{Google drive}. The 164-MB file is named {\tt jdk-20\_windows-x64\_bin.exe}
+\item download a Java SE Development Kit (64-bit) from the \hyperlink{Google}{Google drive}, or a current release from {\tt https://www.oracle.com/java/technologies/downloads/}
 \item install by double-clicking on that file and following the instructions
-\item for an easy execution, associate stepss.jar with Java following the standard Windows procedure:
+\item for an easy execution, associate {\tt stepss.jar} with Java following the standard Windows procedure:
 \begin{enumerate}
-\item right-click on the stepss.jar icon
+\item right-click on the {\tt stepss.jar} icon
 \item select open with
 \item choose always use this application.
 \end{enumerate}
 \end{enumerate}
-   
+
+There is no need to uninstall any Java version you already have; the GUI runs on any 64-bit Java~8 or later.
+
 Apart from the Java machine, STEPSS does not require any installation in the usual meaning of the term.
-Just download the {\tt STEPSS.jar} file from the \hyperlink{Google}{Google drive} and drop it in any convenient place of the computer. The Windows desktop is a very convenient location.
+Just download the {\tt stepss.jar} file from the \hyperlink{Google}{Google drive} and drop it in any convenient place of the computer. The Windows desktop is a very convenient location.
 
-Leave the archive intact; in particular do not uncompress it !  
+Leave the archive intact; in particular do not uncompress it !
 
-STEPSS is launched by merely double-clicking on {\tt STEPSS.jar} (or a shortcut to the latter). 
+STEPSS is launched by merely double-clicking on {\tt stepss.jar} (or a shortcut to the latter).
 
 When STEPSS is launched it creates a temporary working folder and copies all needed executables and libraries into that folder.
 
@@ -66,14 +63,15 @@ To remove STEPSS from your computer, just delete the archive file. STEPSS does n
 
 {\bf \large This step can be skipped if you do not plan to develop new models for RAMSES}.
 
-The Intel OneAPI compiler relies on the Microsoft Visual Studio environnement as well as some associated C++ libraries.
+The Intel oneAPI compiler relies on the Microsoft Visual Studio environnement as well as some associated C++ libraries.
 
-The Community 2022 version is required. If you have a previous version installed on your computer, it must be uninstalled following the standard Windows procedure.
+The Community edition, version 2019 or later, is required; 2022 is recommended. There is no need to uninstall an existing Visual Studio installation that already meets this requirement.
 
 The installation steps are as follows:
 \begin{enumerate}
 \item download from the \hyperlink{Google}{Google drive} the launcher named\\
-{\tt vs\_community\_\_e942d3d4864d4a80b72975352289d007.exe}
+{\tt vs\_community\_\_e942d3d4864d4a80b72975352289d007.exe}, or a current Community installer from\\
+{\tt https://visualstudio.microsoft.com/downloads/}
 \item execute by double-clicking
 \item during the installation, under the ``Workloads'' view, select the checkbox to install the ``Desktop development with C++'' component of Visual Studio as shown in Fig.~\ref{fig_Visual_Studio}. This component is not installed by default.
 \end{enumerate}
@@ -89,18 +87,19 @@ The installation steps are as follows:
 
 {\bf This step can be skipped if you do not plan to develop new models for RAMSES}.
 
-There are three packages to download and install.
+STEPSS is compiled with {\tt ifx}, the Intel oneAPI Fortran compiler. The older {\tt ifort} (``Fortran Compiler Classic'') is deprecated by Intel and is no longer supported: use a oneAPI release of version 2024.0 or later, which provides {\tt ifx}.
 
+Two packages are needed, both available free of charge from Intel:
 \begin{enumerate}
-\item download from the \hyperlink{Google}{Google drive} the OneApi Basekit. The file is named:\\
-\hspace{5ex}{\tt w\_BaseKit\_p\_2023.1.0.47256\_offline.exe}
-\item download from the \hyperlink{Google}{Google drive} the Fortran Compiler Classic package. The file is named:\\
-\hspace{5ex}{\tt w\_ifort\_runtime\_p\_2023.1.0.46319.exe}
-\item download from the \hyperlink{Google}{Google drive} the HPC toolkit. The file is named:\\
-\hspace{5ex}{\tt w\_HPCKit\_p\_2023.1.0.46357\_offline.exe}
-\item install each of the three packages, in the above order, by double-clicking on the .exe files
-\item restart your computer.
+\item the {\bf Intel oneAPI Base Toolkit}
+\item the {\bf Intel oneAPI HPC Toolkit}, which contains the {\tt ifx} Fortran compiler.
 \end{enumerate}
+
+Download the current versions from:\\
+\hspace*{5ex}{\tt https://www.intel.com/content/www/us/en/developer/tools/oneapi/}\\
+\hspace*{5ex}{\tt hpc-toolkit-download.html}
+
+Install the Base Toolkit first, then the HPC Toolkit, following the instructions of the installer, and restart your computer.
 
 
 

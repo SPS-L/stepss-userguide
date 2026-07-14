@@ -11,7 +11,7 @@ STEPSS consists of three tightly integrated modules:
 | Module | Full Name | Description |
 |--------|-----------|-------------|
 | **PFC** | Power Flow Computation | Determines the initial operating point using the Newton-Raphson method in polar coordinates. Computes bus voltage magnitudes and phase angles, with optional transformer ratio adjustment. |
-| **RAMSES** | RApid Multiprocessor Simulation of Electric power Systems | Simulates the dynamic evolution of the power system. Supports Backward Euler, Trapezoidal, and BDF2 integration methods. Exploits OpenMP parallelism (up to 2 cores in the free version). |
+| **RAMSES** | RApid Multithreaded Simulation of Electric power Systems | Simulates the dynamic evolution of the power system. Supports Backward Euler, Trapezoidal, and BDF2 integration methods. Exploits OpenMP parallelism (up to 2 cores in the free version). |
 | **CODEGEN** | CODE GENerator | Translates user-defined models from text descriptions into Fortran 2003 code for compilation and linking. Supports excitation controllers, torque controllers, injectors, and two-port components. |
 
 ## Repository Structure
@@ -39,19 +39,26 @@ pdflatex stepss_doc.tex
 pdflatex stepss_doc.tex
 ```
 
-A pre-built PDF (`stepss_doc.pdf` / `userguide.pdf`) is included in this repository.
+Two pre-built PDFs are included, and they are kept identical:
+
+- `stepss_doc.pdf` — the build output of `stepss_doc.tex`, and the copy published at [stepss.sps-lab.org](https://stepss.sps-lab.org).
+- `userguide.pdf` — the same document under the file name the Java GUI expects. It is bundled, together with the companion notes in `models/`, into `DOC.zip` in [stepss-java-ui](https://github.com/SPS-L/stepss-java-ui) and extracted at run time.
+
+After rebuilding, refresh both, and regenerate `DOC.zip` in `stepss-java-ui` so the GUI ships the current guide.
 
 ## Prerequisites (running STEPSS)
 
-STEPSS runs on **Windows 64-bit** and requires:
+The Java GUI documented in this guide runs on **Windows 64-bit** and requires:
 
-- **Java 20** (64-bit) — required for the GUI
-- No separate installation needed: download `STEPSS.jar` and run it directly; it self-extracts at startup
+- A 64-bit **Java Runtime Environment** — the GUI targets Java 8 and runs on any later version
+- No separate installation needed: download `stepss.jar` and run it directly; it self-extracts at startup
 
-To compile user-defined models (CODEGEN):
+To compile user-defined models (CODEGEN) on Windows:
 
-- **Visual Studio 2022 Community** with *Desktop development with C++*
-- **Intel oneAPI Fortran Compiler** (BaseKit + Fortran Compiler + HPC Toolkit)
+- **Visual Studio Community 2019 or later** (2022 recommended) with *Desktop development with C++*
+- **Intel oneAPI 2024.0 or later** (Base Toolkit + HPC Toolkit), which provides the `ifx` Fortran compiler. The older `ifort` is deprecated and is no longer supported.
+
+STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran, and PyRAMSES installs with `pip` on Windows and Linux — see [stepss.sps-lab.org](https://stepss.sps-lab.org).
 
 ## Limitations (free academic version)
 

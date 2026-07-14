@@ -1,7 +1,7 @@
 Disturbances need to have a continuity.
 
 
-\section{\index{CONTINUE SOLVER}Continue Solver}
+\section{\index{CONTINUE SOLVER}Continue Solver}\label{sec-continue-solver}
 
 time(s) CONTINUE SOLVER disc\_meth max\_h(s)
 	min\_h(s) latency(pu) upd\_over  
@@ -12,13 +12,13 @@ Discretization method (disc\_meth):
 	\item BE: Backward Euler 
 	\item BD: BDF2 
 \end{itemize}
-Jacobian update override (upd\_over): 
+Jacobian update override (upd\_over):
 \begin{itemize}
-	\item ALL: Update all injectors and network 
-	\item NET: Update only network 
-	\item ABL: Update only injectors 
-	\item IBL: Update all injectors and network 
-	\item NOT: Do not override 
+	\item ALL: force a full Jacobian refactorisation
+	\item NET: force a refactorisation of the network Jacobian
+	\item ABL: force an update of the injector Jacobian at every bus
+	\item IBL: do not force any Jacobian update; the bus and network Jacobians are left as the solver last set them
+	\item NOT: do not override; the solver's own bus Jacobian flags are restored
 \end{itemize}
 It is mainly used to modify the settings of the solver and has to
 exist at the first line. For example:
@@ -145,7 +145,7 @@ bus reached 0.5 pu after the fault:
 \textbf{Supported:} Version 3.13 and above.
 
 
-\section{\index{CHGPRM}Change parameters}
+\section{\index{CHGPRM}Change parameters}\label{sec-chgprm}
 
 Used to change the parameters of a model during the simulation.
 

@@ -7,7 +7,7 @@ This chapter is devoted to presenting the models of those three basic components
 %------------------------------------------------------------------------------------------
 \section{\index{FNOM}Nominal system frequency}
 
-The nominal system frequency is specified by an FNOM records as follows.
+The nominal system frequency is specified by an FNOM record as follows.
 
 \hspace*{5ex}{\tt FNOM F ;}
 
@@ -24,7 +24,7 @@ To encompass the various combinations in a single model, ``switches'' are used. 
 \begin{itemize}
 \item[$S_{d1}$] = 1 if there is a damper winding $d1$, = 0 otherwise
 \item[$S_{q1}$] = 1 if there is a damper winding $q1$, = 0 otherwise
-\item[$S_{q2}$] = 1 if there is a equivalent winding $q2$, = 0 otherwise
+\item[$S_{q2}$] = 1 if there is an equivalent winding $q2$, = 0 otherwise
 \end{itemize}
 
 The allowed combinations of $S_{d1}$, $S_{q1}$ and $S_{q2}$ are shown in the Table~\ref{tab-sync-variants}, with the corresponding values of the switches. Note that the second and third combinations yield the same results.
@@ -136,13 +136,13 @@ and similarly for the current:
 \begin{equation}\label{park-cur}
 \left( \begin{array}{c} i_d \\ i_q \end{array} \right) = \left( \begin{array}{cc} - \sin \delta & \cos \delta \\ \cos \delta & \sin \delta \end{array} \right) \left( \begin{array}{c} i_x \\ i_y \end{array} \right)
 \end{equation}
-whre $\delta$ is the rotor angle.
+where $\delta$ is the rotor angle.
 
 Replacing $i_d$ and $i_q$ with the above expressions in Eqs.~(\ref{psiad-alg}, \ref{psiaq-alg}) gives:
 \begin{equation}\label{psiad-alg-xy}
 \psi_{ad} \left( \frac{1 + m ( \sqrt{\psi_{ad}^2 + \psi_{aq}^2} )^n}{M_d^u} + \frac{1}{L_{\ell f}} + \frac{S_{d1}}{L_{\ell d1}} \right) + \sin \delta \: i_x - \cos \delta \: i_y - \frac{1}{L_{\ell f}} \psi_f - \frac{S_{d1}}{L_{\ell d1}} \psi_{d1} = 0
 \end{equation}
-ans similarly for the $q$ axis:
+and similarly for the $q$ axis:
 \begin{equation}\label{psiaq-alg-xy}
 \psi_{aq} \left( \frac{1 + m ( \sqrt{\psi_{ad}^2 + \psi_{aq}^2} )^n}{M_q^u} + \frac{S_{q1}}{L_{\ell q1}} + \frac{S_{q2}}{L_{\ell q2}} \right) - \cos \delta \: i_x - \sin \delta \: i_y - \frac{S_{q1}}{L_{\ell q1}} \psi_{q1} - \frac{S_{q2}}{L_{\ell q2}} \psi_{q2} = 0
 \end{equation}
@@ -158,7 +158,7 @@ v_q & = & - R_a i_q + \omega \psi_d \label{park-vq} \\
 \frac{d\psi_{q1}}{dt} & = & - \omega_N R_{q1} i_{q1} \label{park-psiq1} \\
 \frac{d\psi_{q2}}{dt} & = & - \omega_N R_{q2} i_{q2} \label{park-psiq2}
 \end{eqnarray}
-where $R_a$ is the stator resistance, $R_f$ the field winding resistance, $R_{d1}$, $R_{q1}$, $R_{q2}$ the rotor winding resistances, $\omega$ the rotor speed, $\omega_N$ the nominal angular freequency (in rad/s), $v_f$ the field voltage, and $K_f$ a coefficient to pass from per unit values of the excitation system to per unit values of the machine.
+where $R_a$ is the stator resistance, $R_f$ the field winding resistance, $R_{d1}$, $R_{q1}$, $R_{q2}$ the rotor winding resistances, $\omega$ the rotor speed, $\omega_N$ the nominal angular frequency (in rad/s), $v_f$ the field voltage, and $K_f$ a coefficient to pass from per unit values of the excitation system to per unit values of the machine.
 
 The stator equations are transformed as follows. Eqs.~(\ref{park-cur}) are used to express $v_d$, $v_q$, $i_d$ and $i_q$ as functions of $v_x$, $v_y$, $i_x$, $i_y$, while Eqs.~(\ref{psid-airgap}, \ref{psiq-airgap}) are used to involve $\psi_{ad}$ and $\psi_{aq}$. This yields for the $d$ axis:
 \begin{eqnarray*}
@@ -177,7 +177,7 @@ v_q & = & - R_a ( \cos \delta \: i_x + \sin \delta \: i_y ) + \omega ( L_\ell i_
 \end{eqnarray}
 and:
 \begin{equation}\label{stator-q-xy}
-0 = - \cos \delta v_x - \sin \delta v_y - ( R_a \cos \delta + \omega_N L_\ell \sin \delta ) i_x - ( R_a \sin \delta - \omega L_\ell \cos \delta ) i_y + \omega \psi_{ad}
+0 = - \cos \delta v_x - \sin \delta v_y - ( R_a \cos \delta + \omega L_\ell \sin \delta ) i_x - ( R_a \sin \delta - \omega L_\ell \cos \delta ) i_y + \omega \psi_{ad}
 \end{equation}
 
 The rotor equations are transformed by substituting the expressions (\ref{if-rotor}, \ref{id1-rotor}, \ref{iq1-rotor}, \ref{iq2-rotor}) for the rotor currents, thereby obtaining:
@@ -229,7 +229,7 @@ The parameters of the turbine are expressed in per unit on the turbine nominal p
 
 \subsubsection*{Excitation system}
 
-The case of the excitation system is a little more involved and requires specifying an addtional parameter.
+The case of the excitation system is a little more involved and requires specifying an additional parameter.
 
 Let the base current of the field winding be $I_{fB}^{mac}$ in the machine model and $I_{fB}^{exc}$ in the excitation system model. Define the ratio:
 \begin{equation}\label{ibratio-def}
@@ -314,7 +314,7 @@ The data format is as follows.
 
 where:
 \begin{itemize}
-\item {\tt NAME} is the name of the machine. This is a string of a most 20 characters
+\item {\tt NAME} is the name of the machine. This is a string of at most 20 characters
 \item {\tt BUS} is the name of the bus which the machine is connected to. This is a string of at most 8 characters
 \item {\tt FP} is the fraction $f_P$ of the initial bus active power injection, as defined in Eq.~(\ref{frac}) (see Section~\ref{sec-refframe})
 \item {\tt FQ} is the fraction $f_Q$ of the initial bus reactive power injection, as defined in Eq.~(\ref{frac})
@@ -331,8 +331,8 @@ where:
 \item {\tt XPD} is the direct-axis transient reactance, in pu
 \item {\tt XSD} is the direct-axis subtransient reactance, in pu
 \item {\tt XQ} is the unsaturated quadrature-axis synchronous reactance, in pu
-\item {\tt XPD} is the quadrature-axis transient reactance, in pu
-\item {\tt XSD} is the quadrature-axis subtransient reactance, in pu
+\item {\tt XPQ} is the quadrature-axis transient reactance, in pu
+\item {\tt XSQ} is the quadrature-axis subtransient reactance, in pu
 \item {\tt M} is the dimensionless saturation factor $m$ as defined in Eqs.~(\ref{md-sat}, \ref{mq-sat}). {\tt M} is set to zero if saturation is neglected
 \item {\tt N} is the dimensionless saturation exponent $n$ as defined in Eqs.~(\ref{md-sat}, \ref{mq-sat}). The value is ignored if {\tt M} is set to zero
 \item {\tt RA} is the armature resistance, in pu
@@ -356,7 +356,7 @@ The data format is as follows.
 
 where:
 \begin{itemize}
-\item {\tt NAME} is the name of the machine. This is a string of a most 20 characters
+\item {\tt NAME} is the name of the machine. This is a string of at most 20 characters
 \item {\tt BUS} is the name of the bus which the machine is connected to. This is a string of at most 8 characters
 \item {\tt FP} is the fraction $f_P$ of the initial bus active power injection, as defined in Eq.~(\ref{frac}) (see Section~\ref{sec-refframe})
 \item {\tt FQ} is the fraction $f_Q$ of the initial bus reactive power injection, as defined in Eq.~(\ref{frac})
@@ -378,17 +378,17 @@ where:
 \item {\tt M} is the dimensionless saturation factor $m$ as defined in Eqs.~(\ref{md-sat}, \ref{mq-sat}). {\tt M} is set to zero if saturation is neglected
 \item {\tt N} is the dimensionless saturation exponent $n$ as defined in Eqs.~(\ref{md-sat}, \ref{mq-sat}). The value is ignored if {\tt M} is set to zero
 \item {\tt RA} is the armature resistance, in pu
-\item {\tt TPD0} is the direct-axis open-circuit transient time constant, in s. It is usually denoted $T'_{d0}$
-\item {\tt TSD0} is the direct-axis open-circuit subtransient time constant, in s. It is usually denoted $T''_{d0}$
-\item {\tt TPQ0} is the quadrature-axis open-circuit transient time constant, in s. It is usually denoted $T'_{q0}$
-\item {\tt TSQ0} is the quadrature-axis open-circuit subtransient time constant, in s. It is usually denoted $T''_{q0}$
+\item {\tt RF} is the resistance $R_f$ of the field winding, in pu
+\item {\tt RD1} is the resistance $R_{d1}$ of the $d1$ damper winding, in pu
+\item {\tt RQ1} is the resistance $R_{q1}$ of the $q1$ damper winding, in pu
+\item {\tt RQ2} is the resistance $R_{q2}$ of the $q2$ damper winding, in pu
 \item {\bf EXC} is a keyword (not a data !) indicating the beginning of the excitation system data section
 \item {\tt E1 E2 ...\ EN} are the successive excitation system data. Please refer to Section~\ref{sec-model-data} for more details
 \item {\bf TOR} is a keyword (not a data !) indicating the end of the excitation system data and the beginning of the torque control data section
 \item {\tt T1 T2 ...\ TN} are the successive torque control data. Please refer to Section~\ref{sec-model-data} for more details.
 \end{itemize}
 
-As explained in the preamble of this section, the full model can be simplified by ignoring some of the rotor windings\footnote{let us recall that not all combinations of windings are allowed}. This is specified by replacing the values of some parameters with an asterisk `*' (the quotes are not needed). The parametres of concern are detailed in Table~\ref{tab-sync-simplified}. Let us recall that not all combintations
+As explained in the preamble of this section, the full model can be simplified by ignoring some of the rotor windings\footnote{let us recall that not all combinations of windings are allowed}. This is specified by replacing the values of some parameters with an asterisk `*' (the quotes are not needed). The parameters of concern are detailed in Table~\ref{tab-sync-simplified}.
 
 \begin{table}[htb]
 \centering
@@ -435,9 +435,9 @@ In this example, the model involves a single synchronous machine, named G5, conn
 \begin{equation}\label{sat-factor}
 sat = 1 + m \left( \sqrt{\psi_{ad}^2 + \psi_{aq}^2} \right)^n \geq 1
 \end{equation}
-This is the ratio between the field current in the saturated machine and the corresponding field current when saturation is neglected, for the same operating conditions. Thus, it characterizes the extra excitation current needed in the presence of saturated material. In the above example, saturation was negelected (a zero value was specified for {\tt M}) and, hence, $sat = 1$.
+This is the ratio between the field current in the saturated machine and the corresponding field current when saturation is neglected, for the same operating conditions. Thus, it characterizes the extra excitation current needed in the presence of saturated material. In the above example, saturation was neglected (a zero value was specified for {\tt M}) and, hence, $sat = 1$.
 
-The machine has an excitation controller whose model is named {\tt exc\_GENERIC3}. At the intial operating point the field voltage is $v_f = 2.3680$ pu on the exciter base, which is indirectly defined by the {\tt IBRATIO} parameter of the machine.
+The machine has an excitation controller whose model is named {\tt exc\_GENERIC3}. At the initial operating point the field voltage is $v_f = 2.3680$ pu on the exciter base, which is indirectly defined by the {\tt IBRATIO} parameter of the machine.
 
 The machine is driven by a turbine whose model is named {\tt THERMAL\_GENERIC1}. The initial mechanical torque is $T_m = 0.97826$ pu, on the turbine base, which is defined by the {\tt PNOM} parameter of the machine.
 \end{quote}

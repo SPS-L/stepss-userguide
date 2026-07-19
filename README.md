@@ -20,7 +20,7 @@ Two pre-built PDFs are committed, and they are kept identical:
 - `stepss_doc.pdf` — the build output of `stepss_doc.tex`, and the source of the copy published at [stepss.sps-lab.org](https://stepss.sps-lab.org/).
 - `userguide.pdf` — the same document under the file name the Java GUI expects. It is bundled, together with the companion notes in `models/`, into `DOC.zip` in [stepss-java-ui](https://github.com/SPS-L/stepss-java-ui) and extracted at run time.
 
-After rebuilding, refresh both copies, then regenerate `DOC.zip` in `stepss-java-ui` and update `public/stepss_userguide.pdf` in `stepss-docs` so the GUI and the website ship the current guide.
+After rebuilding, refresh both copies, then regenerate `DOC.zip` in `stepss-java-ui` and update `public/stepss_docs.pdf` in `stepss-docs` so the GUI and the website ship the current guide.
 
 ## Project Structure
 
@@ -66,7 +66,7 @@ STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran,
 
 ## Documentation
 
-- **Published guide (PDF)**: [stepss.sps-lab.org/stepss_userguide.pdf](https://stepss.sps-lab.org/stepss_userguide.pdf)
+- **Published guide (PDF)**: [stepss.sps-lab.org/stepss_docs.pdf](https://stepss.sps-lab.org/stepss_docs.pdf)
 - **Documentation website**: [stepss.sps-lab.org](https://stepss.sps-lab.org/) — the same content published as a website, built from the [stepss-docs](https://github.com/SPS-L/stepss-docs) repository
 
 ## License

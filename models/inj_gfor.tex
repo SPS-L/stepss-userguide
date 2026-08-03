@@ -15,8 +15,7 @@
 \begin{document}
 
 \begin{center}
-{\large\bf GFOR: Grid-forming VSC modelling in RAMSES}\\[1ex]
-{\small based on the model by T.\ Van Cutsem (July 2026)}
+{\large\bf GFOR: Grid-forming VSC modelling in RAMSES}
 \end{center}
 
 {\bf Overview.} An MMC-type converter connected to the grid through its
@@ -89,8 +88,8 @@ $i_q^{*}=i_{qs}^{*}=i_q$, $v_{md}=V_m^0$ and $v_{mq}=0$.
 
 \newpage
 
-{\bf Data.} The record has the following structure (defaults from the
-{\tt Benchmark\_1\_VSC} test case distributed with RAMSES):
+{\bf Data.} The record has the following structure (default values
+correspond to a 1100~MVA converter):
 
 {\tt INJEC GFOR NAME BUS FP FQ P Q\ \ R L r Snom H D Tpll Rdroop Imax Te ;}
 
@@ -117,7 +116,7 @@ The setpoints $V_m^0$ ({\tt Vmo}) and $P^\ast$ ({\tt Po}) are computed at
 initialization from the power-flow solution and can be modified during the
 simulation with {\tt CHGPRM} disturbances.
 
-Example (from {\tt Benchmark\_1\_VSC}):
+Example:
 
 {\tt INJEC GFOR HVDC A 1. 1. 0. 0. 0.005 0.15 1.02 1100. 5.0 300. 0.100 999. 1.0 0.001 ;}
 

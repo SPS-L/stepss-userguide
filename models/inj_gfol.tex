@@ -15,8 +15,7 @@
 \begin{document}
 
 \begin{center}
-{\large\bf GFOL: Grid-following VSC modelling in RAMSES}\\[1ex]
-{\small based on the model by T.\ Van Cutsem (July 2026)}
+{\large\bf GFOL: Grid-following VSC modelling in RAMSES}
 \end{center}
 
 {\bf Overview.} An MMC-type converter connected to the grid through its
@@ -99,8 +98,8 @@ voltage is controlled.
 
 \newpage
 
-{\bf Data.} The record has the following structure (defaults from the
-{\tt Benchmark\_1\_VSC} test case distributed with RAMSES):
+{\bf Data.} The record has the following structure (default values
+correspond to a 1200~MVA converter):
 
 {\tt INJEC GFOL NAME BUS FP FQ P Q\ \ R L r Snom Rc Xc Kp Ki Tlpf Kpp Kip
 Trlim dPdt\_min dPdt\_max Kpv Kiv tau Vpllb Vpllu Imax Vs1 Vs2 iqmax
@@ -140,13 +139,13 @@ Parameter & Description & Unit & Default \\
 \end{center}
 
 Setting {\tt Vs1} and {\tt Vs2} to large negative values (as in the
-benchmark) disables the dynamic voltage support. Typical values of
+defaults above) disables the dynamic voltage support. Typical values of
 {\tt Kiv} are 50~pu/s for voltage control and 10~pu/s for reactive power
 control. The setpoints $P^0$, $Q^0$ and $V_c^0$ are computed at
 initialization from the power-flow solution and can be modified during the
 simulation with {\tt CHGPRM} disturbances.
 
-Example (from {\tt Benchmark\_1\_VSC}), spanning two lines:
+Example, spanning two lines:
 
 {\tt INJEC GFOL HVDC1 A 1. 1. 0. 0. 0.005 0.15 1.02 1200. 0.005 0.15 0.5730
 6. 0.0033 0.0333 10. \\

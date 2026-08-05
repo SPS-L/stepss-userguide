@@ -37,3 +37,7 @@
 
 # Keep PDF files (used as images)
 !*.pdf
+
+# Local Claude Code / MCP configuration
+/.claude/
+.mcp.json

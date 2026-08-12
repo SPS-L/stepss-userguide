@@ -57,7 +57,7 @@ To compile user-defined models (CODEGEN) on Windows:
 - **Visual Studio Community 2019 or later** (2022 recommended) with *Desktop development with C++*
 - **Intel oneAPI 2024.0 or later** (Base Toolkit + HPC Toolkit), which provides the `ifx` Fortran compiler. The older `ifort` is deprecated and is no longer supported.
 
-STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran, and PyRAMSES installs with `pip` on Windows and Linux. See [stepss.sps-lab.org](https://stepss.sps-lab.org/).
+STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran, and stepss installs with `pip` on Windows and Linux. See [stepss.sps-lab.org](https://stepss.sps-lab.org/).
 
 ## Limitations (free academic version)
 

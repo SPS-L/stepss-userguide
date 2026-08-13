@@ -143,6 +143,18 @@ smaller impedance are clamped to this value, which prevents the network
 admittance matrix from becoming singular. Default: $10^{-5}$~pu.
 
 
+\section{\index{EIGMAXSTATES@EIG\_MAX\_STATES}Size limit of the small-signal
+analysis}
+
+ \$EIG\_MAX\_STATES value ;
+
+Largest number of states accepted by the EIG small-signal analysis. The reduced
+state matrix is solved densely, so the peak workspace is of the order of
+$9N_x^2$ doubles, about 1.8~GB at the default. Above this limit the analysis
+refuses and terminates with exit code 78 rather than attempting the allocation.
+Default: 5000.
+
+
 \section{\index{LATSUBNETS@LAT\_SUBNETS}Latency on subnetworks}
 
  \$LAT\_SUBNETS T/F ;

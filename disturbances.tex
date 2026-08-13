@@ -243,6 +243,50 @@ Also, make sure to add these to your settings:
 \$SCHEME IN;
 
 
+\section{\index{EIG}Small-signal stability analysis}
+
+time(s) EIG 'name\_of\_filename'
+
+Reduces the linearised differential-algebraic model to a state matrix, solves
+the eigenproblem, and writes the modes, participation factors and mode shapes.
+The analysis runs inside RAMSES; no external tool is required.
+
+Required settings:
+
+\$OMEGA\_REF SYN ;
+
+\$SCHEME DE ;
+
+Three files are written, named from the given basename:
+
+\begin{itemize}
+\item {\tt <name>\_modes.dat}: one line per mode, giving the index, the real and
+imaginary parts of the eigenvalue, the damping ratio, the frequency in Hz, a
+dominance flag, and a simplicity flag;
+\item {\tt <name>\_pf.dat}: participation factors, with the family, device and
+variable name of each state;
+\item {\tt <name>\_ms.dat}: mode shapes, as magnitude and angle of each machine's
+rotor speed, normalised so the largest magnitude in a mode is unity and angles
+are relative to it.
+\end{itemize}
+
+The damping ratio is $\zeta = -\sigma/|\lambda|$ for $\lambda = \sigma \pm
+j\omega$, and the frequency is $|\omega|/2\pi$. A mode with $\zeta < 0$ grows
+rather than decays.
+
+The simplicity flag deserves attention. Identical device models with identical
+parameters produce identical eigenvalues, and the eigenvectors of a repeated
+eigenvalue are not unique. Participation factors and mode shapes of such a mode
+are therefore basis-dependent and carry no physical meaning. The flag is unity
+when the eigenvalue is well separated from every other and zero otherwise; do
+not interpret the rows of a mode flagged zero.
+
+Unlike JAC, which logs a warning and skips, EIG refuses when it cannot produce a
+result it can justify: it writes nothing, states the reason in the log, and
+terminates with exit code 78. This occurs under the COI reference frame, under
+the integrated scheme, above the \$EIG\_MAX\_STATES limit, and when the
+algebraic block is singular.
+
 \section{\index{LFRESV}Export load flow}
 
 Takes a snapshot of the system and exports the load flow at a specific time.

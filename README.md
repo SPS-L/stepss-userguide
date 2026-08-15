@@ -73,9 +73,9 @@ STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran,
 
 This guide (the LaTeX sources, the figures, and the built PDF) is licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license. See [LICENSE](LICENSE). Share and adapt it freely, including commercially, with appropriate credit.
 
-**The software it documents is not.** STEPSS is distributed under the **Academic Public License**: free for non-commercial use (academic research, teaching, non-profit organisations); commercial use requires contacting the authors, and the free version is limited to 1000 buses and 2 cores. Those terms are reproduced in `legal.tex` and printed at the front of the guide.
+**The software it documents is not, and it is not under one licence.** STEPSS is an umbrella over components licensed separately: the two user interfaces are Apache 2.0, while the engines are not. RAMSES is the property of the University of Liège (Belgium) and is proprietary, free for non-commercial use; Helios and CODEGEN are under Academic Public Licenses. The free-of-charge terms limit a model to 1000 buses and parallelisation to 2 cores, lifted by a `$LICENSE` record in the data files rather than by a different build.
 
-PFC and CODEGEN are the property of Dr. Thierry Van Cutsem. RAMSES is the property of the University of Liège (Belgium); the authors hold distribution rights.
+[**Licensing**](https://stepss.sps-lab.org/getting-started/license/) on the documentation site is the single owner of these facts, and the terms printed at the front of the guide come from `legal.tex`. Summarising them here beyond the paragraph above only creates a second copy to drift: this file previously described the whole of STEPSS as Academic Public License, which is one component's terms applied to the platform.
 
 See [NOTICE](NOTICE).
 

@@ -47,15 +47,18 @@ STEPSS consists of three tightly integrated modules:
 
 ## Prerequisites (running STEPSS)
 
-The Java GUI documented in this guide runs on **Windows 64-bit** and requires:
+The Java GUI documented in this guide comes two ways, both on the [releases page](https://github.com/SPS-L/stepss-java-ui/releases):
 
-- A 64-bit **Java Runtime Environment, version 11 or later**
-- No separate installation needed: download `stepss.jar` and run it directly; it self-extracts at startup
+- an **installer** (`.msi`, `.dmg` or `.deb`) that carries its own Java, so nothing else is needed
+- **`stepss.jar`**, which needs a 64-bit **Java Runtime Environment, version 11 or later** already installed, and self-extracts at startup
 
-To compile user-defined models (CODEGEN) on Windows:
+To compile user-defined models (CODEGEN), the toolchain is **GNU Fortran**, because the URAMSES kit STEPSS carries is a gfortran build:
 
-- **Visual Studio Community 2019 or later** (2022 recommended) with *Desktop development with C++*
-- **Intel oneAPI 2024.0 or later** (Base Toolkit + HPC Toolkit), which provides the `ifx` Fortran compiler. The older `ifort` is deprecated and is no longer supported.
+- **Windows**: MSYS2, then `pacman -S mingw-w64-x86_64-gcc-fortran mingw-w64-x86_64-openblas make`
+- **Linux** (Debian, Ubuntu): `sudo apt install gfortran make libopenblas-dev`
+- **macOS**: `brew install gcc openblas`
+
+Intel oneAPI (`ifx`) and the Visual Studio environment it needs are no longer part of this. Every RAMSES binary distributed today, on all three platforms, is a gfortran build.
 
 STEPSS is not Windows-only. RAMSES also builds on Linux and macOS with gfortran, and stepss installs with `pip` on Windows and Linux. See [stepss.sps-lab.org](https://stepss.sps-lab.org/).
 

@@ -1,22 +1,39 @@
-{\bf \large The material of this chapter is specific to the Windows 64-bit version of STEPSS, to its Java-based Graphic User Interface (GUI) and the Intel oneAPI Fortran Compiler.
+{\bf \large The material of this chapter is specific to the Windows 64-bit version of STEPSS and its Java-based Graphic User Interface (GUI).
 
 Before going any further, you have to read and accept the legal terms detailed at the beginning of this document.}
 
-STEPSS is not restricted to Windows. RAMSES also builds on Linux and macOS with the GNU Fortran compiler, and stepss, the Python interface, is installed with {\tt pip} on both Windows and Linux. Those routes are documented online at\\
+STEPSS is not restricted to Windows. Installers are published for Windows, macOS and Linux, RAMSES also builds on Linux and macOS with the GNU Fortran compiler, and stepss, the Python interface, is installed with {\tt pip} on both Windows and Linux. Those routes are documented online at\\
 \hspace*{5ex}{\tt https://stepss.sps-lab.org}
 
-All needed files can be downloaded from the following \hypertarget{Google}{Google drive}:\\
+Every version of STEPSS is published on its releases page, which is the place to download it from:\\
+\hspace*{5ex}{\tt https://github.com/SPS-L/stepss-java-ui/releases}
+
+Copies of the third-party installers mentioned in this chapter are also kept on a \hypertarget{Google}{Google drive}, to save navigating vendor web pages:\\
 \hspace*{-7ex}{\tt https://drive.google.com/drive/folders/1HcUSD-FOx6192HURJnxltYJuKuNA8Vwz?usp=drive\_link}
 
-{\bf \large Note that the Java, Visual Studio and oneAPI files are not part of STEPSS}. They are provided only to ease the installation procedure, avoiding navigation through the Oracle, Windows and Intel Web pages.
+{\bf \large Note that those third-party files are not part of STEPSS}.
 
 %------------------------------------------------------------------------------------------------------
-\section{Installing JAVA}
+\section{Installing STEPSS}
 
+STEPSS comes two ways. The {\bf installer} carries its own Java, so nothing else has to be installed and any Java already on the machine is neither needed nor disturbed. The {\bf archive}, {\tt stepss.jar}, is a single file that leaves nothing behind, and needs a Java you have installed yourself. Either way, everything required to run the simulations and display the results, executables and libraries included, travels with STEPSS.
 
-STEPSS comes with a Java-based Graphical User Interface (GUI). Everything is packed in a Java archive containing a (legal) copy of all executables and libraries required to run the simulations and display the results.
+\subsection{Using the installer (recommended)}
 
-Using that GUI requires a 64-bit Java Runtime Environment (JRE), version~11 or later, installed on your computer. Any recent JRE or JDK is fine. To check if you have Java installed, and if so, which version it is:
+From the releases page, download the file for your system:
+\begin{itemize}
+\item Windows: {\tt STEPSS-\emph{version}.msi}
+\item macOS (Apple Silicon): {\tt STEPSS-\emph{version}.dmg}
+\item Linux (Debian, Ubuntu): {\tt stepss\_\emph{version}\_amd64.deb}
+\end{itemize}
+
+Open it and follow the installer. STEPSS is then started from the Start menu, from Applications, or from your desktop's list of applications, like any other program.
+
+To remove it, uninstall it the way you would any other application: {\em Add or Remove Programs} on Windows, dragging it to the Trash on macOS, {\tt sudo apt remove stepss} on Debian and Ubuntu.
+
+\subsection{Using the archive}
+
+The archive route needs a 64-bit Java Runtime Environment (JRE), version~11 or later, installed on your computer. Any recent JRE or JDK is fine. To check whether you have Java, and which version:
 \begin{enumerate}
 \item open a Windows Command prompt
 \item in the latter, enter the command:\\
@@ -32,10 +49,9 @@ It should display a message similar to the one shown in Fig.~\ref{fig_install_ja
 \caption{Checking the presence of the Java environment}\label{fig_install_java}
 \end{figure}
 
-
 If the command is not recognised, no Java is installed. In that case, install a 64-bit JRE or JDK as follows:
 \begin{enumerate}
-\item download a Java SE Development Kit (64-bit) from the \hyperlink{Google}{Google drive}, or a current release from {\tt https://www.oracle.com/java/technologies/downloads/}
+\item download a Java SE Development Kit (64-bit) from the \hyperlink{Google}{Google drive}, or a current release from {\tt https://adoptium.net/} or {\tt https://www.oracle.com/java/technologies/downloads/}
 \item install by double-clicking on that file and following the instructions
 \item for an easy execution, associate {\tt stepss.jar} with Java following the standard Windows procedure:
 \begin{enumerate}
@@ -47,8 +63,8 @@ If the command is not recognised, no Java is installed. In that case, install a 
 
 There is no need to uninstall any Java version you already have, as long as it is 64-bit Java~11 or later.
 
-Apart from the Java machine, STEPSS does not require any installation in the usual meaning of the term.
-Just download the {\tt stepss.jar} file from the \hyperlink{Google}{Google drive} and drop it in any convenient place of the computer. The Windows desktop is a very convenient location.
+Apart from the Java machine, this route does not require any installation in the usual meaning of the term.
+Just download the {\tt stepss.jar} file from the releases page and drop it in any convenient place of the computer. The Windows desktop is a very convenient location.
 
 Leave the archive intact; in particular do not uncompress it !
 
@@ -59,48 +75,24 @@ When STEPSS is launched it creates a temporary working folder and copies all nee
 To remove STEPSS from your computer, just delete the archive file. STEPSS does not leave anything in your computer !
 
 %--------------------------------------------------------------------------------------------------------
-\section{Installing Visual Studio}
+\section{Installing a Fortran Compiler}
 
-{\bf \large This step can be skipped if you do not plan to develop new models for RAMSES}.
+{\bf \large This step can be skipped if you do not plan to develop new models for RAMSES}. Everything else in STEPSS works without it.
 
-The Intel oneAPI compiler relies on the Microsoft Visual Studio environnement as well as some associated C++ libraries.
+Compiling a model of your own produces a simulator built from the URAMSES kit that STEPSS carries, and that kit is a {\bf GNU Fortran} build. You therefore need {\tt gfortran}, GNU {\tt make} and OpenBLAS. The Intel oneAPI compiler and the Microsoft Visual Studio environment it relies on are no longer used and no longer need to be installed.
 
-The Community edition, version 2019 or later, is required; 2022 is recommended. There is no need to uninstall an existing Visual Studio installation that already meets this requirement.
-
-The installation steps are as follows:
+On Windows, these come from MSYS2:
 \begin{enumerate}
-\item download from the \hyperlink{Google}{Google drive} the launcher named\\
-{\tt vs\_community\_\_e942d3d4864d4a80b72975352289d007.exe}, or a current Community installer from\\
-{\tt https://visualstudio.microsoft.com/downloads/}
-\item execute by double-clicking
-\item during the installation, under the ``Workloads'' view, select the checkbox to install the ``Desktop development with C++'' component of Visual Studio as shown in Fig.~\ref{fig_Visual_Studio}. This component is not installed by default.
+\item install MSYS2 from {\tt https://www.msys2.org/}
+\item open an MSYS2 terminal and install the toolchain:\\
+\hspace*{5ex}{\tt pacman -S mingw-w64-x86\_64-gcc-fortran mingw-w64-x86\_64-openblas make}
 \end{enumerate}
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.3]{Visual_Studio.jpg}
-\caption{Selecting the ``Desktop development with C++'' component when installing Visual Studio}\label{fig_Visual_Studio}
-\end{figure}
- 
-%--------------------------------------------------------------------------------------------------------
-\section{Installing the Fortran Compiler}
+STEPSS looks for MSYS2 in {\tt C:$\backslash$msys64}, or wherever the {\tt MSYS2\_ROOT} environment variable points, because the MSYS2 installer does not add its compiler directory to the system PATH.
 
-{\bf This step can be skipped if you do not plan to develop new models for RAMSES}.
+On Linux, install the same three with your package manager; on Debian and Ubuntu that is\\
+\hspace*{5ex}{\tt sudo apt install gfortran make libopenblas-dev}\\
+On macOS, use Homebrew:\\
+\hspace*{5ex}{\tt brew install gcc openblas}
 
-STEPSS is compiled with {\tt ifx}, the Intel oneAPI Fortran compiler. The older {\tt ifort} (``Fortran Compiler Classic'') is deprecated by Intel and is no longer supported: use a oneAPI release of version 2024.0 or later, which provides {\tt ifx}.
-
-Two packages are needed, both available free of charge from Intel:
-\begin{enumerate}
-\item the {\bf Intel oneAPI Base Toolkit}
-\item the {\bf Intel oneAPI HPC Toolkit}, which contains the {\tt ifx} Fortran compiler.
-\end{enumerate}
-
-Download the current versions from:\\
-\hspace*{5ex}{\tt https://www.intel.com/content/www/us/en/developer/tools/oneapi/}\\
-\hspace*{5ex}{\tt hpc-toolkit-download.html}
-
-Install the Base Toolkit first, then the HPC Toolkit, following the instructions of the installer, and restart your computer.
-
-
-
-
+The kits STEPSS carries are specific to a gfortran ABI, and each platform's default compiler matches the kit shipped for it. If yours does not, STEPSS reports the exact compiler version to install rather than failing part way through a build.

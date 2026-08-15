@@ -8,7 +8,9 @@ This is the LaTeX source for the STEPSS (Static and Transient Electric Power Sys
 
 Authors: Dr. Petros Aristidou, Dr. Thierry Van Cutsem.
 
-This *document* is licensed CC BY 4.0 (see LICENSE). The *software* it documents is not: STEPSS is under the Academic Public License (non-commercial), whose terms are reproduced in `legal.tex`. Don't conflate the two.
+This *document* is licensed CC BY 4.0 (see LICENSE). The *software* it documents is not, and it is not under a single licence: STEPSS is an umbrella over components licensed separately. The two user interfaces are Apache 2.0; RAMSES is proprietary to the University of Liège, free for non-commercial use; Helios and CODEGEN are under Academic Public Licenses. Do not describe the platform as a whole under any one of these, in either direction. `getting-started/license.md` in stepss-docs owns these facts, `legal.tex` carries the terms printed in the guide, and the README summarises in one paragraph and links out. Anything more here becomes a fourth copy.
+
+The free-of-charge limits (1000 buses, 2 cores) are lifted by a `$LICENSE` record in the user's data files, not by a separate build. There is one RAMSES binary, so nothing that is not the engine can tell which way it is running.
 
 ## Build
 

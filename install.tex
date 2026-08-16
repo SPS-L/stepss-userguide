@@ -18,6 +18,8 @@ Copies of the third-party installers mentioned in this chapter are also kept on 
 
 STEPSS comes two ways. The {\bf installer} carries its own Java, so nothing else has to be installed and any Java already on the machine is neither needed nor disturbed. The {\bf archive}, {\tt stepss.jar}, is a single file that leaves nothing behind, and needs a Java you have installed yourself. Either way, everything required to run the simulations and display the results, executables and libraries included, travels with STEPSS.
 
+On Debian and Ubuntu there is a third route, an {\bf APT repository}. It delivers the same installer, with the difference that later releases arrive through {\tt apt upgrade} rather than being downloaded by hand.
+
 \subsection{Using the installer (recommended)}
 
 From the releases page, download the file for your system:
@@ -29,7 +31,51 @@ From the releases page, download the file for your system:
 
 Open it and follow the installer. STEPSS is then started from the Start menu, from Applications, or from your desktop's list of applications, like any other program.
 
+On Linux, install the {\tt .deb} with\\
+\hspace*{5ex}{\tt sudo apt install ./stepss\_\emph{version}\_amd64.deb}\\
+rather than with {\tt dpkg -i}, so that the packages STEPSS needs, gnuplot among them, are installed with it. It requires Ubuntu~24.04 or newer, or a Debian of the same vintage or later; on an older release, use the archive instead.
+
 To remove it, uninstall it the way you would any other application: {\em Add or Remove Programs} on Windows, dragging it to the Trash on macOS, {\tt sudo apt remove stepss} on Debian and Ubuntu.
+
+\subsection{Using the APT repository (Debian and Ubuntu)}
+
+On Debian and Ubuntu, STEPSS can be installed as an ordinary package from the repository the laboratory publishes at\\
+\hspace*{5ex}{\tt https://apt.sps-lab.org}\\
+It carries the same {\tt .deb} as the previous section. What it adds is that {\tt apt upgrade} then moves you to each later release along with the rest of the system, instead of leaving you to notice that one was published.
+
+The setup is done once. Copy the following block into a terminal:
+
+\begin{verbatim}
+sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSL https://apt.sps-lab.org/sps-l-archive-keyring.asc \
+  -o /etc/apt/keyrings/sps-l-archive-keyring.asc
+
+sudo tee /etc/apt/sources.list.d/sps-l.sources >/dev/null <<'EOF'
+Types: deb
+URIs: https://apt.sps-lab.org
+Suites: stable
+Components: non-free
+Architectures: amd64
+Signed-By: /etc/apt/keyrings/sps-l-archive-keyring.asc
+EOF
+\end{verbatim}
+
+STEPSS is then installed, and later upgraded, like anything else:
+
+\begin{verbatim}
+sudo apt update
+sudo apt install stepss
+\end{verbatim}
+
+Start it by typing {\tt stepss}, or from the {\em Science} section of the applications menu. Remove it with {\tt sudo apt remove stepss}.
+
+Four things to know about this route:
+\begin{itemize}
+\item It requires {\bf Ubuntu~24.04 or newer}, or a Debian of the same vintage or later, on {\bf x86-64}. The package is built on Ubuntu~24.04 and names the packages it depends on as that release names them, so Ubuntu~22.04 and Debian~12 cannot install it. There is no Linux arm64 build of the engines, which is why {\tt Architectures: amd64} appears above: without that line, apt on an arm64 machine looks for an index that does not exist and reports an error on every {\tt apt update}.
+\item The repository serves {\bf the current release only}. To install a specific earlier build, download its {\tt .deb} from the releases page.
+\item {\tt non-free} is accurate rather than a formality. STEPSS is not free software taken as a whole, and installing it through apt agrees to nothing: the licence appears the first time STEPSS is launched, which is after installation. Read the legal terms at the beginning of this document first. Please also do not mirror the repository, since the licence granted for RAMSES is not transferable.
+\item It is {\bf not} an official Ubuntu or Debian repository, and nothing in it has been through Canonical's or Debian's review. That is also why the setup above is needed at all.
+\end{itemize}
 
 \subsection{Using the archive}
 
@@ -73,6 +119,11 @@ STEPSS is launched by merely double-clicking on {\tt stepss.jar} (or a shortcut 
 When STEPSS is launched it creates a temporary working folder and copies all needed executables and libraries into that folder.
 
 To remove STEPSS from your computer, just delete the archive file. STEPSS does not leave anything in your computer !
+
+The archive is the one route that installs nothing beside itself, so real-time plotting needs gnuplot put there by hand. On Windows the archive carries its own copy and nothing is needed. On Linux, install {\tt gnuplot-x11} rather than plain {\tt gnuplot}, which can resolve to a build with no interactive terminal:\\
+\hspace*{5ex}{\tt sudo apt install gnuplot-x11}\\
+On macOS, use Homebrew:\\
+\hspace*{5ex}{\tt brew install gnuplot}
 
 %--------------------------------------------------------------------------------------------------------
 \section{Installing a Fortran Compiler}

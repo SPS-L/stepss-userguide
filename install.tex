@@ -69,6 +69,10 @@ sudo apt install stepss
 
 Start it by typing {\tt stepss}, or from the {\em Science} section of the applications menu. Remove it with {\tt sudo apt remove stepss}.
 
+If {\tt apt update} answers {\tt NO\_PUBKEY 3600A756077AD061}, that is apt naming the key it wanted and could not find. It means one of three things, which look identical from apt: the keyring file is not there, because the download failed and {\tt curl} correctly writes nothing when it does; the {\tt Signed-By} line is missing from your {\tt .sources} file; or the file holds some other key. Check which:\\
+\hspace*{5ex}{\tt gpg -{}-show-keys /etc/apt/keyrings/sps-l-archive-keyring.asc}\\
+It should report fingerprint {\tt 125ABE6917ED2F2965D6545B3600A756077AD061}, for {\tt SPS-L Packaging}. If it reports no such file, run the {\tt curl} command again. A different complaint mentioning {\tt add\_keyblock\_resource} means the file exists but is empty, and has the same remedy.
+
 Four things to know about this route:
 \begin{itemize}
 \item It requires {\bf Ubuntu~24.04 or newer}, or a Debian of the same vintage or later, on {\bf x86-64}. The package is built on Ubuntu~24.04 and names the packages it depends on as that release names them, so Ubuntu~22.04 and Debian~12 cannot install it. There is no Linux arm64 build of the engines, which is why {\tt Architectures: amd64} appears above: without that line, apt on an arm64 machine looks for an index that does not exist and reports an error on every {\tt apt update}.

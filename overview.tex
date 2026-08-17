@@ -2,7 +2,7 @@
 
 STEPSS includes three modules:
 \begin{itemize}
-\item {\bf PFC} (for Power Flow Computation) performs a power flow computation in order to determine the initial operating point of a dynamic simulation;
+\item {\bf Helios} (for Power Flow Computation) performs a power flow computation in order to determine the initial operating point of a dynamic simulation;
 \item {\bf RAMSES} (for RApid Multithreaded Simulation of Electric power Systems) simulates the dynamic evolution of the power system in response to disturbances/actions specified by the user;
 \item {\bf CODEGEN} (for CODE GENerator) translates a model described by the user in a text file into its equivalent in FORTRAN 2003 language. The latter has to be compiled and linked to a user-defined executable version RAMSES.
 \end{itemize}
@@ -17,14 +17,14 @@ The three modules, their relationships and their input/ouput data files are show
 
 Note that each of the three modules can be used separately. Here are examples of such uses:
 \begin{itemize}
-\item PFC alone: a power flow computation is run to inspect the power system state and/or save the corresponding power flow solution for use by RAMSES;
-\item PFC alone: a sequence of power flow computations is performed until obtaining the desired power system state. The corresponding power flow solution is saved for use by RAMSES;
-\item RAMSES alone: with the initial power flow solution produced by PFC, several dynamic simulations are run starting from that initial state, i.e. without invoking PFC each time;
+\item Helios alone: a power flow computation is run to inspect the power system state and/or save the corresponding power flow solution for use by RAMSES;
+\item Helios alone: a sequence of power flow computations is performed until obtaining the desired power system state. The corresponding power flow solution is saved for use by RAMSES;
+\item RAMSES alone: with the initial power flow solution produced by Helios, several dynamic simulations are run starting from that initial state, i.e. without invoking Helios each time;
 \item CODEGEN alone: a model is built and saved for future incorporation in a user-defined version of RAMSES.
 \end{itemize}
 
 %--------------------------------------------------------------------------------------------------
-\section{PFC module}
+\section{Helios module}
 
 The power flow computation resorts to the well-known Newton(-Raphson) method. Polar coordinates are used.
 
@@ -32,16 +32,16 @@ As shown in Fig.~\ref{fig-over-general}, the input information consists of:
 \begin{itemize}
 \item network data relative to buses, lines, transformers, etc.
 \item power flow data specified at PV, PQ and slack buses, respectively
-\item PFC control parameters. These are settings such as: tolerances on final power mismatches, thresholds to enforce reactive power limits of generators, etc. These are optional data; if they are not provided, default values (listed in this documentation) are used.
+\item Helios control parameters. These are settings such as: tolerances on final power mismatches, thresholds to enforce reactive power limits of generators, etc. These are optional data; if they are not provided, default values (listed in this documentation) are used.
 \end{itemize}
 
-Optionally PFC also adjusts the ratios of some transformers, with the objective:
+Optionally Helios also adjusts the ratios of some transformers, with the objective:
 \begin{itemize}
 \item for an in-phase transformer: to bring the voltage magnitude at a bus inside a specified deadband
 \item for a phase-shifting transformer: to bring the active power flow in a network branch inside a specified deadband.
 \end{itemize}
 
-PFC produces an output file including:
+Helios produces an output file including:
 \begin{itemize}
 \item the voltage magnitudes and phase angles at all buses of the network
 \item the adjustable transformer data with updated values of their ratios.
@@ -56,7 +56,7 @@ RAMSES is aimed at simulating the dynamic response of power system models derive
 
 It takes as input (see Fig.~\ref{fig-over-general}):
 \begin{itemize}
-\item the network data, which are shared with PFC\footnote{with a few exceptions (detailed in this document)}
+\item the network data, which are shared with Helios\footnote{with a few exceptions (detailed in this document)}
 \item the data pertaining to the dynamics of the components connected to the network
 \item RAMSES control parameters. These are settings such as: tolerances for solving the equations, variation of state variables to identify the Jacobians, time steps of plots, reference angular speed, etc.
 \item the sequence of actions and/or disturbances imposed during the simulation.

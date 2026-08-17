@@ -24,7 +24,7 @@ Only one BUS record per bus is allowed.
 
 All buses must be declared through BUS records. If the software finds (in other than BUS records) a bus name not defined through a BUS record, it issues an error message and stops.
 
-{\bf \large Caveat}. The above record is used in the RAMSES module. For the initial power flow computation with PFC, an extended version of the BUS record is used with six fields instead of two. Please refer to Section~\ref{sec-pf-bus}. Thus, when RAMSES is initialized, if a BUS record has six fields, only the first two are read, the others are ignored.
+{\bf \large Caveat}. The above record is used in the RAMSES module. For the initial power flow computation with Helios, an extended version of the BUS record is used with six fields instead of two. Please refer to Section~\ref{sec-pf-bus}. Thus, when RAMSES is initialized, if a BUS record has six fields, only the first two are read, the others are ignored.
 
 %----------------------------------------------------------------------------------
 \section{Lines and cables}
@@ -132,7 +132,7 @@ In STEPSS $R$, $X$, $B_1$ and $B_2$ are in percent on the $(S_{nom},V_{B1})$ bas
 $n$ is in percent on the $(V_{B1}, V_{B2})$ base. Its value is given by:
 \[ n = 100 \; \frac{V_{o2}\: V_{B1}}{V_{o1}\: V_{B2}} \]
 
-A second transformer model is available. It is a simplified version with $B_2=0$ and $\phi=0$ in Fig.~\ref{fig-netw-transfo} and and includes data for PFC to adjust the transformer ratio (see Section~\ref{sec-pf-ltc}). This model cannot be used for phase-shifting transformers.
+A second transformer model is available. It is a simplified version with $B_2=0$ and $\phi=0$ in Fig.~\ref{fig-netw-transfo} and and includes data for Helios to adjust the transformer ratio (see Section~\ref{sec-pf-ltc}). This model cannot be used for phase-shifting transformers.
 
 
 \subsection{Data format}\label{sec-netw-trfo}
@@ -165,13 +165,13 @@ where:
 \item {\tt NAME} is the name of the transformer.  This is a string of at most 20 characters
 \item {\tt FROMBUS} is the name of the ``from'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
 \item {\tt TOBUS} is the name of the ``to'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
-\item{\tt CONBUS} is used by PFC for adjusting $n$: see Section~\ref{sec-pf-ltc}. It is not used by RAMSES, but a (dummy) name must be provided
+\item{\tt CONBUS} is used by Helios for adjusting $n$: see Section~\ref{sec-pf-ltc}. It is not used by RAMSES, but a (dummy) name must be provided
 \item{\tt R} is the series resistance, in \% on the base detailed above
 \item{\tt X} is the leakage reactance, in \% on the base detailed above
 \item{\tt B} is the shunt suceptance, in \% on the base detailed above
 \item{\tt N} is the magnitude of the transformer ratio in \% (dimensionless)
 \item{\tt SNOM} is the nominal apparent power of the transformer, in MVA. This value must not be zero
-\item{\tt NFIRST} is used by PFC for adjusting $n$: see Section~\ref{sec-pf-ltc}.
+\item{\tt NFIRST} is used by Helios for adjusting $n$: see Section~\ref{sec-pf-ltc}.
 \item{\tt NLAST}: same as for {\tt NFIRST}
 \item{\tt NBPOS}: same as for {\tt NFIRST}
 \item{\tt TOLV}: same as for {\tt NFIRST}
@@ -230,7 +230,7 @@ where:
 \item{\tt BR} is the on/off status of the two-port breakers. A zero value indicates that the breakers are open at both ends (two-port out of service); any other value means that both breakers are closed (two-port in service).
 \end{itemize}
 
-The parameters of the two-port are given in per unit on the following base: nominal bus voltages, system base power. By default a value of 100 MVA is used\footnote{a typical value for transmisstion systems} but it can be changed: see Section~\ref{sec-pfc-ctl}.
+The parameters of the two-port are given in per unit on the following base: nominal bus voltages, system base power. By default a value of 100 MVA is used\footnote{a typical value for transmisstion systems} but it can be changed: see Section~\ref{sec-helios-ctl}.
 
 It is allowed for a non-reciprocal two-port to connect two buses with different nominal voltages.
 
@@ -269,6 +269,6 @@ Only one SHUNT record per named shunt is allowed. Multiple shunts at the same bu
 
 All shunts are memorized, even those which are disconnected. A disconnected shunt is not involved (it appears in the output results with a zero power flow) but it can be put into service in the dynamic simulation.
 
-{\bf \large Caveat}. The above record is used in the RAMSES module. However, for the initial power flow computation with PFC, the shunt data are attached to a bus and are specified in an extended version of the BUS record. Please refer to Section~\ref{sec-pf-bus}.
+{\bf \large Caveat}. The above record is used in the RAMSES module. However, for the initial power flow computation with Helios, the shunt data are attached to a bus and are specified in an extended version of the BUS record. Please refer to Section~\ref{sec-pf-bus}.
 
 

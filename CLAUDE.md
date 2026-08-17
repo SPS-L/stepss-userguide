@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is the LaTeX source for the STEPSS (Static and Transient Electric Power Systems Simulation) user guide — a formal reference manual covering data formats, model library, installation, and the three integrated modules: PFC (power flow), RAMSES (dynamic simulation), and CODEGEN (user-defined model compiler).
+This is the LaTeX source for the STEPSS (Static and Transient Electric Power Systems Simulation) user guide — a formal reference manual covering data formats, model library, installation, and the three integrated modules: Helios (power flow), RAMSES (dynamic simulation), and CODEGEN (user-defined model compiler).
 
 Authors: Dr. Petros Aristidou, Dr. Thierry Van Cutsem.
 
@@ -33,8 +33,8 @@ Main file: `stepss_doc.tex`. It uses sans-serif font globally (`\sf`), A4 custom
 3. `files.tex` — Data file organisation
 4. `network.tex` — Network component modelling
 
-**Part II — Power Flow (PFC):**
-5. `pfc-data.tex` — PFC data format
+**Part II — Power Flow (Helios):**
+5. `power-flow-data.tex` — Power-flow data format
 
 **Part III — Dynamic Simulation (RAMSES):**
 6. `ref_and_init.tex` — Reference frame and initialization
@@ -58,4 +58,4 @@ Main file: `stepss_doc.tex`. It uses sans-serif font globally (`\sf`), A4 custom
 - **Key packages**: `amsmath`, `mdframed`, `algorithmic`, `fontawesome5` (for `\faHandPointRight`), `hyperref`, `enumitem` (with `nolistsep`), `epsfig`, `bm`.
 - **Cross-references for blocks**: CODEGEN block sections use `\hypertarget{blockname}` / `\hyperlink{blockname}` for internal linking between block descriptions.
 - **Figures**: All diagrams are PDF or PNG format, included at the repo root level and in `codegen/`.
-- **Data format documentation**: Network/PFC records are documented with `tabular` environments showing field-by-field breakdowns. Each record type is semicolon-terminated, matching the `.dat` file format consumed by RAMSES/PFC/Helios.
+- **Data format documentation**: Network and power-flow records are documented with `tabular` environments showing field-by-field breakdowns. Each record type is semicolon-terminated, matching the `.dat` file format consumed by RAMSES and Helios.

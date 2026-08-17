@@ -1,4 +1,4 @@
-The following records, documented in Chapter \ref{ch-network} are used by PFC:
+The following records, documented in Chapter \ref{ch-network} are used by Helios:
 \begin{itemize}
 \item[] BUS
 \item[] LINE
@@ -86,7 +86,7 @@ The presence of a slack-bus is mandatory in power flow computations: indeed, not
 
 A generator of the PV type must be connected to the slack-bus. Its voltage magnitude, specified in its GENER record, is imposed at the bus, while the voltage phase angle is set to zero.
 
-PFC can handle only one connected network (or island). If the network graph is not connected, {\sl \large only the connected sub-network including the slack-bus is treated}; the rest of the network is ignored with a warning message.
+Helios can handle only one connected network (or island). If the network graph is not connected, {\sl \large only the connected sub-network including the slack-bus is treated}; the rest of the network is ignored with a warning message.
 
 The SLACK record allows specifying which bus is the slack-bus. The syntax is as follows:
 
@@ -165,7 +165,7 @@ dynamic simulation.
 
 \subsection{Modelling}
 
-PFC can adjust the ratio of a designated transformer with the objective of bringing a controlled voltage inside a deadband $[V_{des}-\epsilon \;\; V_{des}+\epsilon]$, where $V_{des}$ is the desired voltage and $\epsilon$ is a tolerance.
+Helios can adjust the ratio of a designated transformer with the objective of bringing a controlled voltage inside a deadband $[V_{des}-\epsilon \;\; V_{des}+\epsilon]$, where $V_{des}$ is the desired voltage and $\epsilon$ is a tolerance.
 
 The ratio is changed in discrete steps (as in the real life), between a minimum and a maximum value. During the computation, the ratio is changed by one step at a time, after which Newton iterations are performed until convergence is achieved. The process is repeated until the controlled voltage falls in the deadband. When multiple transformers are adjusted, some may reach their deadbands before others.
 
@@ -210,7 +210,7 @@ A transformer can be controlled by a single tap changer only. It is more natural
 
 \subsection{Modelling}
 
-PFC can also adjust the phase angle of a transformer with the objective of bringing the active power flow in a branch inside a deadband $[P_{des}-\epsilon \;\; P_{des}+\epsilon]$, where $P_{des}$ is the desired power flow and $\epsilon$ is a tolerance.
+Helios can also adjust the phase angle of a transformer with the objective of bringing the active power flow in a branch inside a deadband $[P_{des}-\epsilon \;\; P_{des}+\epsilon]$, where $P_{des}$ is the desired power flow and $\epsilon$ is a tolerance.
 
 The adjustment is very similar to that of in-phase transformers for voltage control detailed in  Section~\ref{sec-pf-ltc}.
 
@@ -240,7 +240,7 @@ The phase angle $\phi$ corresponding to position $p$ ($1 \le p \le {\tt NBPOS}$)
 \end{equation}
 The value of $p$ is increased or decreased by one at each adjustment iteration.
 
-PFC performs a sensitivity analysis to determine whether the phase angle should be increased or decreased. If this analysis indicates a direction opposite to what is specified in {\tt SIGN}, a warning is issued and the value of {\tt SIGN} is ignored. On output, when it produces a file with the records updated, PFC sets {\tt SIGN} to the value corresponding to its sensitivity analysis.
+Helios performs a sensitivity analysis to determine whether the phase angle should be increased or decreased. If this analysis indicates a direction opposite to what is specified in {\tt SIGN}, a warning is issued and the value of {\tt SIGN} is ignored. On output, when it produces a file with the records updated, Helios sets {\tt SIGN} to the value corresponding to its sensitivity analysis.
 
 An initial value of the phase angle is given by the {\tt PHI} field of the TRANSFO record. If the transformer is to be adjusted, before starting the power flow computation, that value is adjusted to coincide with the nearest tap position, in accordance with Eq.~(\ref{equ-pf-phivalue}).
 
@@ -252,7 +252,7 @@ Only one PSHIFT-P record per transformer is allowed. The PSHIFT-P record is inte
 %----------------------------------------------------------------------------------
 \section{Bus voltages: initial values and results}\label{sec-lfresv}
 
-On output, PFC produces a file with the computed bus voltage magnitudes and phase angles. The latter are specified in records with keyword LFRESV. The syntax is as follows:
+On output, Helios produces a file with the computed bus voltage magnitudes and phase angles. The latter are specified in records with keyword LFRESV. The syntax is as follows:
 
 \hspace*{5ex}{\tt LFRESV BUS MODV PHASV ;}
 
@@ -271,20 +271,20 @@ If no LFRESV record is specified at a bus:
 \item the phase angle is initialized to 0 degree.
 \end{itemize}
 
-Thus, if the LFRESV records obtained from a first run of PFC are added to the data files, the other data being unchanged, no Newton iteration is going to be performed since we are already at the solution. This is an easy way to check that system data come with their corresponding voltages.
+Thus, if the LFRESV records obtained from a first run of Helios are added to the data files, the other data being unchanged, no Newton iteration is going to be performed since we are already at the solution. This is an easy way to check that system data come with their corresponding voltages.
 
 
 %----------------------------------------------------------------------------------
-\section{Share of records beween PFC and RAMSES}
+\section{Share of records between Helios and RAMSES}
 
-A summary of the records used by respectively PFC and RAMSES is given in Table~\ref{tab-records}.
+A summary of the records used by respectively Helios and RAMSES is given in Table~\ref{tab-records}.
 
 \begin{table}[h!]
 \centering
-\caption{records used by PFC and RAMSES, respectively}\label{tab-records}
+\caption{records used by Helios and RAMSES, respectively}\label{tab-records}
 \begin{tabular}{|c|c|c|}
 \hline
-record & in PFC & in RAMSES \\ \hline \hline
+record & in Helios & in RAMSES \\ \hline \hline
 BUS & all 6 fields used & only first two fields used \\ \hline
 LINE & used & used \\ \hline
 SWITCH & used & used \\ \hline
@@ -303,11 +303,11 @@ PSHIFT-P & used & ignored \\ \hline
 
 
 %----------------------------------------------------------------------------------
-\section{Computation control parameters}\label{sec-pfc-ctl}
+\section{Computation control parameters}\label{sec-helios-ctl}
 
 \subsection{Parameters}
 
-PFC performs Newton(-Raphson) iterations to solve the power flow equations. At the $k$-th iteration, the following indices are computed:
+Helios performs Newton(-Raphson) iterations to solve the power flow equations. At the $k$-th iteration, the following indices are computed:
 \begin{itemize}
 \item[] $\displaystyle \epsilon_P = \max_i |f_i({\bf v}^{(k)}, {\bm \theta}^{(k)}) - P^o_i|$ the largest absolute mismatch of the active power equations
 \item[] $\displaystyle \epsilon_Q = \max_i |g_i({\bf v}^{(k)}, {\bm \theta}^{(k)}) - Q^o_i|$ the largest absolute mismatch of the reactive power equations

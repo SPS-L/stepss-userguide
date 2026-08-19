@@ -33,7 +33,7 @@ Open it and follow the installer. STEPSS is then started from the Start menu, fr
 
 On Linux, install the {\tt .deb} with\\
 \hspace*{5ex}{\tt sudo apt install ./stepss\_\emph{version}\_amd64.deb}\\
-rather than with {\tt dpkg -i}, so that the packages STEPSS needs, gnuplot among them, are installed with it. It requires Ubuntu~24.04 or newer, or a Debian of the same vintage or later; on an older release, use the archive instead.
+rather than with {\tt dpkg -i}, so that the libraries STEPSS needs are installed with it. It requires Ubuntu~24.04 or newer, or a Debian of the same vintage or later; on an older release, use the archive instead.
 
 To remove it, uninstall it the way you would any other application: {\em Add or Remove Programs} on Windows, dragging it to the Trash on macOS, {\tt sudo apt remove stepss} on Debian and Ubuntu.
 
@@ -124,10 +124,7 @@ When STEPSS is launched it creates a temporary working folder and copies all nee
 
 To remove STEPSS from your computer, just delete the archive file. STEPSS does not leave anything in your computer !
 
-The archive is the one route that installs nothing beside itself, so real-time plotting needs gnuplot put there by hand. On Windows the archive carries its own copy and nothing is needed. On Linux, install {\tt gnuplot-x11} rather than plain {\tt gnuplot}, which can resolve to a build with no interactive terminal:\\
-\hspace*{5ex}{\tt sudo apt install gnuplot-x11}\\
-On macOS, use Homebrew:\\
-\hspace*{5ex}{\tt brew install gnuplot}
+The archive installs nothing beside itself and needs nothing installed for plotting: STEPSS draws its own curves, both while a simulation runs and afterwards. Earlier versions needed gnuplot here, by hand on Linux and macOS and bundled on Windows, and no longer do.
 
 %--------------------------------------------------------------------------------------------------------
 \section{Installing a Fortran Compiler}

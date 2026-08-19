@@ -11,6 +11,10 @@
 
 \$GP\_REFRESH\_RATE time\_interval(s) ;
 
+How often the run-time observable file is flushed, in seconds. A reader watching
+that file, such as the run-time curve window in STEPSS GUI, polls at this rate,
+so it is also how often those curves advance. Default: 1 s.
+
 
 \section{\index{OBSBUFFERSIZE@OBS\_BUFFER\_SIZE}Observable buffer size}
 
@@ -121,17 +125,20 @@ Check \href{file:models/freq_upd_vminmax.pdf}{Network update with frequency}.
 
  \$CALL\_GP T/F ;
 
-If set to F, the observables are still written to file but Gnuplot is not
-launched. Use this for batch processing and for runs on machines without a
-display. Default: T.
+Whether RAMSES drives Gnuplot itself through a pipe. \textbf{From v3.77 the
+default is F}, and nothing in STEPSS depends on it: the observables and the
+{\tt .plt} script beside them are written either way, and the interfaces draw
+their own curves. Setting T restores the piped behaviour for this release cycle
+and needs Gnuplot on the {\tt PATH}, which STEPSS no longer ships.
 
 
 \section{\index{GPMODE@GP\_MODE}Gnuplot output mode}
 
  \$GP\_MODE term/png ;
 
-With {\tt term} the curves are shown in an interactive Gnuplot terminal; with
-{\tt png} they are written to PNG files instead. Default: {\tt term}.
+Which terminal the exported {\tt .plt} script names, for anyone who opens that
+script in Gnuplot themselves: {\tt term} an interactive terminal, {\tt png} a
+PNG file. It has no effect on the curves STEPSS draws. Default: {\tt term}.
 
 
 \section{\index{ZMIN}Minimum branch impedance}

@@ -125,19 +125,18 @@ Check \href{file:models/freq_upd_vminmax.pdf}{Network update with frequency}.
 
  \$CALL\_GP T/F ;
 
-Whether RAMSES drives Gnuplot itself through a pipe. \textbf{From v3.77 the
-default is F}, and nothing in STEPSS depends on it: the observables and the
-{\tt .plt} script beside them are written either way, and the interfaces draw
-their own curves. Setting T restores the piped behaviour for this release cycle
-and needs Gnuplot on the {\tt PATH}, which STEPSS no longer ships.
+Whether RAMSES drives Gnuplot itself through a pipe. With F it writes the
+observables and the {\tt .plt} script beside them and calls nothing, which is
+what the STEPSS interfaces read. With T it pipes to Gnuplot, which must then be
+on the {\tt PATH}; STEPSS does not ship it. Default: F.
 
 
 \section{\index{GPMODE@GP\_MODE}Gnuplot output mode}
 
  \$GP\_MODE term/png ;
 
-Which terminal the exported {\tt .plt} script names, for anyone who opens that
-script in Gnuplot themselves: {\tt term} an interactive terminal, {\tt png} a
+Which terminal the exported {\tt .plt} script names, for opening that script in
+Gnuplot: {\tt term} an interactive terminal, {\tt png} a
 PNG file. It has no effect on the curves STEPSS draws. Default: {\tt term}.
 
 

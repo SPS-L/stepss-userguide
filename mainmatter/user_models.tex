@@ -1,0 +1,628 @@
+\section{States and equations}
+
+\subsection{States}\label{sec-models-states}
+
+The four categories of user-defined models and their acronyms are as follows:
+\begin{itemize}
+\item[EXC] excitation controller of synchronous machine: typically the excitation system and the Automatic Voltage Regulator (AVR), including the Power System Stabilizer (PSS)
+\item[TOR] torque controller of synchronous machine: typically the turbine and the speed governor
+\item[INJ] injector: a component connected to a single AC bus
+\item[TWOP] two-port: a component connecting two buses.
+\end{itemize}
+
+Whichever its type, any model has input states (grouped in ${\bf x}_{IN}$), internal states (in ${\bf x}_{ITL}$) and output states (in ${\bf x}_{OUT}$) as sketched in Fig.~\ref{fig-user_models-states}. Note that states can be indifferently differential or algebraic states.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=1.0]{states.pdf}
+\caption{Outline of a model}\label{fig-user_models-states}
+\end{figure}
+
+The input and output states pertaining to each category of model are detailed in Table~\ref{tab-in_out_states}. The notation is as follows:
+
+For an excitation controller:
+\begin{itemize}
+\item[$V$] terminal voltage of the machine, in pu
+\item[$P$] active power produced, in pu on the machine rated apparent power (MVA)
+\item[$Q$] reactive power produced, in pu on the machine rated apparent power (MVA)
+\item[$\omega$] rotor speed, in pu
+\item[$i_f$] field current, in pu on the exciter base current
+\item[$v_f$] field voltage, in pu on the exciter base voltage.
+\end{itemize}
+
+For a torque controller:
+\begin{itemize}
+\item[$\omega$] rotor speed, in pu
+\item[$P$] active power produced, in pu on the turbine rated power (MW)
+\item[$T_m$] mechanical torque applied to rotor, in pu on the turbine rated torque.
+\end{itemize}
+
+For an injector:
+\begin{itemize}
+\item[$v_x, v_y$] rectangular components of phasor of voltage at the connection bus (the $(x,y)$ reference axes have been defined in Section~\ref{sec-refframe})
+\item[$i_x, i_y$] rectangular components of phasor of current injected into the connection bus
+\item[$\omega_{coi}$] angular frequency of center of inertia, in pu\footnote{This can be used as an average system frequency. One of the modelling blocks (see next Chapter) offers the possibility to estimate the ``local'' frequency at the connection bus}.
+\end{itemize}
+
+For a two-port:
+\begin{itemize}
+\item[$v_{x1}, v_{y1}$] rectangular components of phasor of voltage at bus 1
+\item[$v_{x2}, v_{y2}$] rectangular components of phasor of voltage at bus 2
+\item[$i_{x1}, i_{y1}$] rectangular components of phasor of current injected into bus 1
+\item[$i_{x2}, i_{y2}$] rectangular components of phasor of current injected into bus 2
+\item[$\omega_{coi}$] angular frequency of center of inertia, in pu.
+\end{itemize}
+
+\begin{table}[t!]
+\centering
+\caption{Input and output states}\label{tab-in_out_states}
+\begin{tabular}{|c|c|c|}
+\hline
+type of model       & input states & output states  \\ \hline \hline
+excitation controller of & $V, P, Q, \omega, i_f$ of machine & $v_f$  of machine \\
+synchronous machine &  &  \\ \hline
+torque controller of  & $P, \omega$ of machine & $T_m$  of machine \\
+synchronous machine & &  \\ \hline
+injector & $v_x, v_y$ at bus & $i_x, i_y$ into bus  \\ 
+         & $\omega_{coi}$ & \\ \hline
+two-port & $v_{x1}, v_{y1}, v_{x2}, v_{y2}$ at buses & $i_{x1}, i_{y1}, i_{x2}, i_{y2}$ into buses \\
+         & $\omega_{coi}$ &  \\
+\hline
+\end{tabular}
+\end{table}
+
+The models also include operating-point dependent parameters (grouped in $\bf u$).
+
+The three categories of states are treated as follows:
+\begin{itemize}
+\item {\bf \large at the initialization} of the model: 
+\begin{itemize}
+\item the input states are given. They are obtained from the synchronous machine states (see Section~\ref{format-sync}) or the initial power injected into buses (see Section~\ref{sec-refframe})
+\item the output states are also given, using the same information\footnote{at first glance, specifying both the input and the output states would lead to an overdetermined system with more equations than states; this is not the case since the excess equations are used to initialize the operating-point dependent parameters $\bf u$. The number of the latter is equal to the number of output states}
+\item the internal states are initialized either explicitly by the user or automatically by RAMSES
+\item the operating-point dependent parameters are initialized by the user, in agreement with the initial values of the states
+\end{itemize}
+\item {\bf \large during the simulation}:
+\begin{itemize}
+\item the input, the internal and the output states are computed together with the other system states
+\item the operating-point dependent parameters remain constant, unless they are modified by a user action (see Section~\ref{sec-chgprm}).
+\end{itemize}
+\end{itemize}
+
+Note that the model must have a number of equations at least equal to the number of output states, otherwise it is not correctly formulated.
+
+Note also that not all input states need be used.
+
+\begin{quote}
+\faHandPointRight ~ \rm Consider the very simple excitation system shown in Fig.~\ref{fig-simple_AVR}.
+\rm The following equations are easily derived:
+\begin{eqnarray}
+0 & = & V^o - V - dV \label{exequ1} \\
+\displaystyle T \: \frac{d v_f}{dt} & = & - v_f + G \: dV \label{exequ2}
+\end{eqnarray}
+The model has a single input ($V$), a single internal state ($dV$) and the requested output state ($v_f$). $dV$ is an algebraic state, while $v_f$ is a differential one. $V^o$ is the single component of the $\bf u$ vector.
+
+At initialization, the system is assumed in steady state: $\displaystyle \frac{dv_f}{dt} = 0$. Hence, $\displaystyle dV(0) = \frac{v_f(0)}{G}$, where $(0)$ denotes values at $t=0$. $V^o$ is obtained from Eq.~(\ref{exequ1}) as: $V^o = V(0) + dV(0)$.
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.75]{simple_AVR.pdf}
+\caption{A very simple model of excitation system}\label{fig-simple_AVR}
+\end{figure}
+\end{quote}
+
+\subsection{Equations}
+
+As they are determined from the machine and the network equations, the input states are not part of the user model state vector, which thus takes on the form:
+\begin{equation}
+{\bf x} = \left[ \begin{array}{c} {\bf x}_{ITL} \\ {\bf x}_{OUT} \end{array} \right]
+\end{equation}
+
+The differential-algebraic equations can be written in compact form as:
+\begin{equation}\label{dae}
+{\bf T} \dot{\bf x} = {\bf f}({\bf x}, {\bf x}_{IN}, {\bm u}, {\bm z})
+\end{equation}
+where ${\bf x}$ and ${\bf f}$ have the same dimension. The $i$-th row of matrix $\bf T$ includes:
+\begin{itemize}
+\item only zeros if the $i$-th equation is algebraic
+\item a single nonzero term $T_{ij}$ if the $i$-th equation is differential with:
+\[ T_{ij} \dot{x}_j = f_i({\bf x}, {\bf x}_{IN}, {\bf u}, {\bf z}) \]
+where $i$ and $j$ may be different.
+\end{itemize}
+The nonzero components of $\bf T$ are time constants, typically.
+
+$\bf \large z$ is a vector of discrete variables whose role is detailed in the next section.
+
+%--------------------------------------------------------------------------------------------------
+\section{Discrete transitions}
+
+{\em The material of this section is provided for information in so far as the corresponding treatment is performed automatically by STEPSS. Nevertheless, it may help interpreting the output curves and/or some execution messages.}
+
+\subsection{Formulation}
+
+\begin{quote}
+\rm 
+\faHandPointRight ~ Consider now a little more detailed version of the model in Fig.~\ref{fig-simple_AVR}, including non-windup limits on the integrator embedded in the first-order transfer function, as shown in Fig.~\ref{fig-simple_AVR2}.
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.75]{simple_AVR2.pdf}
+\caption{A little more detailed version of the system in Fig~\ref{fig-simple_AVR}}\label{fig-simple_AVR2}
+\end{figure}
+
+The system is modelled by one of the following three sets of equations:
+\begin{itemize}
+\item if the integrator is not at any of its limits ($z=0$):
+\begin{eqnarray}
+0 & = & V^o - V - dV \label{example1} \\
+\displaystyle T \: \frac{d v_f}{dt} & = & - v_f + G \: dV
+\end{eqnarray}
+\item if the integrator is at its upper limit ($z=1$):
+\begin{eqnarray}
+0 & = & V^o - V - dV \\
+0 & = & v_f^{max} - v_f
+\end{eqnarray}
+\item if the integrator is at its lower limit ($z=-1$):
+\begin{eqnarray}
+0 & = & V^o - V - dV \\
+0 & = & v_f^{min} - v_f \label{example6}
+\end{eqnarray}
+\end{itemize}
+\end{quote}
+As shown in the above example, a discrete variable $z$ is used to identify which set of equations must be solved at any given time of the simulation. The values assigned to $z$ are completely arbitrary. Changing $z$ from one value to another corresponds to substituting one set of equations to another. Such ``discrete transitions'' take place when some inequality constraints are violated. A typical example is when a state exceeds its prescribed limit.
+
+Note incidentally that differential equations can be changed into algebraic ones, and conversely. This is a feature offered by RAMSES.
+
+\begin{quote}
+\rm 
+\faHandPointRight ~ In the example of Eqs.~(\ref{example1}-\ref{example6}), here is the pseudo-code performing the discrete transitions relative to the non-windup integrator:
+\vspace*{2ex}
+\begin{algorithmic}
+\IF {$z = 0$}
+  \IF {$v_f > v_f^{max}$} 
+    \STATE $z \gets 1$
+  \ELSIF {$v_f < v_f^{min}$}
+    \STATE $z \leftarrow -1$
+  \ENDIF
+\ELSIF {$z = 1$}
+  \IF {$(- v_f + G \: dV)/T < 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSIF {$z = -1$}
+  \IF {$(- v_f + G \: dV)/T > 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{quote}
+
+The $z$ variables are initialized at the beginning of the simulation, as for the states.
+
+\begin{quote}
+\rm 
+\faHandPointRight ~ In the example of Eqs.~(\ref{example1}-\ref{example6}), here is the pseudo-code initializing the $z$ variable relative to the non-windup integrator:
+\vspace*{2ex}
+\begin{algorithmic} 
+\IF {$v_f > v_f^{max}$}
+    \STATE {$z \gets 1$}
+\ELSIF {$v_f < v_f^{min}$}
+    \STATE {$z \gets -1$}
+\ELSE
+    \STATE {$z \gets 0$}
+\ENDIF
+\end{algorithmic}
+\end{quote}
+
+In the above example, at $t=0$, if $v_f$ violates one of its limits, it is brought back to that limit. This means that a discrete transition will take place right away at $t=0$.
+
+
+\subsection{Discrete transition identification and treatment scheme}
+
+This section deals with the handling of discrete transitions when passing from time $t$ to time $t+h$, where $h$ is the time step size. It is assumed that the system equations have been irrevocably solved until time $t$.
+
+When the solver detects that the condition for a discrete transition has been satisfied in the time interval $[t \;\; t+h]$, it does not attempt to identify the exact time $t'$ ($t < t' \le t+h)$ when the condition became satisfied. Instead, the following {\em ex post} solution scheme is used:
+\begin{enumerate}
+\item for the value of the discrete variables $\bf z$ prevailing at time $t$, Eqs.~(\ref{dae}) are integrated from $t$ to $t+h$ with full accuracy\footnote{solving them with less accuracy, to the purpose of gaining time, might lead to wrong identification of the discrete transitions}
+\item at the resulting point, the inequality constraints associated with discrete transitions are checked. If needed, $\bf z$ is changed, i.e. Eqs.~(\ref{dae}) are changed
+\item the integration step from $t$ to $t + h$ is canceled, all states are reset to their values at time $t$, and the new equations (\ref{dae}) are integrated from $t$ to $t + h$ with full accuracy
+\item if needed, steps 2 and 3 are repeated until no change in $\bf z$ takes place. As the solver could be trapped in a limit cycle of discrete transitions, a maximum number of $\bf z$ changes at the same time is allowed. If that number is reached, the integration time step size is temporarily decreased from $h$ to its minimum value $h_{min}$ (see Section~\ref{sec-continue-solver}). If the limit cycle problem persists with the minimum step size, the simulation stops; the model should be adjusted with respect to the sequence of discrete transitions.
+\end{enumerate}
+
+The solution scheme is presented in greater detail in:
+\begin{quote}
+\rm D. Fabozzi, A. S. Chieh, P. Panciatici and T. Van Cutsem ``On simplified handling of state events in time-domain simulation'', Proc. of the 17th Power System Computation Conference (PSCC), 2011
+\end{quote}
+
+It is illustrated graphically in Fig.~\ref{fig-disc_steps}, for a single state $x$ and a single discrete variable $z$. The numbers refer to the above steps and times are shown in parentheses.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{disc_steps.pdf}
+\caption{Graphical representation of the solution scheme to handle discrete transitions}\label{fig-disc_steps}
+\end{figure}
+
+
+%-------------------------------------------------------------------------------------------------
+\section{Model assembly}
+
+In order for CODEGEN to generate the differential-algebraic equations of an arbitrarily complex user model, the latter is decomposed into a set of simple, interconnected {\em modelling blocks}. The latter correspond to time constants, integrators, PID controllers, non-linearities, etc. The library of available modelling blocks is documented in Chapter~\ref{ch-libray_blocks}.
+
+The EXC, TOR, INJ or TWOP model is thus handled as a set of interconnected modelling blocks, as illustrated in Fig.~\ref{fig-modular-models}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.95]{states-links.pdf}
+\caption{A user model made up of interconnected modelling blocks}\label{fig-modular-models}
+\end{figure}
+
+Each block contributes with its algebraic and/or differential equations. Equations~(\ref{dae}) are obtained by gathering the equations of all the blocks.
+
+The blocks are interconnected through links. A distinct internal state (contributing to ${\bf x}_{ITL}$) is associated with each link. It can be differential or algebraic. Each of these states must be given by the user a unique name as well as an initial value.
+
+Most of the modelling blocks also involve internal states (contributing to ${\bf x}_{ITL}$). Unlike the states associated with links between the blocks, the user does not need to name them, nor to initialize them; this is done automatically by the code generated by CODEGEN.
+
+Finally, some modelling blocks involve discrete variables $\bf z$.
+
+\begin{quote}
+\rm 
+\faHandPointRight ~ Example. The modelling block {\tt tf1p1z} is an example of block with one internal state. It implements the transfer function with one pole and one zero shown in Fig.~\ref{fig-tf1p1z}.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.9]{codegen/tf1p1z.pdf}
+\caption{The {\tt tf1p1z} modelling block}\label{fig-tf1p1z}
+\end{figure}
+
+$x_i$ is either an input or an internal state, while $x_j$ is either an internal or an output state. The model requires three data: $G$, $T_z$ and $T_p$.
+
+CODEGEN generates the following equations:
+\begin{eqnarray}
+\dot{x_1} & = & G \: x_i - x_j \label{tf1p1z-1} \\
+0 & = & T_p \: x_j - G \: T_z \: x_i - \: x_1 \label{tf1p1z-2}
+\end{eqnarray}
+where $x_1$ is an internal state. The latter is automatically initialized to :
+\[ x_1(0) = G \: (T_p - T_z ) x_i(0) \]
+which is obtained by setting the derivative of $x_1$ to zero in the above equations.
+\end{quote}
+
+%-------------------------------------------------------------------------------------------------
+\section{Syntax of the model description}
+
+A model is specified in a text file with the contents and structure shown in Fig.~\ref{fig-syntax}. The name of the file can be freely chosen. 
+
+The file is made up of six sections, which are detailed hereafter. All sections must be present and in the order shown in Fig.~\ref{fig-syntax}.
+
+All keywords must be written exactly as specified in this documentation. In particular the upper/lowercase must be the same and no blank must be inserted or skipped.
+
+
+\subsection{Header}\label{sec-model-header}
+
+The header includes two lines in which:\\
+$<$type of model$>$ specifies the type of model. It can be {\tt exc}, {\tt tor}, {\tt inj} or {\tt twop}, as explained in Section~\ref{sec-models-states}\\
+$<$name of model$>$ specifies the name of the model. This is a string of at most 16 characters
+
+If a model type {\tt abc} and a model name {\tt xyz} are specified, the complete name of the model will be 
+{\tt abc\_xyz.f90}. This name has to be used in the data files (see Sections~\ref{format-inj} and~\ref{format-twop}). CODEGEN will correspondingly produce a file named {\tt abc\_xyz.f90} with the FORTRAN code of the model.
+
+\begin{figure}[h!]
+\large
+\begin{mdframed}
+$<$type of model$>$\\
+$<$name of model$>$\\
+\%data\\
+$<$name of data 1$>$\\
+$<$name of data 2$>$\\
+\hspace*{5ex}\vdots \\
+\%parameters\\
+$<$name of parameter 1$>$=$<$mathematical expression 1$>$ \\
+$<$name of parameter 2$>$=$<$mathematical expression 2$>$ \\
+\hspace*{5ex}\vdots \\
+\%states\\
+$<$name of internal state 1$>$=$<$mathematical expression of initial value 1$>$ \\
+$<$name of internal state 2$>$=$<$mathematical expression of initial value 2$>$ \\
+\hspace*{5ex}\vdots \\
+\%observables\\
+$<$name of state, data or parameter 1$>$ \\
+$<$name of state, data or parameter 2$>$ \\
+\hspace*{5ex}\vdots \\
+\%models\\
+\& $<$name of modelling block 1$>$ \\
+$<$name of state 1$>$\\
+$<$name of state 2$>$\\
+\hspace*{5ex}\vdots \\
+$<$name of data 1, name of parameter 1 or mathematical expression 1$>$ \\
+$<$name of data 2, name of parameter 2 or mathematical expression 2$>$ \\
+\hspace*{5ex}\vdots \\
+\& $<$name of modelling block 2$>$ \\
+$<$name of state 1$>$\\
+$<$name of state 2$>$\\
+\hspace*{5ex}\vdots \\
+$<$name of data 1, name of parameter 1 or mathematical expression 1$>$ \\
+$<$name of data 2, name of parameter 2 or mathematical expression 2$>$ \\
+\hspace*{5ex}\vdots
+\end{mdframed}
+\caption{Syntax of model files}\label{fig-syntax}
+\end{figure}
+
+\subsection{Data section}\label{sec-model-data}
+
+The data section starts with the keyword {\tt \%data}.
+
+Each data must be given a unique name. That name, enclosed with  braces \{\}, is used in the rest of the model description.
+
+The braces must not be used when a data is first defined, i.e. before the = symbol\footnote{since CODEGEN expects to find a data, there is no ambiguity}. If used, the brace(s) will be treated as part of the data name, which most likely will lead to an error and the failure to compile the model.
+
+Each name can be followed by a comment, on the same line, starting with an exclamation mark !.
+
+At the initialization of a simulation, RAMSES maps the data present in the input file with those declared in the data section of the model. The data are read from the data file in the order specified in the data section.
+
+The base power used for per unit values in the network is a data available by default in the {\tt inj} and {\tt twop} models, as detailed in Table~\ref{tab-snom_in_models}. The names are enclosed with braces, as for other data. The names are reserved and must not be used for another data.
+
+\begin{table}[t]
+\centering
+\caption{Base powers that can be used in models (reserved names)}\label{tab-snom_in_models}
+\begin{tabular}{|c|c|c|}
+\hline
+model type & name & meaning \\ \hline \hline
+exc & - & - \\ \hline
+tor & - & - \\ \hline
+inj & \{sbase\} & base power used for per unit values in the network (MVA) \\ \hline
+twop & \{sbase1\} & base power used for per unit values in the subnetwork including bus 1 (MVA) \\
+     & \{sbase2\} & base power used for per unit values in the subnetwork including bus 2 (MVA) \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Parameter section}
+
+The parameter section starts with the keyword {\tt \%parameters}.
+
+Each parameter must be given a unique name. That name, enclosed with braces \{~\}, is used in the rest of the model description. 
+
+The braces must not be used when a parameter is first defined, i.e. before the = symbol\footnote{since CODEGEN expects to find a parameter, there is no ambiguity}. If used, the brace(s) will be treated as part of the parameter name, which most likely will lead to an error and the failure to compile the model.
+
+Each name can be followed by a comment, on the same line, starting with an exclamation mark !.
+
+A data and a parameter cannot be given the same name.
+
+At initialization of the simulation, each parameter is given the value specified by the mathematical expression after the = symbol. This expression usually involves data but it can also involve parameters which have been previously defined\footnote{the names of those parameters must be enclosed in braces}.
+It may involve standard mathematical functions such as $cos$, $**$, $sqrt$, etc. The syntax is that of the FORTRAN language. It can be found for instance at:
+ 
+\hspace*{-5ex}https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2023-0/categories-of-intrinsic-functions.html
+
+Attention is drawn on the following syntactic items:
+\begin{itemize}
+\item the exponent is denoted with $**$, not \^{} (as with MATLAB)
+\item the operators in boolean expressions are denoted as follows: .lt. (smaller than), .le. (smaller or equal to), .gt. (greater than), .ge. (greater or equal to), .eq. (equal to), .ne. (not equal to).
+\end{itemize}
+
+\subsection{State section}\label{sec-states}
+
+The state section starts with the keyword {\tt \%states}.
+
+Each internal state must be given a unique name. That name, enclosed with brackets [~], is used in most places of the model description. 
+
+The brackets must not be used when a state is first defined, i.e. before the = symbol\footnote{since CODEGEN expects to find a state, there is no ambiguity}. If used, the bracket(s) will be treated as part of the state name, which most likely will lead to an error and the failure to compile the model.
+
+Similarly, brackets must not be used when specifying the input and/or output states of a block.
+
+Each state declaration can be followed by a comment, on the same line, starting with an exclamation mark !.
+
+A state cannot have the same name as a data or a parameter.
+
+Input and output states have their own, reserved names that cannot be used for internal states. They are listed in Table~\ref{tab-reserved_names}. All values are in pu on the bases detailed in Section~\ref{sec-models-states}. As for other states, their names must be enclosed with brackets.
+
+\begin{table}[t]
+\centering
+\caption{Reserved names that must not be used for internal states}\label{tab-reserved_names}
+\begin{tabular}{|c|c|c|}
+\hline
+model type & reserved names & meaning of state \\ \hline \hline
+exc & [v] & terminal voltage of machine \\
+    & [p] & active power produced by machine \\
+    & [q] & reactive power produced by machine \\
+    & [omega] & rotor speed of machine \\
+    & [if] & field current of machine \\
+    & [vf] & field voltage of machine \\ \hline
+tor & [p] & mechanical power produced by turbine \\
+    & [omega] & rotor speed of machine \\
+    & [tm] & mechanical torque of turbine \\ \hline
+inj & [vx] & x component of bus voltage \\
+    & [vy] & y component of bus voltage \\
+    & [omega] & angular speed of center of inertia \\
+    & [ix] & x component of current injected into network \\
+    & [iy] & y component of current injected into network \\ \hline
+twop & [vx1] & x component of voltage at bus 1 \\
+    & [vy1] & y component of voltage at bus 1 \\
+    & [vx2] & x component of voltage at bus 2 \\
+    & [vy2] & y component of voltage at bus 2 \\
+    & [omega1] & angular speed of center of inertia of subsystem including bus 1 \\
+    & [omega2] & angular speed of center of inertia of subsystem including bus 2 \\
+    & [ix1] & x component of current injected into network at bus 1 \\
+    & [iy1] & y component of current injected into network at bus 1 \\
+    & [ix2] & x component of current injected into network at bus 2 \\
+    & [iy2] & y component of current injected into network at bus 2 \\ \hline
+\end{tabular}
+\end{table}
+
+Each internal state is initialized at the value specified by the mathematical expression after the = symbol. This expression may involve data, parameters or states (the initial values of those states, to be precise) that have been previously defined or are listed in Table~\ref{tab-reserved_names}. The mathematical expression may involve standard mathematical functions: see previous section.
+
+Only internal states are declared, input and output states are not. Let us recall that their initial values are known.
+
+
+\subsection{Observable section}
+
+The observable section starts with the keyword {\tt \%observables}.
+
+Observables are quantities candidate to be plotted as functions of time at the end of the simulation. They are usually (input, output or internal) states but data or parameters are also allowed\footnote{this  allows displaying the time evolution of a controller setpoint, for instance}.
+
+The data and the parameter names must not be enclosed with braces. Similarly, the state names must not be enclosed with brackets.
+
+
+\subsection{Model section}
+
+The model section starts with the keyword {\tt \%models}.
+
+The modelling blocks and their data are enumerated sequentially. The order does not matter. Each modelling block is identified by the \& symbol, {\large \bf followed by a space}, followed by the name of the block. The information required by each block is detailed in the next chapter.
+
+Each name can be followed by a comment, on the same line, starting with an exclamation mark !.
+
+The end of the section coincides with the end of the file.
+
+
+\subsection{An example}
+
+Here is the code of the simple excitation system shown in Fig.~\ref{fig-simple_AVR2}. The name of the model is ``simple\_avr''. There are three observables: one parameter, one internal state and one output state
+\begin{verbatim}
+exc
+simple_avr
+%data
+G                   ! gain of exciter
+T                   ! time constant of the exciter
+vfmin               ! lower fielf voltage
+vfmax               ! upper field voltage 
+%parameters
+Vo = [v]+ [vf]/{G}  ! voltage setpoint of AVR
+%states
+dv = [vf]/{G}       ! voltage error
+%observables
+Vo
+dv
+vf
+%models
+& algeq             ! calculation of voltage error
+{Vo}-[v]-[dv]       
+& tf1plim           ! exciter transfer function
+dv
+vf
+{G}
+{T}
+{vfmin}
+{vfmax}
+\end{verbatim}
+
+Here is the trace of execution, showing the counts of equations and states, respectively, as the modelling blocks are assembled.
+
+{\small
+\begin{verbatim}
+           WELCOME TO CODEGEN    v5
+       the model generator of STEPSS
+
+Input file with model description: simple_avr.txt
+
+MODEL NAME : exc_simple_avr
+
+Processing data...
+     prm(  1)=  G                   ! gain of exciter
+     prm(  2)=  T                   ! time constant of the exciter
+     prm(  3)=  vfmin               ! lower fielf voltage
+     prm(  4)=  vfmax               ! upper field voltage
+
+Processing parameters...
+     prm(  5)=  Vo   voltage setpoint of AVR
+
+Processing states...
+
+   Output states
+     x(  1)=  vf           field voltage
+   Internal states defined by user
+     x(  2)=  dv                     voltage error
+
+Processing observables...
+     Vo
+     dv
+     vf
+
+Number of user-defined and output d/a states :   2
+
+Processing models...
+     & algeq             ! calculation of voltage error
+                                          1 d/a eqs     2 d/a states     0 disc states
+     & tf1plim           ! exciter transfer function
+                                          2 d/a eqs     2 d/a states     1 disc states
+
+Merging temporary files...
+com.tmp
+head.tmp
+obs.tmp
+init.tmp
+evalf.tmp
+updz.tmp
+
+\end{verbatim}
+}
+
+\subsection{What about time ?}
+
+Time is neither a data, nor a parameter, nor a state. Although this is infrequent, time may appear explicitely in some models. It is denoted {\tt t} (without brackets).
+
+
+
+%-------------------------------------------------------------------------------------------------
+\section{Error detection}
+
+CODEGEN performs some ``sanity checks'' to detect mistakes such as:
+\begin{itemize}
+\item unbalanced braces or brackets
+\item missing keyword \%data, \%parameters, \%states, \%observables or \%models
+\item multiply defined data, states or parameters
+\item usage of a reserved name for an internal state
+\item typo leading to an unknown name of state or modelling block
+\item ouput variable not appearing in any equation of the model
+\item number of states different from number of equations (differential or algebraic).
+\end{itemize}
+
+However, not all mistakes are flagged by CODEGEN. Typos or syntax errors may not be detected, leading to error messages by the compiler when the .f90 file is compiled. Some examples are:
+\begin{itemize}
+\item typos in the name of a mathematical function. For instance, ``cus([delta])'' instead of ``cos([delta])'', exponent denoted by {\large \^{~}} instead of {\large **}
+\item forgotten braces \{~\} enclosing the name of a data or a parameter
+\item forgotten brackets [~] enclosing the name of a state.
+\end{itemize}
+
+%-------------------------------------------------------------------------------------------------
+\section{Data format}
+
+\subsection{Injectors}\label{format-inj}
+
+The data of an injector are defined in the Data section of the user-defined model, see Section~\ref{sec-model-data}. The corresponding values are to be provided in an {\tt INJEC} record with the following syntax:
+
+\hspace*{5ex}{\tt INJEC MODEL\_NAME INJ\_NAME BUS FP  FQ  P  Q  DATA1 DATA2 \ldots ;}
+
+where:
+\begin{itemize}
+\item{\tt MODEL\_NAME} is the name of injector model, as defined in the header of the model description, see Section~\ref{sec-model-header}. This is a string of at most 20 characters
+\item{\tt INJ\_NAME} is the name of the injector (a particular instance of the model). This is a string of at most 20 characters
+\item{\tt BUS} is the name of the bus to which the injector is connected. This is a string of at most 8 characters
+\item{\tt FP} is the fraction $f_{Pj}$ defined by Eq.~(\ref{frac})
+\item{\tt FQ} is the fraction $f_{Qj}$ defined by Eq.~(\ref{frac})
+\item{\tt P} is the initial active power defined by Eq.~(\ref{inipower}). Let us recall that {\tt FP} and {\tt P} must obey Eq.~(\ref{constr-ini-data})
+\item{\tt Q} is the initial reactive power defined by Eq.~\ref{inipower}. Let us recall that {\tt FQ} and {\tt Q} must obey Eq.~\ref{constr-ini-data}
+\item{\tt DATA1 DATA2 \ldots} are the successive values of the data, as defined in the Data section of the user-defined model. In particular they appear in the order defined in that section.
+\end{itemize}
+
+
+\subsection{Two-ports}\label{format-twop}
+
+The data of a two-port are defined in the Data section of the user-defined model, see Section~\ref{sec-model-data}. The corresponding values are to be provided in an {\tt TWOP} record with the following syntax:
+
+\hspace*{5ex}{\tt TWOP MODEL\_NAME TWOP\_NAME BUS1 BUS2 IND FP1  FQ1  P1  Q1  FP2  FQ2  P2  Q2  DATA1 DATA2 \ldots ;}
+
+where:
+\begin{itemize}
+\item{\tt MODEL\_NAME} is the name of two-port model, as defined in the header of the model description, see Section~\ref{sec-model-header}. This is a string of at most 20 characters
+\item{\tt INJ\_NAME} is the name of the two-port (a particular instance of the model). This is a string of at most 20 characters
+\item{\tt BUS1} is the name of the first bus to which the two-port is connected. This is a string of at most 8 characters
+\item{\tt BUS2} is the name of the second bus to which the two-port is connected. This is a string of at most 8 characters
+\item{\tt IND} is a ``synchronization'' indicator:
+\begin{itemize}
+\item if it is set to ``S'', the two-port causes the subnetworks of {\tt BUS1} and {\tt BUS2} to be ``synchronous'', i.e. to operate at the same frequency, as for an AC transmission line, for instance
+\item if it is set to ``A'', the two sub-networks are left ``asynchronous'', i.e. they operate at different frequencies, as for an HDVC link, for instance.
+\end{itemize}
+Other values of {\tt IND} are incorrect.
+\item{\tt FP1} is the fraction $f_{Pj}$ defined by Eq.~(\ref{frac}), relative to {\tt BUS1}
+\item{\tt FQ1} is the fraction $f_{Qj}$ defined by Eq.~(\ref{frac}), relative to {\tt BUS1} 
+\item{\tt P1} is the initial active power defined by Eq.~(\ref{inipower}) relative to {\tt BUS1}. Let us recall that {\tt FP1} and {\tt P1} must obey Eq.~(\ref{constr-ini-data})
+\item{\tt Q1} is the initial reactive power defined by Eq.~\ref{inipower} relative to {\tt BUS1}. Let us recall that {\tt FQ1} and {\tt Q1} must obey Eq.~\ref{constr-ini-data}
+\item{\tt FP2} is the fraction $f_{Pj}$ defined by Eq.~(\ref{frac}), relative to {\tt BUS2}
+\item{\tt FQ2} is the fraction $f_{Qj}$ defined by Eq.~(\ref{frac}), relative to {\tt BUS2} 
+\item{\tt P2} is the initial active power defined by Eq.~(\ref{inipower}) relative to {\tt BUS2}. Let us recall that {\tt FP2} and {\tt P2} must obey Eq.~(\ref{constr-ini-data})
+\item{\tt Q2} is the initial reactive power defined by Eq.~\ref{inipower} relative to {\tt BUS2}. Let us recall that {\tt FQ2} and {\tt Q2} must obey Eq.~\ref{constr-ini-data}
+\item{\tt DATA1 DATA2 \ldots} are the successive values of the data, as defined in the Data section of the user-defined model. In particular they appear in the order defined in that section.
+\end{itemize}

@@ -36,33 +36,44 @@ group left open in an early file does this, silently.
 
 ## Document Structure
 
-Main file: `stepss_doc.tex`. It uses sans-serif font globally (`\sf`), A4 custom
-margins via `A4.STY`, and `utf8` input encoding. Every hand-written source here
-is pure ASCII; the encoding matters because the generated chapters are not, and
-`tools/from_docs.py` refuses to emit a character `pdflatex` cannot set.
+Main file: `stepss_doc.tex`, which holds parts, chapters and includes and no
+prose of its own. The design comes from `sps-report.cls`, the SPS-L report
+class: Palatino body, Roboto Slab titles, a photographic cover with the CUT and
+SPS-L logo, and a title page carrying the STEPSS logo from `stepss-docs`.
+
+The class is derived from the TU Delft report template (CC BY-NC 4.0, Daan
+Zwaneveld). Changes on top of it are listed at the head of the file. Keep that
+list current: it is the only record of how far this has diverged from upstream.
+
+Every hand-written source here is pure ASCII; the generated chapters are not,
+and `tools/from_docs.py` refuses to emit a character `pdflatex` cannot set.
 
 Eight parts. Anything under `generated/` comes from stepss-docs and is described
 in the next section; the rest is hand-written and is the deeper treatment of its
 topic.
 
-**Part I, General:** `overview.tex`, `install.tex`, `generated/quickstart`,
-`files.tex`, `network.tex`
+Hand-written chapters live in `mainmatter/`, the licence in `frontmatter/`,
+mirrored chapters in `generated/`, and every image in `figures/`.
+
+**Part I, General:** `mainmatter/overview.tex`, `mainmatter/install.tex`,
+`generated/quickstart`, `mainmatter/files.tex`, `mainmatter/network.tex`
 
 **Part II, The graphical interface:** `generated/gui-first-run`,
 `generated/gui-interface`, `generated/gui-running`
 
-**Part III, Power Flow (Helios):** `power-flow-data.tex`
+**Part III, Power Flow (Helios):** `mainmatter/power-flow-data.tex`
 
-**Part IV, Dynamic Simulation (RAMSES):** `ref_and_init.tex`,
-`sync_thev_impload.tex`, `disturbances.tex`, `solvsett.tex`,
-`generated/model-dctl`, `generated/eigenanalysis`
+**Part IV, Dynamic Simulation (RAMSES):** `mainmatter/ref_and_init.tex`,
+`mainmatter/sync_thev_impload.tex`, `mainmatter/disturbances.tex`,
+`mainmatter/solvsett.tex`, `generated/model-dctl`, `generated/eigenanalysis`
 
 **Part V, Model library:** `generated/model-index` plus eight
 `generated/model-*` chapters
 
-**Part VI, User-defined models (CODEGEN):** `user_models.tex`,
-`library_blocks.tex` (which includes 42 block files from `codegen/`), then
-`generated/codegen-examples` and `generated/cg-studio`
+**Part VI, User-defined models (CODEGEN):** `mainmatter/user_models.tex`,
+`mainmatter/library_blocks.tex` and the 42 block files in
+`mainmatter/codegen/`, then `generated/codegen-examples` and
+`generated/cg-studio`
 
 **Part VII, STEPSS in Python:** `generated/py-*`, `generated/uramses`
 
@@ -101,16 +112,18 @@ Four things about it are load-bearing:
 
 ## Key Directories
 
-- `codegen/`, 42 `.tex` files each documenting one CODEGEN modelling block (transfer functions, integrators, PI controllers, limiters, FSAs, etc.), plus corresponding PDF block diagrams. These are `\input`-ed by `library_blocks.tex`.
-- `models/`, reference PDF documentation for specific device models (wind turbines, thermal torque controllers, discrete controllers).
+- `mainmatter/`, the hand-written chapters.
+- `mainmatter/codegen/`, 42 `.tex` files each documenting one CODEGEN modelling block (transfer functions, integrators, PI controllers, limiters, FSAs, etc.). Their block diagrams are in `figures/codegen/`.
+- `frontmatter/`, the licence printed at the front of the guide.
+- `models/`, standalone companion notes for individual device models (wind turbines, thermal torque controllers, discrete controllers). Compiled separately, not part of this document.
 - `generated/`, chapters mirrored from stepss-docs. Generated; do not edit.
-- `figures/`, images those chapters reference, collected by the generator. SVG sources are converted to PDF on the way in. Generated; do not edit.
+- `figures/`, every image. The ones the generator collects from stepss-docs are overwritten on each run; the rest, including `cover.jpg`, the two logos and `figures/codegen/`, are not.
 - `tools/`, the generator.
 
 ## LaTeX Conventions
 
-- **Custom page style**: `A4.STY` sets 165mm text width, 230mm text height, 1.1 baseline stretch, zero paragraph indent with 3ex paragraph skip.
+- **Page style**: `sps-report.cls` sets the geometry (`hscale=0.75`, `vscale=0.8` on A4), two-sided with `openright`, and the running heads. There is no `A4.STY` any more.
+- **Figures**: referenced by name, resolved through `\graphicspath{{figures/}{./}}`. A chapter never spells out a directory, which is what let the 42 block files move without being touched: they ask for `codegen/<block>.pdf` and that resolves under `figures/`.
 - **Key packages**: `amsmath`, `mdframed`, `algorithmic`, `fontawesome5` (for `\faHandPointRight`), `hyperref`, `enumitem` (with `nolistsep`), `epsfig`, `bm`, `xcolor`. The generated chapters add `longtable`, `booktabs`, `array`, `calc`, `graphicx` and `fvextra`, all loaded from `docs-preamble.tex` along with the `docsnote` box and the `hypersetup` that colours links instead of boxing them.
 - **Cross-references for blocks**: CODEGEN block sections use `\hypertarget{blockname}` / `\hyperlink{blockname}` for internal linking between block descriptions.
-- **Figures**: All diagrams are PDF or PNG format, included at the repo root level, in `codegen/` and in `figures/`.
 - **Data format documentation**: Network and power-flow records are documented with `tabular` environments showing field-by-field breakdowns. Each record type is semicolon-terminated, matching the `.dat` file format consumed by RAMSES and Helios.

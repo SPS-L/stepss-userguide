@@ -1,0 +1,116 @@
+\hypertarget{link_to_pictl2lim}{}{\Large \bf pictl2lim}
+
+{\it Proportional-Integral (PI) controller with non-windup limit on the integral term and limit on the proportional term}.
+\begin{center}
+\includegraphics{codegen/pictl2lim.pdf}
+\end{center}
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\&  pictl2lim \\
+name of variable $x_k$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $K_i$\\
+data name, parameter name or math expression for $K_p$\\
+data name, parameter name or math expression for $x_i^{min}$\\
+data name, parameter name or math expression for $x_i^{max}$\\
+data name, parameter name or math expression for $x_p^{min}$\\
+data name, parameter name or math expression for $x_p^{max}$
+}
+
+~ \hrule ~
+
+Internal states : $x_i$ and $x_p$ 
+
+Discrete variables : $z_1 \in \{-1,0,1\}$ and $z_2 \in \{-1,0,1\}$
+
+Equations :
+\begin{equation*}
+\begin{cases}
+0 & = K_p x_k - x_p \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = 0 \\
+0 & = x_p - x_p^{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = -1 \\
+0 & = x_p - x_p^{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = 1  
+\end{cases}
+\end{equation*}
+\begin{equation*}
+\begin{cases}
+\dot{x}_i & = K_i x_k \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = 0 \\
+0 & = x_i - x_i^{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = -1 \\
+0 & = x_i - x_i^{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = 1  
+\end{cases}
+\end{equation*}
+\begin{equation*}
+0 = x_p + x_i - x_j
+\end{equation*}
+
+\pagebreak
+\vspace*{-9ex}
+Discrete transitions : \hspace*{5ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z_1 = 0$}
+  \IF {$x_p > x_p^{max}$} 
+    \STATE $z_1 \gets 1$
+  \ELSIF {$x_p < x_p^{min}$}
+    \STATE $z_1 \gets -1$
+  \ENDIF
+\ELSIF {$z_1 = 1$}
+  \IF {$K_p x_k< x_p^{max}$}
+    \STATE $z_1 \gets 0$
+  \ENDIF
+\ELSIF {$z_1 = -1$}
+  \IF {$K_p x_k > x_p^{min}$}
+    \STATE $z_1 \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\begin{algorithmic} 
+\IF {$z_2 = 0$}
+  \IF {$x_i > x_i^{max}$} 
+    \STATE $z_2 \gets 1$
+  \ELSIF {$x_i < x_i^{min}$}
+    \STATE $z_2 \gets -1$
+  \ENDIF
+\ELSIF {$z_2 = 1$}
+  \IF {$K_i x_k < 0$}
+    \STATE $z_2 \gets 0$
+  \ENDIF
+\ELSIF {$z_2 = -1$}
+  \IF {$K_i x_k > 0$}
+    \STATE $z_2 \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace*{2ex}
+
+\pagebreak
+
+Initialization of the internal state $x_p$: \hspace*{2ex} $x_p = \min \left( x_p^{max}, \max (x_p^{min}, K_p x_k)\right)$
+
+%\hspace*{30ex} $x_i = \min \left( x_i^{max}, \max (x_i^{min}, x_j - x_p)\right)$
+
+\vspace*{1ex}
+Initialization of internal state $x_i$ and the discrete variables: \hspace*{10ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$K_p x_k > x_p^{max}$}
+   \STATE $z_1 \gets 1$
+\ELSIF {$K_p x_k < x_p^{min}$}
+   \STATE $z_1 \gets -1$
+\ELSE
+   \STATE $z_1 \gets 0$
+\ENDIF
+\end{algorithmic}
+
+\begin{algorithmic} 
+\IF {$K_i x_k > 0$}
+   \STATE $z_2 \gets 1$
+   \STATE $x_i \gets x_i^{max}$
+\ELSIF {$K_i x_k < 0$}
+   \STATE $z_2 \gets -1$
+   \STATE $x_i \gets x_i^{min}$
+\ELSE
+   \STATE $z_2 \gets 0$
+   \STATE $x_i \gets x_j - x_p$   
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+

@@ -1,0 +1,58 @@
+\hypertarget{link_to_max1v1c}{}{\Large \bf max1v1c}
+
+{\it Maximum between a state and a constant}
+
+\begin{center}
+\includegraphics{codegen/max1v1c.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& max1v1c \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $C$\\
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{1,2\}$
+
+Equations :
+\begin{equation*}
+0 = 
+\begin{cases}
+x_j - C  \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\ 
+x_j - x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 2
+\end{cases}
+\end{equation*}
+
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 1$}
+  \IF {$x_i > C$} 
+    \STATE $z \gets 2$
+  \ENDIF
+\ELSIF {$z = 2$}
+  \IF {$x_i <= C$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\pagebreak
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i < C$}
+    \STATE {$z \gets 1$}
+\ELSE
+    \STATE {$z \gets 2$}
+\ENDIF
+\end{algorithmic}
+\end{minipage} 

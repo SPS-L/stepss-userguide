@@ -1,0 +1,114 @@
+\hypertarget{link_to_pwlin}{}{\Large \bf pwlin*}
+
+{\it Piece-wise linear function of input, defined by $n$ points. 
+
+Separate blocks exist for $n=3, 4, 5$ and $6$.}
+
+\begin{center}
+\includegraphics{codegen/pwlin.pdf}
+\end{center}
+
+\vspace*{-4ex}
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& pwlin3\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_x(1)$\\
+data name, parameter name or math expression for $v_y(1)$\\
+data name, parameter name or math expression for $v_x(2)$\\
+data name, parameter name or math expression for $v_y(2)$\\
+data name, parameter name or math expression for $v_x(3)$\\
+data name, parameter name or math expression for $v_y(3)$
+}
+
+~
+
+\hspace*{18ex}\parbox[t]{\textwidth}{\sf 
+\& pwlin4\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_x(1)$\\
+data name, parameter name or math expression for $v_y(1)$\\
+data name, parameter name or math expression for $v_x(2)$\\
+data name, parameter name or math expression for $v_y(2)$\\
+data name, parameter name or math expression for $v_x(3)$\\
+data name, parameter name or math expression for $v_y(3)$\\
+data name, parameter name or math expression for $v_x(4)$\\
+data name, parameter name or math expression for $v_y(4)$
+}
+
+~
+
+\hspace*{18ex}\parbox[t]{\textwidth}{\sf 
+\& pwlin5\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_x(1)$ \\
+data name, parameter name or math expression for $v_y(1)$ \\
+data name, parameter name or math expression for $v_x(2)$ \\
+data name, parameter name or math expression for $v_y(2)$ \\
+data name, parameter name or math expression for $v_x(3)$ \\
+data name, parameter name or math expression for $v_y(3)$ \\
+data name, parameter name or math expression for $v_x(4)$ \\
+data name, parameter name or math expression for $v_y(4)$ \\
+data name, parameter name or math expression for $v_x(5)$ \\
+data name, parameter name or math expression for $v_y(5)$
+}
+
+~
+
+\hspace*{18ex}\parbox[t]{\textwidth}{\sf 
+\& pwlin6\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_x(1)$\\
+data name, parameter name or math expression for $v_y(1)$\\
+data name, parameter name or math expression for $v_x(2)$\\
+data name, parameter name or math expression for $v_y(2)$\\
+data name, parameter name or math expression for $v_x(3)$\\
+data name, parameter name or math expression for $v_y(3)$\\
+data name, parameter name or math expression for $v_x(4)$\\
+data name, parameter name or math expression for $v_y(4)$\\
+data name, parameter name or math expression for $v_x(5)$\\
+data name, parameter name or math expression for $v_y(5)$\\
+data name, parameter name or math expression for $v_x(6)$\\
+data name, parameter name or math expression for $v_y(6)$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{1, \ldots, n-1 \}$
+
+Equations :
+\begin{equation*}
+0 = v_y(z)+\frac{v_y(z+1)-v_y(z)}{v_x(z+1)-v_x(z)}\left( x_i-v_x(z) \right) \: - \: x_j
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i < v_x(1)$}
+   \STATE $z \gets 1$
+\ELSIF {$x_i \ge v_x(n)$}
+   \STATE $z \gets n-1$
+\ELSE
+   \FOR {$k=1$ to $n-1$}
+      \IF {$v_x(k) \le x_i$ \AND $x_i < v_x(k+1)$}
+         \STATE $z \gets k$
+      \ENDIF
+   \ENDFOR
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+Initialization of discrete variables : same code as for the discrete transitions
+
+\vspace{2ex}
+The $v_x$ values must be increasing, i.e. $v_x(1) < v_x(2) \le v_x(3) \le \ldots \le v_x(n-1) < v_x(n)$.
+
+For $x_i$ values smaller than $v_x(1)$ (resp. larger than $v_x(n)$), $x_j$ is obtained by linear extrapolation based on the first two (resp. the last two) points. Hence, the data must be such that ~~ $v_x(1) \ne v_x(2)$ ~~ and ~~ $v_x(n-1) \ne v_x(n)$.

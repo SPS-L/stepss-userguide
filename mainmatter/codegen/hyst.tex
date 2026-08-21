@@ -1,0 +1,77 @@
+\hypertarget{link_to_hyst}{}{\Large \bf hyst}
+
+{\it Hysteresis}
+
+\begin{center}
+\includegraphics{codegen/hyst.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& hyst \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $x_I$\\
+data name, parameter name or math expression for $y_{IB}$\\
+data name, parameter name or math expression for $y_{IA}$\\
+data name, parameter name or math expression for $x_D$\\
+data name, parameter name or math expression for $y_{DB}$\\
+data name, parameter name or math expression for $y_{DA}$\\
+data name, parameter name or math expression for $z0$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{-1, 1 \}$
+
+Equations :
+\begin{equation*}
+0 =
+\begin{cases}
+\displaystyle x_j - y_{IA} - \frac{y_{IA} - y_{DB}}{x_I - x_D}(x_i-x_I) \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1 \\
+\displaystyle x_j - y_{DA} - \frac{y_{IB} - y_{DA}}{x_I - x_D}(x_i-x_D)  \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 
+\end{cases}
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = -1$}
+  \IF {$x_i > x_I$} 
+    \STATE $z \gets 1$
+  \ENDIF
+\ELSE
+  \IF {$x_i < x_D$}
+    \STATE $z \gets -1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i > x_I$} 
+    \STATE $z \gets 1$
+\ELSIF {$x_i < x_D$}
+    \STATE $z \gets -1$
+\ELSE
+\IF {$z0 \ge 0$} 
+    \STATE $z \gets 1$
+\ELSE
+    \STATE $z \gets 0$
+\ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+At $t=0$, if $x_D < x_i(0) < x_I$ the initial state of the system is indeterminate, since it could operate on the $(y_{IA}, y_{DB})$ line (i.e. with an initial value of $z$ equal to $1$) as well as on the $(y_{DA}, y_{IB})$ line (i.e. with an initial value of $z$ equal to $-1$). Hence, the user must specify $z0$, the initial value of $z$. 
+
+If $x_i(0) < x_D$ (resp. $x_i(0) > x_I$) the initial value is $z=-1$ (resp. $z=1$) and $z0$ is not used.
+
+The data must obey $x_D < x_I$, otherwise the model would not correspond to hysteresis. The case $x_D = x_I$ is not allowed either, but it can be handled with the {\bf pwlin4} model.

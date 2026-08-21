@@ -1,0 +1,58 @@
+\hypertarget{link_to_max2v}{}{\Large \bf max2v}
+
+{\it Maximum between two states}
+
+\begin{center}
+\includegraphics{codegen/max2.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& max2v \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+name of variable $x_k$
+}
+
+~ \hrule ~
+
+Internal states : none 
+
+Discrete variables : $z \in \{1,2\}$
+
+Equations :
+\begin{equation*}
+0 = 
+\begin{cases}
+x_i - x_k \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+x_j - x_k \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 2 
+\end{cases}
+\end{equation*}
+
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 1$}
+  \IF {$x_i < x_j$} 
+    \STATE $z \gets 2$
+  \ENDIF
+\ELSIF {$z = 2$}
+  \IF {$x_j \le x_i$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace*{2ex}
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i > x_j$}
+    \STATE {$z \gets 1$}
+\ELSE
+    \STATE {$z \gets 2$}
+\ENDIF
+\end{algorithmic}
+\end{minipage} 

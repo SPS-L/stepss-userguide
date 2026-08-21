@@ -1,0 +1,50 @@
+\hypertarget{link_to_nint}{}{\Large \bf nint}
+
+{\it Integer nearest to the input shifted by a constant $c$}.
+
+
+\begin{center}
+\includegraphics{codegen/nint.pdf}
+\end{center}
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& nint \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $c$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in {\cal I}$
+
+Equations :
+\begin{equation*}
+0 = x_j - z
+\end{equation*}
+
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$\mbox{nint}(x_i+c) \ne z$} 
+  \STATE $z \gets \mbox{nint}(x_i+c)$
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+~
+
+where the $\mbox{nint}$ function returns the nearest integer.
+
+Particular cases:
+\begin{itemize}
+\item with $c=0$, the output is the integer nearest to $x_i$;
+\item with $c=-0.5$, the output is the ``floor'' integer of $x_i$, i.e. the largest integer smaller or equal to $x_i$;
+\item with $c=0.5$, the output is the ``ceiling'' integer of $x_i$, i.e. the smallest integer larger or equal to $x_i$.
+\end{itemize}
+
+\vspace*{2ex}
+Initialization of discrete variables :
+\[ z \gets \mbox{nint}(x_i+c) \]

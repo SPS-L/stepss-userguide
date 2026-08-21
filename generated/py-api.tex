@@ -351,7 +351,6 @@ ram = stepss.sim()                        # use bundled RAMSES libraries
 ram = stepss.sim(custLibDir='/path/to/')  # use custom library directory
 \end{Verbatim}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2482}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2206}}
@@ -371,7 +370,6 @@ Description
 \endlastfoot
 \texttt{custLibDir} & \texttt{str} or \texttt{None} & Custom path to the RAMSES library directory. Default: use bundled libraries. \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -645,7 +643,6 @@ ram.contSim(ram.getInfTime())
 
 Export the system Jacobian in descriptor form at the current pause point. Returns a tuple \texttt{(A,\ E)} of \texttt{scipy.sparse.csc\_matrix} objects, where \texttt{A} holds the numerical Jacobian values and \texttt{E} is the structural incidence matrix of the descriptor system. Two intermediate text files are also written to the working directory:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 File & Contents \\
@@ -656,7 +653,6 @@ File & Contents \\
 \texttt{py\_val.dat} & Jacobian values (parsed into \texttt{A}) \\
 \texttt{py\_eqs.dat} & Structural incidence matrix (parsed into \texttt{E}) \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 ram.execSim(case, 10.0)
@@ -706,7 +702,6 @@ ext = stepss.extractor('output.trj')
 
 All extraction methods return objects whose attributes are \textbf{curve objects} (\texttt{stepss.cur} named tuples). Every curve object has:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Attribute & Type & Description \\
@@ -718,7 +713,6 @@ Attribute & Type & Description \\
 \texttt{value} & \texttt{numpy.ndarray} & Observable values \\
 \texttt{msg} & \texttt{str} & Description string (used as plot legend label) \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{\texorpdfstring{\texttt{.plot()}}{.plot()}}\label{py-api:plot}
 
@@ -737,7 +731,6 @@ bus.mag.plot()
 
 Retrieve voltage time series for a bus. Returns an object with:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -748,7 +741,6 @@ Attribute & Description \\
 \texttt{.mag} & Voltage magnitude (pu) \\
 \texttt{.pha} & Voltage phase angle (deg) \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 bus = ext.getBus('4044')
@@ -762,7 +754,6 @@ bus.pha.plot()   # voltage phase angle (deg)
 
 Retrieve the full set of synchronous machine observables. Returns an object with:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -784,7 +775,6 @@ Attribute & Description \\
 \texttt{.QW} & q2 winding flux \\
 \texttt{.SC} & COI speed \textbf{deviation} (pu; 0 = nominal) \\
 \end{longtable}\end{small}
-}
 
 \begin{docsnote}{Note}
 
@@ -813,7 +803,6 @@ gen.ET.plot()   # electromagnetic torque (pu)
 
 Retrieve exciter observables. Available observables depend on the exciter model.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -824,7 +813,6 @@ Attribute & Description \\
 \texttt{.obsdict} & \texttt{dict} mapping observable name \ensuremath{\rightarrow} description \\
 \emph{(model-dependent)} & Access by observable name, e.g.~\texttt{.vf} \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 exc = ext.getExc('g1')
@@ -838,7 +826,6 @@ exc.vf.plot()        # field voltage (model-dependent name)
 
 Retrieve governor/torque model observables. Available observables depend on the governor model.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -849,7 +836,6 @@ Attribute & Description \\
 \texttt{.obsdict} & \texttt{dict} mapping observable name \ensuremath{\rightarrow} description \\
 \emph{(model-dependent)} & Access by observable name, e.g.~\texttt{.Pm} \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 gov = ext.getTor('g1')
@@ -863,7 +849,6 @@ gov.Pm.plot()        # mechanical power (pu)
 
 Retrieve injector observables. Injectors include renewable energy sources (wind, PV, BESS), loads, and other single-bus components.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -874,7 +859,6 @@ Attribute & Description \\
 \texttt{.obsdict} & \texttt{dict} mapping observable name \ensuremath{\rightarrow} description \\
 \emph{(model-dependent)} & Access by observable name, e.g.~\texttt{.Pw} \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 inj = ext.getInj('WT1a')
@@ -888,7 +872,6 @@ inj.Pw.plot()        # wind power (model-dependent name)
 
 Retrieve two-port model observables. Two-port models include HVDC links (LCC and VSC), SVCs, and DC systems.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -899,7 +882,6 @@ Attribute & Description \\
 \texttt{.obsdict} & \texttt{dict} mapping observable name \ensuremath{\rightarrow} description \\
 \emph{(model-dependent)} & Access by observable name, e.g.~\texttt{.P1}, \texttt{.P2} \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 twop = ext.getTwop('hvdc1')
@@ -914,7 +896,6 @@ twop.P2.plot()       # active power at terminal 2
 
 Retrieve discrete controller observables. Discrete controllers include LTC transformers, under-voltage load shedding, phase shifters, etc.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -924,7 +905,6 @@ Attribute & Description \\
 \endlastfoot
 \texttt{.obsdict} & \texttt{dict} mapping observable name \ensuremath{\rightarrow} description \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 dctl = ext.getDctl('1-1041')
@@ -937,7 +917,6 @@ print(dctl.obsdict)  # list available observables
 
 Retrieve branch (line/transformer) power flow time series.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -952,7 +931,6 @@ Attribute & Description \\
 \texttt{.RM} & Transformer ratio magnitude \\
 \texttt{.RA} & Transformer phase angle (deg) \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 branch = ext.getBranch('1041-01')
@@ -970,7 +948,6 @@ branch.RA.plot()   # transformer phase angle (deg)
 
 Retrieve shunt compensation time series.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -980,7 +957,6 @@ Attribute & Description \\
 \endlastfoot
 \texttt{.Q} & Reactive power produced (Mvar) \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 ext.getShunt('sh1').Q.plot()
@@ -992,7 +968,6 @@ ext.getShunt('sh1').Q.plot()
 
 Retrieve load time series.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Attribute & Description \\
@@ -1003,7 +978,6 @@ Attribute & Description \\
 \texttt{.P} & Active power consumed (MW) \\
 \texttt{.Q} & Reactive power consumed (Mvar) \\
 \end{longtable}\end{small}
-}
 
 \begin{Verbatim}
 ext.getLoad('L_1').P.plot()
@@ -1059,7 +1033,6 @@ given a \texttt{pause} time.
 
 \subsection{\texorpdfstring{\texttt{monitor(ram,\ observables,\ title=None,\ refresh=0.2,\ show=True)}}{monitor(ram, observables, title=None, refresh=0.2, show=True)}}\label{py-api:monitorram-observables-titlenone-refresh0.2-showtrue}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2506}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7494}}
@@ -1080,13 +1053,11 @@ Description
 \texttt{refresh} & Minimum wall-clock seconds between redraws. Samples are never skipped, only draws; \texttt{0} redraws at every sample. \\
 \texttt{show} & \texttt{False} collects the samples and builds no figure. \\
 \end{longtable}\end{small}
-}
 
 \subsection{Observable descriptors}\label{py-api:observable-descriptors}
 
 The vocabulary is the one \texttt{addRunObs} uses, plus \texttt{BA} and the generic \texttt{OBS}:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3316}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4600}}
@@ -1113,7 +1084,6 @@ Unit
 \texttt{OBS\ TYPE\ NAME\ OBSERVABLE\_NAME} & Named observable of any component type \texttt{getObs} accepts & set by the model \\
 \texttt{RT\ RT} & Elapsed wall-clock time, to gauge simulation speed & s \\
 \end{longtable}\end{small}
-}
 
 Anything the descriptors do not cover is a callable, taking the simulator and
 returning one number:

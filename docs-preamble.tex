@@ -1,28 +1,12 @@
 %% Preamble additions for the chapters generated from stepss-docs.
 %%
-%% They are kept apart from stepss_doc.tex because they exist only to satisfy
-%% pandoc's LaTeX writer: longtable/booktabs for its tables, calc for the
-%% \real{} in its column widths, and \tightlist for its lists. Changing the
-%% generator's output is the reason to change this file, and nothing else is.
+%% Kept apart from stepss_doc.tex because it exists to satisfy pandoc's LaTeX
+%% writer and nothing else. sps-report.cls already loads longtable, booktabs,
+%% graphicx, xcolor, hyperref, enumitem and mdframed, so none of those appear
+%% here; what is left is what the class has no reason to carry.
 
-% The guide has always drawn a coloured rule around every link, which is
-% hyperref's default under pdflatex. That was tolerable at a few dozen
-% cross-references; the generated chapters carry about two hundred, and a page
-% of boxed phrases is hard to read. Colour the text instead, dark enough to
-% print as near-black.
-\hypersetup{
-  colorlinks=true,
-  linkcolor=[RGB]{26,54,93},
-  citecolor=[RGB]{26,54,93},
-  urlcolor=[RGB]{43,108,176},
-  linktoc=all
-}
-
-\usepackage{longtable}
-\usepackage{booktabs}
 \usepackage{array}
-\usepackage{calc}
-\usepackage{graphicx}
+\usepackage{calc}   % pandoc writes its column widths with \real{}
 
 % pandoc emits \tightlist for a list whose items carry no blank line between
 % them, and defines it only inside its own template.
@@ -49,21 +33,21 @@
   {\begin{docsnotebox}\noindent\textbf{#1}\par\vspace{0.4ex}}
   {\end{docsnotebox}}
 
-% A screenshot is a picture of a window and gains nothing from a rule around
-% it, but a wide table set in \small still wants to breathe.
+% A wide table set in \small still wants to breathe.
 \setlength{\LTpre}{\medskipamount}
 \setlength{\LTpost}{\medskipamount}
 
 % The generated chapters quote data records and shell sessions at their natural
-% width, which is wider than this text block. Let a long verbatim line run into
-% the margin rather than silently past the page edge.
+% width, which is wider than this text block. Let a long verbatim line wrap
+% rather than run silently past the page edge.
 \usepackage{fvextra}
 \fvset{breaklines=true,breakanywhere=true,fontsize=\small}
 
 % ---------------------------------------------------------------- contents
-% book.cls gives a section entry 2.3em for its number, which fits "9.9" and
-% not "17.10". With 42 chapters, every chapter past the ninth that has ten
-% sections ran its number into its title.
+% The class formats chapter entries with titletoc and leaves section entries to
+% the book defaults, which allot a number 2.3em: that fits "9.9" and not
+% "17.10". With 42 chapters, every chapter past the ninth that has ten sections
+% ran its number into its title.
 \makeatletter
 \renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
 \renewcommand*\l@subsection{\@dottedtocline{2}{4.5em}{3.6em}}
@@ -80,6 +64,19 @@
 % those break too.
 \usepackage[htt]{hyphenat}
 
-% Room for the paragraph breaker to work with before it gives up and
-% overfills a line.
+% Room for the paragraph breaker to work with before it gives up and overfills
+% a line.
 \setlength{\emergencystretch}{3em}
+
+% ------------------------------------------------------------------- links
+% The class asks hyperref for hidelinks, which suits a report whose links are a
+% handful of citations. This is a reference with about two hundred
+% cross-references and the reader needs to see which words are ones.
+\hypersetup{
+  colorlinks=true,
+  hidelinks=false,
+  linkcolor=[RGB]{26,54,93},
+  citecolor=[RGB]{26,54,93},
+  urlcolor=[RGB]{43,108,176},
+  linktoc=all
+}

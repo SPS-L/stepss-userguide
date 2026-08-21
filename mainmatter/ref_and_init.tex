@@ -1,0 +1,180 @@
+\section{Phasor approximation and reference frames}\label{sec-refframe}
+
+Under the phasor approximation, the network equations can be written in compact form as:
+\begin{equation}\label{iyv}
+\bar{\bf I} = {\bf Y} \bar{\bf V}
+\end{equation}
+where:
+\begin{itemize}
+\item[$\bar{\bf I}$] is the vector of complex currents injected into the network at the various buses
+\item[$\bar{\bf V}$] is the vector of complex voltages at the various buses
+\item[$\bf Y$] is the bus (or nodal) admittance matrix.
+\end{itemize}
+
+Which frequency consider for the phasors and the admittance matrix ? In dynamic regime, each synchronous machine defines a local frequency. In most cases, those various frequencies remain close to the nominal frequency $f_N$. For large deviations with respect to the nominal value $f_N$, it can be envisaged to update the entries of the $\bf Y$ matrix using the average system frequency, for instance. Otherwise, the admittances are simply computed at frequency $f_N$.
+
+Under the phasor approximation, the voltage at the $i$-th bus takes on the form:
+\begin{eqnarray}
+v_i(t) & = & \sqrt{2} V_i(t) \cos(\omega_N t + \phi_i(t)) = \sqrt{2} \; re \left[ V_i(t) e^{\,j \, \phi_i(t)} e^{\,j \, \omega_N t}\right] \nonumber\\
+       & = & \sqrt{2} \; re \left[ (v_{xi}(t) + j v_{yi}(t)) \; e^{\,j \, \omega_N t} \right] \label{vioft}
+\end{eqnarray}
+where $v_{xi}(t) + j \, v_{yi}(t)$ is the voltage phasor, in rectangular coordinates, expressed
+with respect to $(x,y)$ axes rotating at the angular speed $\omega_N = 2 \pi f_N$, as illustrated in Fig.~\ref{fig-ref_and_init-phasor}.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=1.0]{phasor.pdf}
+\caption{Reference axes and voltage phasor}\label{fig-ref_and_init-phasor}
+\end{figure}
+
+Equations similar to \eqref{vioft} can be written for the currents injected into the network, the currents flowing into the network branches, etc.
+
+Instead of determining the ``full wave" evolution of voltages or currents, dynamic simulation in phasor mode aims at rendering the time evolution of $v_{xi}$ and $v_{yi}$\footnote{In RAMSES the rectangular components have been preferred to the polar components $V_i$ and $\phi_i$}.
+
+The $(x,y)$ axes rotating at angular speed $\omega_N$ make up a {\em synchronous reference}.
+
+Although simple, this reference frame suffers from a significant limitation. Indeed, assuming that the power system initially operates at the nominal franquency $f_N$\footnote{This is a common assumption in power system simulation software}, after a disturbance, it will settle at a different frequency $f$, unless its model includes an infinite bus imposing the frequency $f_N$. From there on, the various voltage and current phasors rotate at the angular speed $2 \pi f \ne \omega_N$. Hence, phasor components such as $v_{xi}$ and $v_{yi}$ will oscillate at a frequency $|f-f_N|$, although the system is at equilibrium from a practical viewpoint. For that reason, the synchronous reference is not suitable for long-term simulations, since tracking the oscillations at frequency $|f-f_N|$ requires using a small enough time step size. The synchronous reference frame is suited to short-term simulations (where frequency has not yet returned to steady state) or when the model includes an infinite bus driving the frequency back to $f_N$.
+
+In fact, any (more convenient) speed can be considered for the reference axes $(x,y)$. The only constraint is that all voltage and current phasors refer to the same axes. 
+
+In the {\em Center Of Inertia (COI)} reference frame, the $(x, y)$ axes rotate at the angular frequency:
+\begin{equation}\label{omegacoi}
+\omega_{coi} = \frac{\sum_{i=1}^m M_i \omega_i}{\sum_{i=1}^m M_i}
+\end{equation}
+where:
+\begin{itemize}
+\item[$m$] is the total number of synchronous machines
+\item[$\omega_i$] is the rotor speed of $i$-th synchronous machine ($i=1,\ldots,m$)
+\item[$M_i$] is the inertia coefficient of the $i$-th machine ($i=1,\ldots,m$).
+\end{itemize}
+The $M_i$ values relate to the inertia constants $H_i$ (in s) of the individual machines, expressed on a common base power $S_B$ (in MVA):
+\[ M_i = 2 H_i \frac{S_{Ni}}{S_B} \]
+where $S_{Ni}$ is the nominal apparent power of the $i$-th machine (in MVA).
+
+The COI reference frame does not suffer from the above mentioned drawback. Indeed, when the system settles at a frequency $f$, all synchronous machines rotate at the angular speed $2 \pi f$, and so do the reference axes ($\omega_{coi} = 2 \pi f$). Hence, phasor components such as $v_{xi}$ and $v_{yi}$ tend to constant values, a larger time step size can be used and the simulation is computationally less demanding. The COI reference frame is well suited long-term simulations.
+
+The COI frequency can be used as an average system frequency in injector and two-port models: see Section~\ref{sec-states}.
+
+
+\subsection{Specifying the reference frame}
+
+The reference to be used is specified in the simulation settings: see Chapter \ref{ch-settings}. 
+
+The presence of a Th\'evenin equivalent (involving a constant frequency voltage source) among the components causes the simulation to use the synchronous reference frame.
+
+\subsection{Implementation of COI reference frame}
+
+To preserve the ``sparsity'' of the model in spite of Eq.~(\ref{omegacoi}), which embeds the rotor speeds of all synchronous machines, the value of $\omega_{coi}$ at the previous time step is used. See:
+\begin{quote}
+\rm D. Fabozzi and T. Van Cutsem ``On angle references in long-term time-domain simulations'', IEEE Transactions on Power Systems, Vol. 26, No 1, pp. 483-484, Feb. 2011
+\end{quote}
+
+for a more detailed presentation of this technique.
+
+
+%------------------------------------------------------------------------------------------
+\section{Network equations}
+
+With all voltage and current phasors referred to the $(x,y)$ axes, the network equations can be decomposed into:
+\begin{equation}
+{\bf i}_x + j \, {\bf i}_y = {\bf Y} \left( {\bf v}_x + j \, {\bf v}_y \right) = 
+\left( {\bf G} + j \, {\bf B} \right) \left( {\bf v}_x + j \, {\bf v}_y \right)
+\end{equation}
+with:
+\begin{equation}
+{\bf v}_x = \left[ \begin{array}{c} v_{x1} \\ \vdots \\ v_{xN}
+\end{array} \right] \;\;\;\;\;\; {\bf v}_y = \left[ \begin{array}{c} v_{y1} \\ \vdots \\ v_{yN} \end{array} \right] \;\;\;\;\;\; {\bf i}_x = \left[ \begin{array}{c} i_{x1} \\ \vdots \\ i_{xN} \end{array} \right] \;\;\;\;\;\; {\bf i}_y = \left[ \begin{array}{c} i_{y1} \\ \vdots \\ i_{yN}
+\end{array}\right]
+\end{equation}
+where ${\bf G}$ is the conductance matrix and ${\bf B}$ the susceptance matrix.
+
+Decomposing into real and imaginary parts and assembling into a single equation yields:
+\begin{equation}\label{neteqs}
+\left[ \begin{array}{c} {\bf i}_x \\ {\bf i}_y \end{array} \right] = \left[ \begin{array}{cc} {\bf G} & - {\bf B} \\ {\bf B} & {\bf G} \end{array} \right] \left[ \begin{array}{c} {\bf v}_x \\ {\bf v}_y \end{array} \right]
+\end{equation}
+Thus, for a network with $N$ buses, there are $2N$ equations \eqref{neteqs} involving $4N$ variables.
+
+%------------------------------------------------------------------------------------------
+\section{Initialization procedure}\label{sec-ini-proc}
+
+The dynamic simulation is initialized according to the procedure detailed next.
+\begin{enumerate}
+\item The starting point is the vector of initial bus voltages, as detailed in Section~\ref{sec-lfresv}
+\item setting the bus voltages to those values, the active and reactive power flows in the network branches and shunts are computed
+\item by summing the power flows in incident branches, the bus power injections are determined. This is illustrated in Fig.~\ref{fig-bus-balance}, where $P^{inj}_i$ (resp. $Q^{inj}_i$) is the active (resp. reactive) power injected into the $i$-th bus. A \emph{positive value} corresponds to power \emph{entering the network}
+\item at each bus, the bus power injection is shared among the various components (generators, loads, injectors, etc.) connected to that bus. 
+
+There are two ways of assigning power to the $j$-th component:
+\begin{itemize}
+\item[(i)] by specifying the active and reactive powers injected into the network by that component:
+\begin{equation}\label{inipower}
+P^{c}_j = P^{c0}_j \:\:\:\:\:\:\:\:\:\: Q^{c}_j = Q^{c0}_j
+\end{equation}
+\item[(ii)] by specifying the fraction of the bus power injection taken by that component :
+\begin{equation}\label{frac}
+P^{c}_j = f_{Pj} \; P^{inj}_i \:\:\:\:\:\:\:\:\:\: Q^{c}_j = f_{Qj} \; Q^{inj}_i
+\end{equation}
+where $f_{Pj}$ (resp. $f_{Qj}$) denotes the fraction relative to active (resp. reactive) power.
+\end{itemize}
+
+\item the remaining power, not taken by the components at bus $i$, i.e.
+\[ P_i^r = P^{inj}_i - \sum_{j=1}^n P^c_j \:\:\:\:\:\:\:\:\:\: Q_i^r = Q^{inj}_i - \sum_{j=1}^n Q^c_j \]
+is checked. If larger than an internal tolerance, the power is assigned to an impedance load\footnote{to be more precise a constant shunt impedance, or equivalently a constant shunt admittance load}, as shown in Fig.~\ref{fig-bus-balance}. The load admittance is such that the power balance is satisfied at $t=0$:
+\begin{equation}\label{ini-adm}
+(G_i^r - j \: B_i^r) \; V_i(0)^2 = - (P_i^r + \: j Q_i^r)
+\end{equation}
+where $V_i(0)$ is the initial bus voltage magnitude\footnote{the left-hand side of Eq.~(\ref{ini-adm}) is the complex power consumed by the admittance, while $P_i^r + \: j Q_i^r$ is counted positive when the power is injected into the network. Hence, the minus sign in the right hand side of the equation}. Note that the sign of $G_i^r$ is opposite to that of $P_i^r$, while the sign of $B_i^r$ is the same as that of $Q_i^r$.
+\end{enumerate}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=1.0]{init-pflow.pdf}
+\caption{initial powers at bus $i$}\label{fig-bus-balance}
+\end{figure}
+
+The two ways  mentioned under items (i) and (ii) above are \emph{mutually exclusive}, i.e. either a nonzero power or a nonzero fraction is specified, but not both. In mathematical terms:
+\begin{equation}\label{constr-ini-data}
+f_{Pj} \times P^{c0}_j = 0  \:\:\:\:\:\:\:\:\:\: f_{Qj} \times Q^{c0}_j = 0
+\end{equation}
+
+Although they are typically in the interval $[0 \; 1]$, the values of the $f_{Pj}$'s and $f_{Qj}$'s may be negative or larger than one.
+
+In the quite common case when a single component is connected to a bus, and it takes the whole power consumed or produced at that bus, it is convenient to specify:
+\[ f_{Pj} = 1 \:\:\:\:\:\:\:\:\:\:\:\:  P^{c0}_j = 0  \:\:\:\:\:\:\:\:\:\:\: f_{Qj} = 1 \:\:\:\:\:\:\:\:\:\:\: Q^{c0}_j = 0 \]
+With fractions instead of powers, the data can be re-used at another initial operating point\footnote{i.e. when another set of initial voltages is used}.
+
+The constant admittance (or impedance) loads corresponding to Eq.~(\ref{ini-adm}) are created automatically at system initialization. They are given names of the type {\tt M\_bus}, where {\tt M} stands for ``mismatch'' and {\tt bus} is the name of the bus to which the admittance is connected. Names starting with {\tt M\_} are reserved and must not be used when defining constant admittance loads.
+
+A large value of $G_i^r$ (resp. $B_i^r$) may be intentional, when a load is to be modelled as a constant shunt admittance and the task is left to RAMSES. However, it may also result from a mistake in the initial power balance. It is recommended to check the values of the {\tt M\_} loads through the menu ``Load Initialization'' in the STEPSS interface.
+
+\vspace*{-2ex}
+\begin{quote}
+\faHandPointRight ~ Here is an example of output produced by RAMSES at initialization.
+\vspace*{-2ex}
+\begin{verbatim}
+NUMBER OF IMPEDANCE LOADS :     3  (M_ type:     3 )
+
+load name              bus name                  P          Q
+
+M_2                    2                       90.002     17.997
+M_3                    3                        0.013     -0.011
+M_4                    4                       -0.017     -0.022
+
+\end{verbatim}
+In this example, three {\tt M\_} loads have been produced at initialization, respectively at buses 2, 3 and 4. The one at bus 3 consumes 0.013 MW and produces 0.011 Mvar. This load was created because it is larger than the internal tolerance but, for a transmission system, this is a negligible value. The same holds true for the {\tt M\_} load at bus 4. On the other hand, the {\tt M\_} load at bus 2 is non negligible. This could be due to forgetting to specify a load at bus 2.
+\end{quote}
+
+%------------------------------------------------------------------------------------------
+\section{Data format}
+
+The way to specify the values of $f_{Pj}, P^{c0}_j, f_{Qj}$ and $Q^{c0}_j$ is detailed in the following subsequent sections of this documentation:
+\begin{itemize}
+\item for a synchronous machine: Section~\ref{format-sync}
+\item for a Th\'{e}venin equivalent: Section~\ref{format-thev}
+\item for a constant impedance load: Section~\ref{format-impload}
+\item for an injector with user-defined model: Section~\ref{format-inj}
+\item for a two-port with user-defined model: Section~\ref{format-twop}
+\end{itemize}
+
+
+ 

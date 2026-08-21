@@ -1,0 +1,114 @@
+\hypertarget{link_to_tf1p2lim}{}{\Large \bf tf1p2lim}
+
+{\it Transfer function between input and output: one time constant, with limits on rate of change of output and non-windup limits on output}
+
+\begin{center}
+\includegraphics{codegen/tf1p2lim.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& tf1p2lim\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $G$\\
+data name, parameter name or math expression for $T$\\
+data name, parameter name or math expression for $x_{min}$\\
+data name, parameter name or math expression for $x_{max}$\\
+data name, parameter name or math expression for $\dot{x}_{min}$\\
+data name, parameter name or math expression for $\dot{x}_{max}$
+}
+
+~ \hrule ~
+
+One internal state : $x_1$ ~~ initialized at ~~ $\min [\max ( 0 , T \: \dot{x}_{min} ), T \: \dot{x}_{max} ]$
+
+Two discrete variables : $z_1 \in \{-1,0,1\}$ and $z_2 \in \{-1,0,1\}$
+
+Two equations :
+\begin{equation*}
+\begin{cases}
+0 & = x_1 - G \: x_i + x_j \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = 0 \\
+0 & = x_1 - T \: \dot{x}_{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = 1  \\
+0 & = x_1 - T \: \dot{x}_{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_1 = -1 
+\end{cases}
+\end{equation*}
+\begin{equation*}
+\begin{cases}
+T \: \dot{x}_j & =  x_1 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = 0  \\
+0 & =  x_j - x_{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = 1  \\
+0 & =  x_j - x_{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z_2 = -1 
+\end{cases}
+\end{equation*}
+
+\vspace{2ex}
+$\dot{x}_{max}$ (resp. $\dot{x}_{min}$) is the maximum (resp. minimum) rate of change of $x$ with time.
+
+The time constant $T$ can be zero. In this case:
+\begin{itemize}
+\item $x_1=0$ throughout the whole simulation
+\item the block behaves like a gain: $x_j = G x_i$
+\item both limiters are ignored: $x_{max} \rightarrow \infty, \; x_{min} \rightarrow -\infty, T \dot{x}_{max} \rightarrow \infty, \; T \dot{x}_{min} \rightarrow -\infty$.
+\end{itemize}
+
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{6cm}
+\begin{algorithmic} 
+\IF {$z_1 = 0$}
+  \IF {$x_1 > T \: \dot{x}_{max}$} 
+    \STATE $z_1 \gets 1$
+  \ELSIF {$x_1 < T \: \dot{x}_{min}$}
+    \STATE $z_1 \gets -1$
+  \ENDIF
+\ELSIF {$z_1 = 1$}
+  \IF {$G x_i - x_j < T \: \dot{x}_{max}$}
+    \STATE $z_1 \gets 0$
+  \ENDIF
+\ELSIF {$z_1 = -1$}
+  \IF {$G x_i - x_j > T \: \dot{x}_{min}$}
+    \STATE $z_1 \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\begin{algorithmic} 
+\IF {$z_2 = 0$}
+  \IF {$x_j > x_{max}$} 
+    \STATE $z_2 \gets 1$
+  \ELSIF {$x_j < x_{min}$}
+    \STATE $z_2 \gets -1$
+  \ENDIF
+\ELSIF {$z_2 = 1$}
+  \IF {$x_1 < 0$}
+    \STATE $z_2 \gets 0$
+  \ENDIF
+\ELSIF {$z_2 = -1$}
+  \IF {$x_1 > 0$}
+    \STATE $z_2 \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\pagebreak
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$G x_i - x_j > T \: \dot{x}_{max}$}
+   \STATE $z_1 \gets 1$
+\ELSIF {$G x_i - x_j < T \: \dot{x}_{min}$}
+   \STATE $z_1 \gets -1$
+\ELSE
+   \STATE $z_1 \gets 0$
+\ENDIF
+\end{algorithmic}
+\begin{algorithmic} 
+\IF {$x_j > x_{max}$}
+   \STATE $z_2 \gets 1$
+\ELSIF {$x_j < x_{min}$}
+   \STATE $z_2 \gets -1$
+\ELSE
+   \STATE $z_2 \gets 0$
+\ENDIF
+\end{algorithmic}
+\end{minipage}

@@ -58,7 +58,6 @@ P_m = T_m \cdot \omega
 
 \subsection{Parameters}\label{model-tor-custom:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2899}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7101}}
@@ -75,7 +74,6 @@ Description
 \endlastfoot
 \emph{(none)} & No user-supplied parameters. \(T_{m0}\) is taken from the load-flow initialisation. \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-tor-custom:usage-example}
 
@@ -151,7 +149,6 @@ i.e.:
 
 \subsection{Parameters}\label{model-tor-custom:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -163,7 +160,6 @@ Parameter & Description \\
 \texttt{T2} & Governor/HP turbine time constant (s) \\
 \texttt{R} & Speed droop (pu/pu) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-tor-custom:usage-example-1}
 
@@ -241,7 +237,6 @@ P_m = T_{mHP} + T_{mMP} + T_{mLP}
 
 \textbf{Parameters from Fortran \texttt{associate} block:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Index & Description \\
@@ -262,7 +257,6 @@ Parameter & Index & Description \\
 \texttt{Fmp} & 11 & MP power fraction \\
 \texttt{Tlp} & 12 & LP turbine time constant (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 10}, \texttt{nbzvar\ =\ 2}, \texttt{nbdata\ =\ 12}, \texttt{nbaddpar\ =\ 2}
@@ -352,7 +346,6 @@ P_m = T_m \cdot \omega
 
 \textbf{Parameters from Fortran \texttt{associate} block:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Index & Description \\
@@ -369,7 +362,6 @@ Parameter & Index & Description \\
 \texttt{LIMZDOT} & 7 & Gate velocity limit (pu/s) \\
 \texttt{TW} & 8 & Water starting time (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 6}, \texttt{nbzvar\ =\ 2}, \texttt{nbdata\ =\ 8}, \texttt{nbaddpar\ =\ 1}
@@ -449,7 +441,6 @@ T_m \cdot \omega = \frac{(Q - Q_v) \, H}{1 - Q_v}
 
 \textbf{Parameters:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Index & Description \\
@@ -464,7 +455,6 @@ Parameter & Index & Description \\
 \texttt{LIMZDOT} & 5 & Gate velocity limit (pu/s) \\
 \texttt{TW} & 6 & Water starting time (s) \\
 \end{longtable}\end{small}
-}
 
 These are exactly parameters 3 to 8 of \texttt{HYDRO\_GENERIC1}, in the same order. \texttt{HYDRO\_GENERIC1}
 precedes them with \texttt{SIGMA} (droop) and \texttt{Tmes} (speed measurement lag), and those two are what
@@ -553,7 +543,6 @@ Additional thermodynamic correction terms involve \(TF\) (flame lag) and \(ECR\)
 
 \textbf{Parameters from Fortran source (prm array):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Index & Name & Description \\
@@ -577,7 +566,6 @@ Index & Name & Description \\
 14 & \texttt{BF2} & Turbine power output slope \\
 15 & \texttt{AF2} & Turbine power output intercept (pu) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 10}, \texttt{nbzvar\ =\ 4}, \texttt{nbdata\ =\ 15}, \texttt{nbaddpar\ =\ 1}
@@ -628,7 +616,6 @@ The valve demand passes through:
 
 \textbf{Parameters from Fortran source (prm array):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1465}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2305}}
@@ -669,7 +656,6 @@ Description
 21 & \texttt{TCH} & Steam chest / turbine lag (s) \\
 22 & \texttt{PMIN} & Minimum turbine output (pu) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 6}, \texttt{nbzvar\ =\ 10}, \texttt{nbdata\ =\ 22}, \texttt{nbaddpar\ =\ 1}
@@ -731,7 +717,6 @@ derived from the non-linear head-flow curve approximated at initialisation.
 
 \textbf{Parameters from Fortran source:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1393}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1926}}
@@ -758,7 +743,6 @@ Description
 7 & \texttt{TCE2} & Second penstock time constant (s) \\
 8 & \texttt{TCE1} & First penstock time constant (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 4}, \texttt{nbzvar\ =\ 4}, \texttt{nbdata\ =\ 8}, \texttt{nbaddpar\ =\ 1}
@@ -826,7 +810,6 @@ The steam-valve rate is held inside \([VFN,\, V0]\), then passes the valve actua
 
 \textbf{Parameters from Fortran source:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1410}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2284}}
@@ -859,7 +842,6 @@ Description
 13 & \texttt{TRES} & Reset time constant (s) \\
 14 & \texttt{GOMP} & Output power gain \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 4}, \texttt{nbzvar\ =\ 8}, \texttt{nbdata\ =\ 14}, \texttt{nbaddpar\ =\ 1}

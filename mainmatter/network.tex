@@ -1,0 +1,274 @@
+The network model includes buses, lines, cables, transformers and shunts. Their models and data are described in the present chapter.
+
+%----------------------------------------------------------------------------------
+\section{Buses}\label{sec-netw-buses}
+
+In dynamic simulations with RAMSES the only parameter associated with a bus is its nominal voltage (more precisely, the RMS value of the nominal line-to-line voltage). This is used as base voltage to convert parameters from physical to per unit values.
+
+If two buses have different nominal voltages they cannot be connected through a path made up of lines or switches (see next sections). This causes the software to issue an error message and stop.
+
+
+\subsection{Data format}
+
+The record, with keyword BUS, includes the following fields:
+
+\hspace*{5ex}{\tt BUS NAME VNOM ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the bus. This is a string of at most 8 characters
+\item {\tt VNOM} is the nominal voltage, in kV.
+\end{itemize}
+
+Only one BUS record per bus is allowed.
+
+All buses must be declared through BUS records. If the software finds (in other than BUS records) a bus name not defined through a BUS record, it issues an error message and stops.
+
+{\bf \large Caveat}. The above record is used in the RAMSES module. For the initial power flow computation with Helios, an extended version of the BUS record is used with six fields instead of two. Please refer to Section~\ref{sec-pf-bus}. Thus, when RAMSES is initialized, if a BUS record has six fields, only the first two are read, the others are ignored.
+
+%----------------------------------------------------------------------------------
+\section{Lines and cables}
+
+\subsection{Modelling}
+
+Lines and cables both have the same pi-equivalent model, which is shown in Fig.~\ref{fig-netw-line}. Note that shunt conductances are neglected.
+
+Under the phasor approximation, series capacitors can also be modelled with this pi-equivalent, by setting $R$ and $C$ to zero and $X$ to a negative value.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{netw-line.pdf}
+\caption{Pi-equivalent of lines and cables}\label{fig-netw-line}
+\end{figure}
+
+\subsection{Data format}
+
+The record, with keyword LINE, includes the following fields:
+
+\hspace*{5ex}{\tt LINE NAME BUS1 BUS2 R X WC2 SNOM BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the line or cable. This is a string of at most 20 characters
+\item {\tt BUS1} is the name of the first bus. This is a string of at most 8 characters defined in a BUS record
+\item {\tt BUS2} is the name of the second bus. This is a string of at most 8 characters defined in a BUS record
+\item {\tt R} is the series resistance $R$, in $\Omega$
+\item {\tt X} is the series reactance $X$, in $\Omega$
+\item {\tt WC2} is the half shunt susceptance ${\omega}C/2$, in ${\mu}S$ (microSiemens)
+\item {\tt SNOM} is the nominal apparent power, in MVA. This value is used to display the line loading, or possibly in user-defined models. If not used, it may be set to zero; this will be interpreted as an infinite power
+\item {\tt BR} is the on/off status of the line breakers. A zero value indicates that the breakers are open at both ends (line out of service); any other value (e.g. 1) means that both breakers are closed (line in service).
+\end{itemize}
+
+The orientation of the line is arbitrary: BUS1 and BUS2 may be swapped.
+
+Only one LINE record per line is allowed.
+
+All lines are memorized, even those that are out of service. A line out of service is not involved (it appears in the output results with a zero power flow) but it can be put into service in the dynamic simulation.
+
+As mentioned in Section~\ref{sec-netw-buses}, a line must not connect two buses with different nominal voltages.
+
+To have a line connected through a single end, add a bus at the open end and set BR to a nonzero value.
+
+%-------------------------------------------------------------------------------
+\section{Switches}\label{sec-netw-switch}
+
+\subsection{Modelling}
+
+A switch is a connection without impedance between two buses. It is treated as a very short line, more precisely a line with $R=0$, ${\omega}C/2 = 0$ and $X$ set to a very low value. Thus it has no active power losses and negligible reactive power losses.
+
+\subsection{Data format}
+
+The record, with keyword SWITCH, includes the following fields:
+
+\hspace*{5ex}{\tt SWITCH NAME BUS1 BUS2 BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the switch.  This is a string of at most 20 characters
+\item {\tt BUS1} is the name of the first bus. This is a string of at most 8 characters defined in a BUS record
+\item {\tt BUS2} is the name of the second bus. This is a string of at most 8 characters defined in a BUS record
+\item {\tt BR} is the on/off status of the switch. A zero value indicates that the switch
+is open; any other value means that it is closed.
+\end{itemize}
+
+The orientation of the switch is arbitrary: BUS1 and BUS2 may be swapped.
+
+Only one SWITCH record per switch is allowed.
+
+All switches are memorized, even those which are open. An open switch is not involved (it appears in the output results with a zero power flow) but it can put into service in the dynamic simulation.
+
+As mentioned in Section~\ref{sec-netw-buses}, it is not allowed to have a switch connecting two buses with different nominal voltages.
+
+%----------------------------------------------------------------------------------
+\section{Transformers}
+
+\subsection{Modelling}
+
+Transformers are represented by the two-port shown in Fig.~\ref{fig-netw-transfo}. Note that  $R$, $X$, $B_1$ and $B_2$ are specified on the ``from'' side of the transformer.
+
+$R$ corresponds to the copper losses. The iron losses are neglected (no shunt resistance). $X$ is the leakage reactance. $B_1$ or $B_2$ are the magnetizing susceptances, which have negative values. Usually one of them is zero. $n$ (resp. $\phi$) is the magnitude (resp. the phase angle) of the transformer ratio. A phase-shifting transformer is characterized by a nonzero value of $\phi$.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{netw-transfo.pdf}
+\caption{Two-port model of transformers}\label{fig-netw-transfo}
+\end{figure}
+
+It may be of interest to recall how the values of $R$, $X$, $B_1$ and $B_2$ relate to the following characteristics, easily obtained from manufacturer data:
+\begin{itemize}
+\item $S_{nom}$ the nominal apparent power
+\item $V_{N1}$ (resp. $V_{N2}$) the nominal voltage on the ``from'' (resp. ``to'') side (see Fig.~\ref{fig-netw-transfo})
+\item $R_{baseV_{N1}}$ (resp. $X_{baseV_{N1}}$) the series resistance (resp. leakage reactance) in per unit on the $(S_{nom},V_{N1})$ base
+\item $B_{1 \, baseV_{N1}}$ and $B_{2 \, baseV_{N1}}$ the shunt susceptances in per unit on the $(S_{nom},V_{N1})$ base
+\item $V_{o1}$ and $V_{o2}$ the open-circuit voltages corresponding to the transformer ratio\footnote{Very often the open-circuit voltages coincide with the nominal voltages, i.e. $V_{o1}=V_{N1}$ and  $V_{o2}=V_{N2}$}.
+\end{itemize}
+
+Let $V_{B1}$ and $V_{B2}$ be the nominal voltages of respectively the ``from'' and the ``to'' buses, as specified in their BUS records (see Section~\ref{sec-netw-buses}). 
+
+In STEPSS $R$, $X$, $B_1$ and $B_2$ are in percent on the $(S_{nom},V_{B1})$ base. The following changes of base have to be used:
+\[  R = 100 \; R_{baseV_{N1}}(\frac{V_{N1}}{V_{B1}})^2 \hspace*{6ex} X = 100 \; X_{baseV_{N1}}(\frac{V_{N1}}{V_{B1}})^2 \]
+\[  B_1 = 100 \; B_{1 \, baseV_{N1}}(\frac{V_{B1}}{V_{N1}})^2 \hspace*{6ex} B_2 = 100 \; B_{2 \, baseV_{N1}}(\frac{V_{B1}}{V_{N1}})^2 \]
+
+$n$ is in percent on the $(V_{B1}, V_{B2})$ base. Its value is given by:
+\[ n = 100 \; \frac{V_{o2}\: V_{B1}}{V_{o1}\: V_{B2}} \]
+
+A second transformer model is available. It is a simplified version with $B_2=0$ and $\phi=0$ in Fig.~\ref{fig-netw-transfo} and and includes data for Helios to adjust the transformer ratio (see Section~\ref{sec-pf-ltc}). This model cannot be used for phase-shifting transformers.
+
+
+\subsection{Data format}\label{sec-netw-trfo}
+
+The record, with keyword TRANSFO, includes the following fields:
+
+\hspace*{5ex}{\tt TRANSFO NAME FROMBUS TOBUS R X B1 B2 N PHI SNOM BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the transformer.  This is a string of at most 20 characters
+\item {\tt FROMBUS} is the name of the ``from'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
+\item {\tt TOBUS} is the name of the ``to'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
+\item{\tt R} is the series resistance, in \% on the base detailed above
+\item{\tt X} is the leakage reactance, in \% on the base detailed above
+\item{\tt B1} is the shunt suceptance, in \% on the base detailed above
+\item{\tt B2} is the shunt suceptance, in \% on the base detailed above
+\item{\tt N} is the magnitude of the transformer ratio in \% (dimensionless)
+\item{\tt PHI} is the phase angle of the transformer ratio, in degree
+\item{\tt SNOM} is the nominal apparent power of the transformer, in MVA. This value must not be zero
+\item{\tt BR} is the on/off status of the transformer breakers. A zero value indicates that the breakers are open at both ends (transformer out of service); any other value means that both breakers are closed (transformer in service).
+\end{itemize}
+
+The second transformer model is described by the record with keyword TRFO: 
+
+\hspace*{2ex}\mbox{\tt TRFO NAME FROMBUS TOBUS CONBUS R X B N SNOM NFIRST NLAST NBPOS TOLV VDES BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the transformer.  This is a string of at most 20 characters
+\item {\tt FROMBUS} is the name of the ``from'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
+\item {\tt TOBUS} is the name of the ``to'' bus (see Fig.~\ref{fig-netw-transfo}). This is a string of at most 8 characters defined in a BUS record
+\item{\tt CONBUS} is used by Helios for adjusting $n$: see Section~\ref{sec-pf-ltc}. It is not used by RAMSES, but a (dummy) name must be provided
+\item{\tt R} is the series resistance, in \% on the base detailed above
+\item{\tt X} is the leakage reactance, in \% on the base detailed above
+\item{\tt B} is the shunt suceptance, in \% on the base detailed above
+\item{\tt N} is the magnitude of the transformer ratio in \% (dimensionless)
+\item{\tt SNOM} is the nominal apparent power of the transformer, in MVA. This value must not be zero
+\item{\tt NFIRST} is used by Helios for adjusting $n$: see Section~\ref{sec-pf-ltc}.
+\item{\tt NLAST}: same as for {\tt NFIRST}
+\item{\tt NBPOS}: same as for {\tt NFIRST}
+\item{\tt TOLV}: same as for {\tt NFIRST}
+\item{\tt VDES}: same as for {\tt NFIRST}
+\item{\tt BR} is the on/off status of the transformer breakers. A zero value indicates that the breakers are open at both ends (transformer out of service); any other value means that both breakers are closed (transformer in service).
+\end{itemize}
+
+The following remarks apply to both TRANSFO and TRFO records.
+
+The orientation of the transformer is not arbitrary: FROMBUS and TOBUS cannot be swapped.
+
+Only one TRANSFO or TRFO record per transformer is allowed.
+
+All transformers are memorized, even those that are out of service. A transformer out of service is not involved (it appears in the output results with a zero power flow) but it can be put into service in the dynamic simulation.
+
+To have a transformer connected through a single end, add a bus at the open end and set BR to a nonzero value.
+
+%----------------------------------------------------------------------------------
+\section{Non-reciprocal two-ports}\label{sec-netw-nrtp}
+
+\subsection{Modelling}
+
+A non-reciprocal two-port is a two-port with a non-symmetric nodal admittance matrix of the form:
+\[ {\bm Y} = \left[ \begin{array}{rl} (G_{si} + j B_{si}) + (G_{ij} + j B_{ij}) & - (G_{ij} + j B_{ij}) \\ -(G_{ji} + j B_{ji}) & (G_{ji} + j B_{ji}) + (G_{sj} + j B_{sj}) \end{array} \right] \]
+with:
+\[ G_{ij} \ne  G_{ji} \mbox{~~~~and~~~~~} B_{ij} \ne  B_{ji} \]
+where $i$ and $j$ relate to the terminal nodes of the two-port, as shown in Fig.~\ref{fig-netw-twop}.
+
+Typically, two-ports are produced when reducing a network that includes phase-shifting transformers, the purpose being to obtain an equivalent.
+
+\begin{figure}[htb]
+\centering
+\includegraphics{netw-twop.pdf}
+\caption{A two-port connecting buses $i$ and $j$}\label{fig-netw-twop}
+\end{figure}
+
+\subsection{Data format}
+
+The record, with keyword NRTP, includes the following fields:
+
+\hspace*{5ex}\mbox{\tt NRTP NAME FROMBUS TOBUS GIJ BIJ GJI BJI GSI BSI GSJ BSJ BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the two-port.  This is a string of at most 20 characters
+\item {\tt FROMBUS} is the name of bus $i$ in Fig.~\ref{fig-netw-twop}. This is a string of at most 8 characters defined in a BUS record
+\item {\tt TOBUS} is the name of bus $j$ in Fig.~\ref{fig-netw-twop}. This is a string of at most 8 characters defined in a BUS record
+\item{\tt GIJ} is the $G_{ij}$ conductance, in pu
+\item{\tt BIJ} is the $B_{ij}$ susceptance, in pu
+\item{\tt GJI} is the $G_{ji}$ conductance, in pu
+\item{\tt BJI} is the $B_{ji}$ susceptance, in pu
+\item{\tt GSI} is the $G_{si}$ conductance, in pu
+\item{\tt BSI} is the $B_{si}$ susceptance, in pu
+\item{\tt GSJ} is the $G_{sj}$ conductance, in pu
+\item{\tt BSJ} is the $B_{sj}$ susceptance, in pu
+\item{\tt BR} is the on/off status of the two-port breakers. A zero value indicates that the breakers are open at both ends (two-port out of service); any other value means that both breakers are closed (two-port in service).
+\end{itemize}
+
+The parameters of the two-port are given in per unit on the following base: nominal bus voltages, system base power. By default a value of 100 MVA is used\footnote{a typical value for transmisstion systems} but it can be changed: see Section~\ref{sec-helios-ctl}.
+
+It is allowed for a non-reciprocal two-port to connect two buses with different nominal voltages.
+
+The orientation of the two-port is not arbitrary: FROMBUS and TOBUS cannot be swapped.
+
+Only one NRTP record per two-port is allowed.
+
+A non-reciprocal two-port is treated as a piece of equipment; hence, the presence of the {\tt BR} field. All non-reciprocal two-ports are memorized, even those which are out of service. A non-reciprocal two-port out of service is not involved (it appears in the output results with a zero power flow) but it can be put into service in the dynamic simulation.
+
+%----------------------------------------------------------------------------------
+\vspace*{-2ex}
+\section{Shunts}\label{sec-netw-shunts}
+
+\subsection{Modelling}
+
+The shunt element is treated as a purely reactive, constant shunt admittance. Hence, the reactive power $Q$ it produces varies with the square of the voltage $V$ according to:
+\[ Q = B \; V^2 \]
+where $B$ is the susceptance. The element may correspond to either a capacitor ($B>0$) or a reactor ($B<0$).
+
+\subsection{Data format}
+
+The record, with keyword SHUNT, includes the following fields:
+
+\hspace*{5ex}\mbox{\tt SHUNT NAME BUS\_NAME QNOM BR ;}
+
+where:
+\begin{itemize}
+\item{\tt NAME} is the name of the shunt. This is a string of at most 20 characters
+\item{\tt BUS\_NAME} is the name of the bus to which the shunt is connected. This is a string of at most 8 characters defined in a BUS record
+\item{\tt QNOM} is the nominal reactive power of the shunt, in Mvar. This is the reactive power produced by the shunt under the nominal voltage of the bus, specified in its BUS record. QNOM is positive (resp. negative) for a shunt capacitor (resp. inductor)
+\item{\tt BR} is the on/off status of the shunt. A zero value indicates that the shunt
+is not connected; any other value means that it is in service.
+\end{itemize}
+
+Only one SHUNT record per named shunt is allowed. Multiple shunts at the same bus are allowed, but each with its own name. In this case, the susceptances are added (taking signs into account).
+
+All shunts are memorized, even those which are disconnected. A disconnected shunt is not involved (it appears in the output results with a zero power flow) but it can be put into service in the dynamic simulation.
+
+{\bf \large Caveat}. The above record is used in the RAMSES module. However, for the initial power flow computation with Helios, the shunt data are attached to a bus and are specified in an extended version of the BUS record. Please refer to Section~\ref{sec-pf-bus}.
+
+

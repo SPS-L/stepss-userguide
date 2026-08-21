@@ -12,7 +12,6 @@ This page documents the mathematical model of the synchronous machine implemente
 
 To accommodate different rotor configurations within a single model, integer ``model switches'' are defined:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Switch & Meaning \\
@@ -24,9 +23,7 @@ Switch & Meaning \\
 \(S_{q1}\) & 1 if there is a damper winding \(q1\), 0 otherwise \\
 \(S_{q2}\) & 1 if there is an equivalent winding \(q2\), 0 otherwise \\
 \end{longtable}\end{small}
-}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4757}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5243}}
@@ -46,7 +43,6 @@ Detailed, salient-pole rotor & \(S_{d1} = 1,\; S_{q1} = 1,\; S_{q2} = 0\) \\
 Detailed, salient-pole rotor & \(S_{d1} = 1,\; S_{q1} = 0,\; S_{q2} = 1\) \\
 Simplified, field winding only & \(S_{d1} = 0,\; S_{q1} = 0,\; S_{q2} = 0\) \\
 \end{longtable}\end{small}
-}
 
 The second and third combinations yield the same results. Models with fewer rotor windings are specified by skipping the corresponding data in the \texttt{SYNC\_MACH} record (see \hyperref[model-sync:omitting-rotor-circuits]{below}).
 
@@ -337,7 +333,6 @@ XT  Xl Xd X'd X"d Xq X'q X"q m n Ra T'do T"do T'qo T"qo
 
 \subsection{Common parameters}\label{model-sync:common-parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1924}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6821}}
@@ -368,11 +363,9 @@ Unit
 \texttt{IBRATIO} & Field current base ratio \(I_{fB}^{mac}/I_{fB}^{exc}\) (see above) & pu \\
 \texttt{TYPE\_MOD} & Parameter format keyword: \texttt{RL} or \texttt{XT} (case-insensitive) & \\
 \end{longtable}\end{small}
-}
 
 \subsection{\texorpdfstring{Machine parameters, \texttt{XT} format}{Machine parameters, XT format}}\label{model-sync:machine-parameters-xt-format}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1699}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.7031}}
@@ -405,11 +398,9 @@ Unit
 \texttt{T\textquotesingle{}qo} & q-axis open-circuit transient time constant (\texttt{*} if no \(q1\) winding) & s \\
 \texttt{T"qo} & q-axis open-circuit subtransient time constant (\texttt{*} if no \(q2\) winding) & s \\
 \end{longtable}\end{small}
-}
 
 \subsection{\texorpdfstring{Machine parameters, \texttt{RL} format}{Machine parameters, RL format}}\label{model-sync:machine-parameters-rl-format}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1820}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6775}}
@@ -442,7 +433,6 @@ Unit
 \texttt{Rq1} & \(q1\) winding resistance \(R_{q1}\) (\texttt{*} if no \(q1\) winding) & pu \\
 \texttt{Rq2} & \(q2\) winding resistance \(R_{q2}\) (\texttt{*} if no \(q2\) winding) & pu \\
 \end{longtable}\end{small}
-}
 
 \subsection{Omitting rotor circuits}\label{model-sync:omitting-rotor-circuits}
 
@@ -450,7 +440,6 @@ A rotor circuit the machine does not have is skipped by putting \texttt{*} in \t
 of its fields, the inductance/reactance \textbf{and} the matching
 resistance/time-constant field (specifying only one is an error):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 Circuit & \texttt{RL} fields & \texttt{XT} fields & Model switch set to 0 \\
@@ -462,7 +451,6 @@ Circuit & \texttt{RL} fields & \texttt{XT} fields & Model switch set to 0 \\
 \(q1\) winding & \texttt{Llq1}, \texttt{Rq1} & \texttt{X\textquotesingle{}q}, \texttt{T\textquotesingle{}qo} & \(S_{q1}\) \\
 \(q2\) winding & \texttt{Llq2}, \texttt{Rq2} & \texttt{X"q}, \texttt{T"qo} & \(S_{q2}\) \\
 \end{longtable}\end{small}
-}
 
 The combination \(S_{d1} = 0\) with \(S_{q1} = S_{q2} = 1\) (field winding plus
 both q-axis windings but no d-axis damper) is rejected. In the \texttt{XT} format,

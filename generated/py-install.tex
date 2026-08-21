@@ -57,7 +57,6 @@ sudo apt install libopenblas0 libgfortran5 libgomp1
 
 These packages provide:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3258}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6742}}
@@ -76,7 +75,6 @@ Purpose
 \texttt{libgfortran5} & GNU Fortran runtime required by the Fortran components of RAMSES \\
 \texttt{libgomp1} & OpenMP runtime for multi-core parallel execution \\
 \end{longtable}\end{small}
-}
 
 On most desktop Linux distributions these are already present. If \texttt{stepss} fails to import with a shared-library error, install the packages above and retry.
 
@@ -133,7 +131,6 @@ rest of the methods.
 
 \section{Platform Support}\label{py-install:platform-support}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2162}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2559}}
@@ -155,7 +152,6 @@ Notes
 \textbf{Linux} & \texttt{ramses.so} & Full support (requires the \hyperref[py-install:linux-system-prerequisites]{system libraries above}) \\
 \textbf{macOS} & \texttt{ramses.so} & Apple Silicon (arm64) only; requires the \hyperref[py-install:macos-system-prerequisites]{Homebrew runtimes above} \\
 \end{longtable}\end{small}
-}
 
 \section{Next Steps}\label{py-install:next-steps}
 

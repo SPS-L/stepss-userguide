@@ -1,0 +1,41 @@
+\hypertarget{link_to_tf1p1z}{}{\Large \bf tf1p1z}
+
+{\it Transfer function between input and output: one zero and one pole}
+
+\begin{center}
+\includegraphics{codegen/tf1p1z.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& tf1p1z\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $G$\\
+data name, parameter name or math expression for $T_z$\\
+data name, parameter name or math expression for $T_p$
+}
+
+~ \hrule ~
+
+Internal states : $x_1$ 
+
+Discrete variables : none
+
+Equations :
+\begin{eqnarray}
+\dot{x_1} & = & G \: x_i - x_j \label{tf1p1z-1} \\
+0 & = & T_p \: x_j - G \: T_z \: x_i - \: x_1 \label{tf1p1z-2}
+\end{eqnarray}
+
+Initialization of internal states : ~~~ $x_1=G \: (T_p - T_z ) x_i$
+
+
+\vspace{2ex}
+The model allows $T_z=0$. In this case, simplifying Eq.~\eqref{tf1p1z-2} and combining it with Eq.~\eqref{tf1p1z-1} yields $\displaystyle T_p \: \dot{x}_j = - x_j + G \: x_i$, which corresponds to $\; \displaystyle x_j = \frac{G}{1 + s T_p} x_i \;$ as expected.
+
+\vspace{2ex}
+Formally, the model also allows $T_p=0$. However, in this case, the transfer function between $x_i$ and $x_j$ becomes  
+\mbox{$\displaystyle G\, (1 + s T_z)$}. {\bf This involves a pure derivator. Hence, the solver may produce undesired transients when $x_i$ or $\dot{x}_i$ undergoes a discontinuity.}
+
+\vspace{2ex}
+The model allows $T_p=T_z=T$. In this case, Equation~\eqref{tf1p1z-2} becomes $\displaystyle x_j - G \: x_i = \frac{x_1}{T}$, and replacing this result in Eq.~\eqref{tf1p1z-1} yields~ $\displaystyle \dot{x}_1 = - \frac{x_1}{T}$, showing that $x_1$ evolves independently of $x_i$ and $x_j$. Furthermore, when $T_z=T_p$, $x_1$ is initialized to zero; hence, it remains equal to zero for the whole simulation. Replacing $x_1=0$  yields $x_j = G \: x_i$ as expected.

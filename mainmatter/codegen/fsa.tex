@@ -1,0 +1,54 @@
+\hypertarget{link_to_fsa}{}{\Large \bf fsa}
+
+{\it Finite State Automaton }
+
+This block forces a set of $n$ algebraic equations. There are $s$ possible sets, each of them corresponding to a value of the discrete state $z$. The change form one set to another takes place when boolean expressions are true.
+
+Syntax : see example below
+
+~ \hrule ~
+
+Internal states : none 
+
+Discrete variables: z, the number of the state currently active
+
+\underline{Example}. Consider the example below with three states ($s=3$). $n=2$ is assumed.
+\begin{center}
+\includegraphics{codegen/fsa.pdf} ~~~~~~~~
+\parbox[c]{0.3\textwidth}{\sf 
+\& fsa \\
+initial state of the system\\
+\# 1\\
+algebraic constraint No. 1 \\
+algebraic constraint No. 2 \\
+{\tt ->} 2\\
+boolean expression C1 \\
+\# 2 \\
+algebraic constraint No. 3 \\
+algebraic constraint No. 4 \\
+{\tt ->} 1\\
+boolean expression C2 \\
+{\tt ->} 3\\
+boolean expression C3 \\
+{\tt ->} 3\\
+boolean expression C4 \\
+\# 3 \\
+algebraic constraint No. 5 \\
+algebraic constraint No. 6 \\
+{\tt ->} 1\\
+boolean expression C5 \\
+\#\#
+}
+\end{center}
+
+The \# symbol indicates the start of the section relative to a state. It is followed by the number of the state. The states must be numbered consecutively from 1 to $s$, and they must be listed by increasing order. The \#\# symbol indicates the end of the list of states.
+
+The initial state is specified as an integer in the second line.
+
+The number $n$ of algebraic constraints must be the same in all states.
+
+The {\tt ->} symbol indicates a transition. It is followed by the number of the state reached after the transition has taken place. The next line is the corresponding boolean expression, involving states and possibly parameters.
+
+In the example above, there are two possible transitions from State 2 to State 3. Alternatively a single transition can be specified with the combined condition ``C3 or C4''.
+
+

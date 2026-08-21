@@ -1,0 +1,29 @@
+\hypertarget{link_to_tf1p}{}{\Large \bf tf1p}
+
+{\it Transfer function between input and output: one time constant}
+
+\begin{center}
+\includegraphics{codegen/tf1p.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& tf1p\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $G$ \\
+data name, parameter name or math expression for $T$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : none
+
+Equations :
+\begin{equation*}
+T \: \dot{x}_j = -x_j + G \; x_i
+\end{equation*}
+
+The time constant $T$ can be zero.
+

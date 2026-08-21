@@ -564,6 +564,13 @@ def postprocess(tex: str, stem: str) -> str:
     tex = retable(tex)
     tex = tex.replace("\\begin{longtable}", "\\begin{small}\\begin{longtable}")
     tex = tex.replace("\\end{longtable}", "\\end{longtable}\\end{small}")
+    # pandoc guards an uncaptioned longtable with {\def\LTcaptype{none} ... },
+    # which suppresses the counter in a bare book class. sps-report.cls loads
+    # the caption package, under which LTcaptype is a counter name and every
+    # one of these raises "No counter 'none' defined". None of these tables has
+    # a caption, so the guard has nothing to do here.
+    tex = tex.replace("{\\def\\LTcaptype{none} % do not increment counter\n", "")
+    tex = tex.replace("\\end{longtable}\\end{small}\n}\n", "\\end{longtable}\\end{small}\n")
     # fancyvrb's Verbatim, not the plain one, so fvextra can break a data
     # record that is wider than this text block instead of running it off the
     # page. Several records in the model chapters are.

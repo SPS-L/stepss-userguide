@@ -1,0 +1,59 @@
+\hypertarget{link_to_finj}{}{\Large \bf f\_inj}
+
+{\it Computes $f$, an estimate of the frequency (in per unit) at a given bus, from the evolution of the rectangular components $v_x$ and $v_y$ of the bus voltage. A measurement time constant $T$ is involved. Can be used in the model of an injector only.}
+
+~
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& f\_inj \\
+name of variable $f$\\
+data name, parameter name or math expression for $T$
+}
+
+~ \hrule ~
+
+Internal states : $v_{xm}$ ~ and ~ $v_{ym}$.
+
+Discrete variables : none
+
+Equations :
+\begin{eqnarray}
+\dot{v}_{xm} & = & \frac{v_x - v_{xm}}{T} \label{vxmdot} \\
+\dot{v}_{ym} & = & \frac{v_y - v_{ym}}{T} \label{vymdot} \\
+0 & = & \omega_{ref, pu} + \frac{(v_y - v_{ym})v_{xm} - (v_x - v_{xm}) v_{ym}}{2 \pi f_{N} T (v_{xm}^2 + v_{ym}^2)} - f \label{f}
+\end{eqnarray}
+
+Initialization of internal states : $v_{xm} = v_{x}$ ~ and ~ $v_{ym}=v_y$.
+
+~
+
+{\bf Explanation of model}
+
+The model uses $v_x$ and $v_y$ as inputs but these variables are automatically inherited and must not be declared. Only the name given to the estimated frequency and the time constant $T$ must be provided.
+
+As shown in the figure below, $v_x$ and $v_y$ are the projections of the bus voltage phasor on the references axes $x$ and $y$ rotating at the angular speed $\omega_{ref}$ (rad/s). The latter is known from the settings of the simulation. The angular frequency of the corresponding rotating vector is given by :
+\[ \omega = \omega_{ref} + \frac{d\phi}{dt} \]
+with:
+\[ \phi = \arctan \frac{v_y}{v_x} \]
+
+\begin{center}
+\includegraphics{codegen/phasor.pdf}
+\end{center}
+
+The frequency in per unit is given by :
+\[ f = \frac{\omega}{2 \pi f_N} = \frac{\omega_{ref}}{2 \pi f_N} + \frac{1}{2 \pi f_N} \frac{d\phi}{dt}   
+= \omega_{ref, pu} + \frac{1}{2 \pi f_N} \frac{d}{dt} \left( \arctan \frac{v_y}{v_x} \right) \]
+where $f_N$ is the nominal frequency (known from the system data).
+
+By developing the last term, it is easily found that:
+\begin{equation}\label{f2}
+f = \omega_{ref, pu} + \frac{1}{2 \pi f_N} \frac{\dot{v_y} v_x - \dot{v_x} v_y}{v_x^2 + v_y^2}
+\end{equation}
+
+To filter the transients affecting $v_x$ and $v_y$, a measurement device with a time constant $T$ is simulated. The ``measured'' values, denoted $v_{xm}$ and $v_{ym}$, evolve according to (\ref{vxmdot}, \ref{vymdot}). These measured values and their derivatives are then used in (\ref{f2}), which becomes:
+\[ f = \omega_{ref, pu} + \frac{1}{2 \pi f_N} \frac{\dot{v}_{ym} v_{xm} - \dot{v}_{xm} v_{ym}}{v_{xm}^2 + v_{ym}^2} \]
+Replacing $\dot{v}_{xm}$ and $\dot{v}_{ym}$ by their expressions (\ref{vxmdot},\ref{vymdot}) yields Eq. (\ref{f}).
+
+\vspace*{2ex}
+A recommended value for $T$ is in the order to $0.05 - 0.10$ s. A zero value for $T$ is not allowed. If too small a value is specified for $T$, the solver may encounter a singularity and the simulation may not proceed.
+

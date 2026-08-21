@@ -1,0 +1,129 @@
+\hypertarget{link_to_timer}{}{\Large \bf timer*}
+
+{\it Timer with varying delay. The latter is a piecewise linear function of the monitored variable
+
+If $x_i$ is smaller than a threshold $v_1$, the output $x_j$ is equal to zero. Otherwise, $x_j$ changes from zero to one at time $t^{\star}+\tau(x_i)$ where $t^{\star}$ is the time at which the input $x_i$ became larger than $v_1$ and the delay $\tau(x_i)$ varies with $x_i$ according to a piecewise linear characteristic involving $n$ points (see diagram below). 
+
+Separate blocks exist for $n=1,2,3,4$ and $5$.}
+\begin{center}
+\includegraphics{codegen/timer.pdf}
+\end{center}
+
+\vspace*{-4ex}
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& timer1\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $T_1$
+}
+
+~
+
+\hspace*{-8ex}\parbox[t]{100mm}{\sf 
+\& timer2\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $T_1$\\
+data name, parameter name or math expression for $v_2$\\
+data name, parameter name or math expression for $T_2$
+}\parbox[t]{95mm}{\sf 
+\& timer3\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $T_1$\\
+data name, parameter name or math expression for $v_2$\\
+data name, parameter name or math expression for $T_2$\\
+data name, parameter name or math expression for $v_3$\\
+data name, parameter name or math expression for $T_3$
+}
+
+~
+
+\hspace*{-8ex}\parbox[t]{100mm}{\sf 
+\& timer4\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $T_1$\\
+data name, parameter name or math expression for $v_2$\\
+data name, parameter name or math expression for $T_2$\\
+data name, parameter name or math expression for $v_3$\\
+data name, parameter name or math expression for $T_3$\\
+data name, parameter name or math expression for $v_4$\\
+data name, parameter name or math expression for $T_4$
+}\parbox[t]{95mm}{\sf 
+\& timer5\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $T_1$\\
+data name, parameter name or math expression for $v_2$\\
+data name, parameter name or math expression for $T_2$\\
+data name, parameter name or math expression for $v_3$\\
+data name, parameter name or math expression for $T_3$\\
+data name, parameter name or math expression for $v_4$\\
+data name, parameter name or math expression for $T_4$\\
+data name, parameter name or math expression for $v_5$\\
+data name, parameter name or math expression for $T_5$
+}
+
+~ \hrule ~
+
+Internal states : $x_1$
+
+Discrete variables : $z \in \{-1,0,1\}$
+
+Equations :
+\begin{equation*}
+0 =
+\begin{cases}
+x_j \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z \in \{-1,0 \} \\
+x_j-1 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1
+\end{cases} 
+\end{equation*}
+\begin{equation*}
+\begin{cases}
+0 & = x_1 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 \\
+\dot{x_1} & =  1 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0 \\
+\dot{x_1} & =  0 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1
+\end{cases}
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{6cm}
+\begin{algorithmic} 
+\IF {$z = -1$}
+  \IF {$x_i \ge v_1$} 
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSE
+  \IF {$x_i < v_1$} 
+     \STATE $z \gets -1$
+  \ENDIF
+\ENDIF
+\IF {$z = 0$}
+  \IF {$x_1 \ge \tau(x_i)$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+
+\vspace*{2ex}
+Initialization of internal states : ~~~ $x_1 \gets 0$
+
+\vspace*{2ex}
+Initialization of discrete variables : ~~~ $z \gets -1$
+
+
+The $v_i$ values must be increasing, but two consecutive values may be equal, i.e. $v_1 \le v_2 \le v_3 \le \ldots \le v_{n-1} \le v_n$.
+
+The piecewise linear characteristic is typically used to approximate an inverse-time characteristic, in which case the $T$ values are decreasing, i.e. $T_1 \ge T_2 \ge T_3 \ge \ldots \ge T_{n-1} \ge T_n$. Nevertheless, non decreasing values are also allowed.
+
+If the initial value of $x_i$ is larger than $v_1$, $x_j$ will change to one after the time $\tau(x_i)$, unless $x_i$ decreases below $v_1$ before the delay $\tau$ is elapsed.

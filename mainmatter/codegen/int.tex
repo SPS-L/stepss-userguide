@@ -1,0 +1,28 @@
+\hypertarget{link_to_int}{}{\Large \bf int}
+
+{\it Integrator with (positive) time constant $T$}
+
+\begin{center}
+\includegraphics{codegen/in.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& int \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $T$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : none
+
+Equations :
+\begin{equation}\label{int}
+T \dot{x}_j = x_i
+\end{equation}
+
+\vspace*{2ex}
+A zero value for $T$ is not allowed. If too small a value is specified for $T$, the solver may encounter a singularity and the simulation may not proceed.

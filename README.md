@@ -19,21 +19,13 @@ A third pass is worth running: the guide is long enough that the table of conten
 
 Requirements: any LaTeX distribution providing `pdflatex` and the packages `times`, `epsfig`, `bm`, `hyperref`, `enumitem`, `algorithmic`, `fontawesome5`, `amsmath`, `mdframed`, `xcolor`, `longtable`, `booktabs`, `array`, `calc`, `graphicx` and `fvextra`. The custom page style `A4.STY` is included in the repository, and `docs-preamble.tex` holds everything the generated chapters need.
 
-Two pre-built PDFs are committed, and they are kept identical:
+One pre-built PDF is committed: `stepss_doc.pdf`, the build output of
+`stepss_doc.tex`.
 
-- `stepss_doc.pdf`: the build output of `stepss_doc.tex`, and the source of the copy published at [stepss.sps-lab.org](https://stepss.sps-lab.org/).
-- `userguide.pdf`: the same document under an older file name.
-
-After rebuilding, refresh both copies and update `public/stepss_docs.pdf` in
+After rebuilding, copy it to `public/stepss_docs.pdf` in
 [stepss-docs](https://github.com/SPS-L/stepss-docs), which is what the website
-serves at [/stepss_docs.pdf](https://stepss.sps-lab.org/stepss_docs.pdf).
-
-`userguide.pdf` no longer has a consumer. It was bundled into a `DOC.zip` that
-STEPSS GUI extracted at run time; the GUI's **Help, User Guide** now opens the
-documentation site instead, and `DOC.zip` survives in stepss-java-ui only as an
-example string in one code comment. It is still refreshed here so the two
-committed copies do not disagree, but nothing downstream reads it, and a
-544-page PDF stored twice is 12 MB of the repository.
+serves at [/stepss_docs.pdf](https://stepss.sps-lab.org/stepss_docs.pdf). That
+is the only downstream copy.
 
 ## Project Structure
 

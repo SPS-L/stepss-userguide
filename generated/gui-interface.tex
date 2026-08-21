@@ -217,9 +217,14 @@ trajectory. \textbf{Load trajectory} reads a trajectory from an earlier run.
 \hyperref[doc:gui-running]{Running a Simulation} walks through this.
 
 \textbf{Small-signal stability analysis} runs the engine's eigenanalysis at a chosen
-instant. Point it at a results directory, set a basename, the analysis time, a
-real-part limit and a participation factor (PF) threshold, then \textbf{Run
-small-signal stability analysis}. Each run opens its own results window and
+instant. Point it at a results directory, set a basename and the analysis time,
+then \textbf{Run small-signal stability analysis}.
+
+There are no thresholds here. There used to be a real-part limit and a
+participation factor (PF) threshold, and both decided what the engine would
+write; every mode is written now, and the thresholds live in the results window
+where changing one re-filters what is already on screen. See
+\hyperref[doc:eigenanalysis]{Eigenanalysis}. Each run opens its own results window and
 leaves any already up alone, so two runs can be compared side by side. \textbf{Save dynamic
 Jacobian\ldots{}} and \textbf{Load dynamic Jacobian\ldots{}} write that run out as an archive
 and open it again later, each load in a window of its own too.

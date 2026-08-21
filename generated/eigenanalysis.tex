@@ -108,6 +108,12 @@ Why
 
 Both are refused rather than approximated. See \hyperref[eigenanalysis:refusals]{Refusals} below.
 
+One optional setting, \texttt{\$PF\_THRES\ x}, sets the floor below which a participation
+entry is not written, default \texttt{1e-3}. It is a size guard on the one output that
+is quadratic in the state count, in the same family as \texttt{\$EIG\_MAX\_STATES}, and
+not a threshold anyone is meant to tune per analysis; see
+\hyperref[eigenanalysis:namepfdat]{\texttt{\textless{}name\textgreater{}\_pf.dat}} below.
+
 They are yours to set on the command line and from Python. The graphical
 interface's \textbf{Run small-signal stability analysis} writes both itself, into an
 extra data file read after the case's own, so a case configured for time-domain
@@ -121,6 +127,13 @@ Three files per analysis, named from the basename given to \texttt{EIG}. All are
 whitespace-separated text with \texttt{\#} comment headers, so \texttt{numpy.loadtxt} reads
 them directly. Names are left-justified and contain no spaces, so splitting on
 whitespace is safe.
+
+\textbf{All three carry every mode.} Nothing the engine writes decides which modes
+are worth looking at; that is the reader's job, and both interfaces filter live
+against the full set. The only floor anywhere is \texttt{\$PF\_THRES}, on participation
+alone, and its reason is size rather than significance.
+
+The first line of each file is a version banner, and these three are at \textbf{v2}.
 
 \subsection{\texorpdfstring{\texttt{\textless{}name\textgreater{}\_modes.dat}}{\textless name\textgreater\_modes.dat}}\label{eigenanalysis:name_modes.dat}
 
@@ -137,12 +150,22 @@ Column & Meaning \\
 \texttt{re}, \texttt{im} & Real and imaginary parts of \(\lambda\) \\
 \texttt{zeta} & Damping ratio \\
 \texttt{freq\_hz} & Frequency in Hz \\
-\texttt{dom} & 1 if \(\mathrm{Re}(\lambda)\) exceeded the \texttt{real\_limit} filter \\
 \texttt{smp} & 1 if the eigenvalue is simple, 0 if degenerate \\
 \end{longtable}\end{small}
 
-The header records \texttt{nstates}, \texttt{nalg}, the time, and the \texttt{real\_limit},
-\texttt{pf\_threshold} and \texttt{gap\_tol} values used.
+The header records \texttt{nstates}, \texttt{nalg}, the time, \texttt{gap\_tol}, and \texttt{pf\_floor}, the
+participation floor the run applied.
+
+\begin{docsnote}{Reading a v1 file}
+
+v1 carried a \texttt{dom} column between \texttt{freq\_hz} and \texttt{smp}, holding the engine's
+verdict on whether the mode passed the \texttt{real\_limit} it was given, and recorded
+\texttt{real\_limit} and \texttt{pf\_threshold} in the header instead of \texttt{pf\_floor}. The two
+layouts have the same field widths, so a reader that ignores the banner does
+not fail on the wrong one: it reads \texttt{smp} out of the \texttt{dom} column and answers
+wrongly. Check the first line.
+
+\end{docsnote}
 
 \subsection{\texorpdfstring{\texttt{\textless{}name\textgreater{}\_pf.dat}}{\textless name\textgreater\_pf.dat}}\label{eigenanalysis:name_pf.dat}
 
@@ -152,18 +175,30 @@ participation factor itself, which STEPSS GUI abbreviates to \textbf{PF}.
 
 The participation of state \(k\) in mode \(i\) is \(p_{ki} = \lvert w_{ki}\,v_{ki}\rvert\),
 built from the left and right eigenvectors and normalised so each mode's largest
-entry is 1. Written only for dominant modes, and only for entries above
-\texttt{pf\_threshold}, so a state that is absent is below the threshold rather than
-exactly zero.
+entry is 1.
+
+Written for every mode, and for every entry above
+\hyperref[ch-settings]{\texttt{\$PF\_THRES}}, so a state that is absent is below
+that floor rather than exactly zero. This is the one output quadratic in the
+state count: one row per (mode, state) pair, so at the \texttt{\$EIG\_MAX\_STATES} ceiling
+of 5000 states an unfloored file would be 25 million rows and roughly 2 GB,
+nearly all of it entries too small to read. At the default the same run writes
+on the order of a hundred thousand.
+
+\textbf{No mode can be emptied by the floor} for any value below 1, because
+normalisation puts one entry at exactly 1 in every mode. Raise it to bound the
+file on a large system; lower it to see smaller entries.
 
 \subsection{\texorpdfstring{\texttt{\textless{}name\textgreater{}\_ms.dat}}{\textless name\textgreater\_ms.dat}}\label{eigenanalysis:name_ms.dat}
 
 Mode shapes, one line per mode and machine:
 \texttt{mode}, \texttt{state}, \texttt{magnitude}, \texttt{angle\_deg}, \texttt{device}.
 
-Rotor-speed components, normalised so the largest magnitude in each mode is 1,
-with \textbf{angles relative to that largest entry}, because an eigenvector's absolute
-phase is arbitrary.
+Rotor-speed components for every mode, normalised so the largest magnitude in
+each mode is 1, with \textbf{angles relative to that largest entry}, because an
+eigenvector's absolute phase is arbitrary. No floor applies: this carries one
+row per machine per mode, which is linear in the state count rather than
+quadratic.
 
 \section{Saving a run as one archive}\label{eigenanalysis:saving-a-run-as-one-archive}
 
@@ -178,8 +213,8 @@ any window already up alone, so an archived run and a fresh one can be read side
 by side.
 
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5073}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4927}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4599}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5401}}
 @{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
@@ -190,7 +225,7 @@ In the archive
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\texttt{stepss-ssa.txt} & The manifest: the basename, the engine version, \texttt{t}, \texttt{real\_limit} and \texttt{pf\_threshold} \\
+\texttt{stepss-ssa.txt} & The manifest: the basename, the engine version and \texttt{t} (older archives also carry the \texttt{real\_limit} and \texttt{pf\_threshold} their run was given) \\
 \texttt{\textless{}name\textgreater{}\_modes.dat}, \texttt{\textless{}name\textgreater{}\_pf.dat}, \texttt{\textless{}name\textgreater{}\_ms.dat} & The results above \\
 \texttt{\textless{}name\textgreater{}\_eqs.dat}, \texttt{\textless{}name\textgreater{}\_var.dat}, \texttt{\textless{}name\textgreater{}\_val.dat}, \texttt{\textless{}name\textgreater{}\_struc.dat} & The unreduced Jacobian \\
 \end{longtable}\end{small}
@@ -236,8 +271,8 @@ refusal writes no results files, states the reason in the log and through
 \hyperref[doc:py-api]{\texttt{getLastErr()}}, and exits with code \textbf{78}.
 
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3868}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6132}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3939}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6061}}
 @{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
@@ -253,7 +288,17 @@ Reason
 \texttt{\$SCHEME\ IN} & The pure DAE values are not available at that point \\
 States above \texttt{\$EIG\_MAX\_STATES} & The dense solve is not practical at that size \\
 Singular \(g_y\) & The model is not index-1 \\
+\texttt{EIG} carrying parameters & The record takes a basename and nothing else \\
 \end{longtable}\end{small}
+
+That last one is a migration, not a mistake in the usual sense. \texttt{EIG} used to
+accept an optional \texttt{real\_limit} and \texttt{pf\_threshold} pair; \texttt{real\_limit} decided
+which modes got participation and mode-shape output, and \texttt{pf\_threshold} became
+the \texttt{\$PF\_THRES} solver setting. A \texttt{.dst} still carrying them is refused rather
+than having them ignored, because the values changed what the old engine wrote
+and accepting one silently would produce a results set that looks entirely
+normal and answers a different question. Remove the parameters; if you want the
+old participation floor, write \texttt{\$PF\_THRES\ 0.05\ ;} in your solver settings.
 
 A run that produced nothing and exited \textbf{0} is a different problem, most likely
 an engine older than v3.60.
@@ -303,6 +348,11 @@ Participation factors separate the two local modes without any prior knowledge
 of the topology: the 1.085 Hz mode lists only G1 and G2, the 1.116 Hz mode only
 G3 and G4, and the inter-area mode lists all four.
 
+Every one of those numbers is available for every mode, which was not always
+true: the engine used to write participation factors and mode shapes only for
+modes above a \texttt{real\_limit} fixed before the run, so answering a question about
+a mode outside it meant running the case again.
+
 In STEPSS GUI the same run is read from the small-signal results window, which
 \textbf{Run small-signal stability analysis} on the
 \hyperref[doc:gui-interface]{Analysis tab} opens on the run it just made:
@@ -323,10 +373,46 @@ factor, normalised so the largest in each mode is 1. The mode shape answers how
 those machines move relative to each other: here G1 and G2 swing against G3 and
 G4, which is what makes 0.62 Hz the inter-area mode rather than a local one.
 
-Ticking \textbf{electromechanical only} restricts the table to the 0.1 to 2.5 Hz band,
-which is where rotor-angle modes live. The full spectrum for this case is 70
-states, most of them fast controller and network dynamics that no rotor
-participates in.
+\subsection{Filtering and zooming}\label{eigenanalysis:filtering-and-zooming}
+
+Three controls sit above the table, and all of them act on results already in
+hand. Changing one re-filters what is on screen; none of them requires the
+analysis to be run again.
+
+\begin{small}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3318}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6682}}
+@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Control
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it does
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{electromechanical only} & Restricts to the 0.1 to 2.5 Hz band, where rotor-angle modes live. On by default \\
+\textbf{real part above} & Hides modes at or below the value beside it. Off by default \\
+\textbf{PF at least} & Trims the Participation panel to entries at or above the value beside it \\
+\end{longtable}\end{small}
+
+The count underneath says how many modes survive, so a filter that empties the
+table reads as a filter rather than as a broken load.
+
+\textbf{real part above} is the one that used to be the \texttt{real\_limit} parameter of the
+run. It is worth reaching for on a full spectrum: this case is 70 states, most
+of them fast controller and network dynamics that no rotor participates in, and
+a handful of them sit far enough to the left to stretch the s-plane's real axis
+until everything worth reading is squashed against the boundary. The plot refits
+its axes whenever the filter changes, so hiding those modes closes the plane in
+around what is left.
+
+For a closer look than a filter gives, \textbf{drag a rectangle on the s-plane} to
+zoom into it. \textbf{Reset zoom}, beside \textbf{Save plot\ldots{}}, goes back to the fitted
+window, and double-clicking the plot does the same. A zoomed plot exports
+zoomed: \textbf{Save plot\ldots{}} writes what is on screen, not the whole plane.
 
 \begin{docsnote}{Note}
 

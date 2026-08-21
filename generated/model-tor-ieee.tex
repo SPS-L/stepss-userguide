@@ -129,6 +129,12 @@ The droop characteristic is:
 \Delta \omega + R \cdot (V_{60} - REF) = 0 \implies \text{error} = \Delta\omega + R \cdot V_{act}
 \]
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-degov1-light}
+\caption{DEGOV1 block diagram.}
+\end{figure}
+
 \subsection{Parameters}\label{model-tor-ieee:parameters}
 
 \begin{small}\begin{longtable}[]{@{}
@@ -234,6 +240,12 @@ The final mechanical torque output accounting for shaft speed is:
 T_m \cdot \omega = P_m
 \]
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-entsoe-simp-light}
+\caption{ENTSOE\_simp block diagram.}
+\end{figure}
+
 \subsection{Parameters}\label{model-tor-ieee:parameters-1}
 
 \begin{small}\begin{longtable}[]{@{}ll@{}}
@@ -338,6 +350,12 @@ The torque-power conversion:
 T_m \cdot \omega = P_m
 \]
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-gast-light}
+\caption{GAST block diagram.}
+\end{figure}
+
 \subsection{Parameters}\label{model-tor-ieee:parameters-2}
 
 \begin{small}\begin{longtable}[]{@{}ll@{}}
@@ -433,6 +451,12 @@ Hence the mechanical torque:
 \[
 T_m = \frac{P_m}{\omega}
 \]
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-tgov1-light}
+\caption{TGOV1 block diagram.}
+\end{figure}
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-3}
 
@@ -551,6 +575,12 @@ T_m \cdot \omega = A_t \cdot (1 - dH)(Q - Q_{nl}) - D_{turb} \cdot (1 - \omega) 
 \[
 P_m = T_m \cdot \omega
 \]
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-hygov-light}
+\caption{HYGOV block diagram.}
+\end{figure}
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-4}
 

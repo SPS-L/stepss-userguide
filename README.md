@@ -2,7 +2,9 @@
 
 **LaTeX source of the STEPSS documentation of models and user guide.**
 
-This repository holds the LaTeX sources, figures, and compiled PDF of the official user documentation: a models reference and user guide covering the PFC, RAMSES, and CODEGEN modules, part of the [STEPSS](https://stepss.sps-lab.org/) power system simulation platform.
+This repository holds the LaTeX sources, figures, and compiled PDF of the official user documentation: a models reference and user guide covering the Helios, RAMSES, and CODEGEN modules, the two user interfaces and the model library, part of the [STEPSS](https://stepss.sps-lab.org/) power system simulation platform.
+
+The guide and [the documentation site](https://stepss.sps-lab.org/) carry the same material. Chapters that exist on both are generated from the site's Markdown by `tools/from_docs.py` rather than written twice; see [Generated chapters](#generated-chapters).
 
 ## Building the Documentation
 
@@ -13,7 +15,9 @@ pdflatex stepss_doc.tex
 pdflatex stepss_doc.tex
 ```
 
-Requirements: any LaTeX distribution providing `pdflatex` and the packages `times`, `epsfig`, `bm`, `hyperref`, `enumitem`, `algorithmic`, `fontawesome5`, `amsmath`, and `mdframed`. The custom page style `A4.STY` is included in the repository.
+A third pass is worth running: the guide is long enough that the table of contents shifts page numbers on the second.
+
+Requirements: any LaTeX distribution providing `pdflatex` and the packages `times`, `epsfig`, `bm`, `hyperref`, `enumitem`, `algorithmic`, `fontawesome5`, `amsmath`, `mdframed`, `xcolor`, `longtable`, `booktabs`, `array`, `calc`, `graphicx` and `fvextra`. The custom page style `A4.STY` is included in the repository, and `docs-preamble.tex` holds everything the generated chapters need.
 
 Two pre-built PDFs are committed, and they are kept identical:
 
@@ -24,14 +28,39 @@ After rebuilding, refresh both copies, then regenerate `DOC.zip` in `stepss-java
 
 ## Project Structure
 
-The main entry point is `stepss_doc.tex`, which organises the guide in four parts:
+The main entry point is `stepss_doc.tex`, which organises the guide in eight parts:
 
-- **Part I (All modules)**: `overview.tex`, `install.tex`, `files.tex`, `network.tex`
-- **Part II (Power Flow, PFC)**: `pfc-data.tex`
-- **Part III (Dynamic Simulation, RAMSES)**: `ref_and_init.tex`, `sync_thev_impload.tex`, `disturbances.tex`, `solvsett.tex`, `disc_cont.tex`
-- **Part IV (User-defined models, CODEGEN)**: `user_models.tex`, `library_blocks.tex`, plus `codegen/` (one `.tex` file per modelling block, with block-diagram PDFs)
+- **Part I (All modules)**: `overview.tex`, `install.tex`, `generated/quickstart.tex`, `files.tex`, `network.tex`
+- **Part II (The graphical interface)**: `generated/gui-first-run.tex`, `generated/gui-interface.tex`, `generated/gui-running.tex`
+- **Part III (Power Flow, Helios)**: `power-flow-data.tex`
+- **Part IV (Dynamic Simulation, RAMSES)**: `ref_and_init.tex`, `sync_thev_impload.tex`, `disturbances.tex`, `solvsett.tex`, `generated/model-dctl.tex`, `generated/eigenanalysis.tex`
+- **Part V (Model library)**: `generated/model-index.tex` and the eight `generated/model-*.tex` chapters
+- **Part VI (User-defined models, CODEGEN)**: `user_models.tex`, `library_blocks.tex`, plus `codegen/` (one `.tex` file per modelling block, with block-diagram PDFs), then `generated/codegen-examples.tex` and `generated/cg-studio.tex`
+- **Part VII (STEPSS in Python)**: `generated/py-*.tex` and `generated/uramses.tex`
+- **Part VIII (Test systems and resources)**: `generated/ts-*.tex`, `generated/res-*.tex`
 
-Other notable files: `legal.tex` (the software license printed at the front of the guide), `models/` (companion PDF notes for specific device models, bundled with the GUI).
+Other notable files: `legal.tex` (the software license printed at the front of the guide), `models/` (companion PDF notes for specific device models, bundled with the GUI), `figures/` (screenshots and diagrams collected from stepss-docs).
+
+## Generated chapters
+
+Everything under `generated/` is written by `tools/from_docs.py` out of the
+Markdown in a `stepss-docs` checkout sitting beside this one. Do not edit those
+files: edit the page named in each one's header comment, then
+
+```bash
+./tools/from_docs.py            # rewrite generated/ and refresh figures/
+./tools/from_docs.py --check    # fail if anything is stale
+```
+
+The outputs are committed, so the guide builds with no checkout of the site
+present. Hand-written chapters are never touched by the generator, and its
+`MANIFEST` lists only pages that have no hand-written counterpart here: the
+data-format and CODEGEN-block chapters remain the authoritative, deeper
+treatment and are not generated from anything.
+
+Figures are collected the same way. `figures/` mirrors the images those pages
+reference, with SVG sources converted to PDF; the screenshots come from the
+capture harness in `stepss-docs/tools/`.
 
 ## What is STEPSS?
 
@@ -41,7 +70,7 @@ STEPSS consists of three tightly integrated modules:
 
 | Module | Full Name | Description |
 |--------|-----------|-------------|
-| **PFC** | Power Flow Computation | Determines the initial operating point using the Newton-Raphson method in polar coordinates. Computes bus voltage magnitudes and phase angles, with optional transformer ratio adjustment. |
+| **Helios** | AC Power Flow | Determines the initial operating point using the Newton-Raphson method in polar coordinates. Computes bus voltage magnitudes and phase angles, with optional transformer ratio adjustment. |
 | **RAMSES** | RApid Multithreaded Simulation of Electric power Systems | Simulates the dynamic evolution of the power system. Supports Backward Euler, Trapezoidal, and BDF2 integration methods. Exploits OpenMP parallelism (up to 2 cores in the free version). |
 | **CODEGEN** | CODE GENerator | Translates user-defined models from text descriptions into Fortran 2003 code for compilation and linking. Supports excitation controllers, torque controllers, injectors, and two-port components. |
 

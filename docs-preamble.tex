@@ -1,0 +1,61 @@
+%% Preamble additions for the chapters generated from stepss-docs.
+%%
+%% They are kept apart from stepss_doc.tex because they exist only to satisfy
+%% pandoc's LaTeX writer: longtable/booktabs for its tables, calc for the
+%% \real{} in its column widths, and \tightlist for its lists. Changing the
+%% generator's output is the reason to change this file, and nothing else is.
+
+% The guide has always drawn a coloured rule around every link, which is
+% hyperref's default under pdflatex. That was tolerable at a few dozen
+% cross-references; the generated chapters carry about two hundred, and a page
+% of boxed phrases is hard to read. Colour the text instead, dark enough to
+% print as near-black.
+\hypersetup{
+  colorlinks=true,
+  linkcolor=[RGB]{26,54,93},
+  citecolor=[RGB]{26,54,93},
+  urlcolor=[RGB]{43,108,176},
+  linktoc=all
+}
+
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{graphicx}
+
+% pandoc emits \tightlist for a list whose items carry no blank line between
+% them, and defines it only inside its own template.
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% A note box for what the site writes as :::note, :::caution and :::tip. One
+% environment rather than three, because the printed page distinguishes them by
+% the heading the directive already carries.
+\newmdenv[
+  linewidth=0.6pt,
+  linecolor=black!45,
+  backgroundcolor=black!3,
+  roundcorner=3pt,
+  innertopmargin=6pt,
+  innerbottommargin=6pt,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{docsnotebox}
+
+\newenvironment{docsnote}[1]
+  {\begin{docsnotebox}\noindent\textbf{#1}\par\vspace{0.4ex}}
+  {\end{docsnotebox}}
+
+% A screenshot is a picture of a window and gains nothing from a rule around
+% it, but a wide table set in \small still wants to breathe.
+\setlength{\LTpre}{\medskipamount}
+\setlength{\LTpost}{\medskipamount}
+
+% The generated chapters quote data records and shell sessions at their natural
+% width, which is wider than this text block. Let a long verbatim line run into
+% the margin rather than silently past the page edge.
+\usepackage{fvextra}
+\fvset{breaklines=true,breakanywhere=true,fontsize=\small}

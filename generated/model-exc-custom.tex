@@ -130,6 +130,12 @@ f(1) = \frac{-V_f + K_A(V_{ref} - V)}{T_A}
   With anti-windup: if the limiter is active, \texttt{f(1)\ =\ Vf\ -\ Vfmin} (or \texttt{Vfmax}).
 \end{itemize}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-1storder-light}
+\caption{1ST\_ORDER exciter block diagram.}
+\end{figure}
+
 \subsection{Parameters}\label{model-exc-custom:parameters-1}
 
 \begin{small}\begin{longtable}[]{@{}ll@{}}
@@ -219,6 +225,12 @@ PSS washout & \texttt{tfder1p} & \(K_{STAB} \cdot sT_W/(1+sT_W)\) \\
 PSS lead--lag 1 & \texttt{tf1p1z} & \((1+sT_1)/(1+sT_2)\) \\
 PSS lead--lag 2 & \texttt{tf1p1z} & \((1+sT_3)/(1+sT_4)\) \\
 \end{longtable}\end{small}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-kundur-light}
+\caption{exc\_kundur block diagram.}
+\end{figure}
 
 \subsection{Parameters}\label{model-exc-custom:parameters-2}
 

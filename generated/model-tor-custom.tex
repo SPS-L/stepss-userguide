@@ -147,6 +147,12 @@ i.e.:
 - State 1 = HP torque \texttt{x(1)}, State 2 = LP torque \texttt{x(2)}
 - Observables: \texttt{HP\ torque}, \texttt{LP\ torque}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-1storder-light}
+\caption{1ST\_ORDER governor block diagram.}
+\end{figure}
+
 \subsection{Parameters}\label{model-tor-custom:parameters-1}
 
 \begin{small}\begin{longtable}[]{@{}ll@{}}
@@ -368,6 +374,12 @@ Parameter & Index & Description \\
 - Additional: \texttt{prm(9)\ =\ P0} (initial electrical power)
 - Observables: \texttt{z}, \texttt{Q}, \texttt{H}, \texttt{Pm}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-hydro-generic1-light}
+\caption{HYDRO\_GENERIC1 block diagram.}
+\end{figure}
+
 \subsection{Usage Example}\label{model-tor-custom:usage-example-3}
 
 \textbf{RAMSES Data File}
@@ -465,6 +477,12 @@ precedes them with \texttt{SIGMA} (droop) and \texttt{Tmes} (speed measurement l
 - \texttt{nbxvar\ =\ 5}, \texttt{nbzvar\ =\ 2}, \texttt{nbdata\ =\ 6}, \texttt{nbaddpar\ =\ 1}
 - Additional: \texttt{prm(7)\ =\ Pset}, the initial electrical power, captured at initialisation
 - Observables: \texttt{z}, \texttt{Q}, \texttt{H}, \texttt{Pm}, \texttt{Pset}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/tor-hydro-dg-light}
+\caption{HYDRO\_DG block diagram.}
+\end{figure}
 
 \subsection{Usage Example}\label{model-tor-custom:usage-example-4}
 

@@ -485,6 +485,36 @@ def longest_token(cell: str) -> int:
     return max((len(w) for w in t.split()), default=1)
 
 
+TT_RE = re.compile(r"\\(?:texttt|Verb|lstinline)\{([^{}]*)\}")
+
+
+def longest_tt_token(cell: str) -> int:
+    """The longest run of typewriter text with nothing to break at.
+
+    Prose hyphenates and a column narrower than its longest word is merely
+    tight. An identifier such as stepss.helios.HeliosSession does not break:
+    TeX will not hyphenate across the dots, so a column narrower than that
+    token overflows into the next one however the rest of the table is
+    proportioned. That is a floor, not a preference.
+    """
+    longest = 0
+    for m in TT_RE.finditer(cell):
+        text = re.sub(r"\\[a-zA-Z@]+\s*|[{}$]", "", m.group(1))
+        text = text.replace("\\", "")
+        for word in text.split():
+            longest = max(longest, len(word))
+    return longest
+
+
+# Typewriter metrics of the built document: \small in an 11pt newpx body over
+# a 448pt text block, which is a little under 90 characters, plus the cell's
+# own 2\tabcolsep of padding.
+TT_CHAR_PT = 5.0
+CELL_PAD_PT = 14.0
+TEXT_WIDTH_PT = 448.0
+MAX_FLOOR = 0.45
+
+
 def split_cells(row: str) -> list[str]:
     return re.split(r"(?<!\\)&", row)
 
@@ -513,6 +543,7 @@ def retable(tex: str) -> str:
 
         lengths = [[] for _ in range(n)]
         tokens = [1] * n
+        tt = [0] * n
         for raw in body.split("\\\\"):
             if any(k in raw for k in SKIP_ROW) and "&" not in raw:
                 continue
@@ -522,6 +553,7 @@ def retable(tex: str) -> str:
             for i, cell in enumerate(cells):
                 lengths[i].append(visible_len(cell))
                 tokens[i] = max(tokens[i], longest_token(cell))
+                tt[i] = max(tt[i], longest_tt_token(cell))
         if not any(lengths):
             return m.group(0)
 
@@ -531,6 +563,27 @@ def retable(tex: str) -> str:
             raws.append(max(math.sqrt(max(mean, 1.0)), 0.55 * math.sqrt(tokens[i])))
         total = sum(raws)
         widths = [max(r / total, 0.05) for r in raws]
+
+        # A column holding an unbreakable identifier gets at least the width
+        # that identifier needs, taken out of the columns that can give it.
+        floors = [
+            min(MAX_FLOOR, (c * TT_CHAR_PT + CELL_PAD_PT) / TEXT_WIDTH_PT) if c else 0.0
+            for c in tt
+        ]
+        if sum(floors) < 0.95:
+            for _ in range(n):
+                short = [i for i in range(n) if widths[i] < floors[i]]
+                if not short:
+                    break
+                debt = sum(floors[i] - widths[i] for i in short)
+                give = [i for i in range(n) if i not in short and widths[i] > 0.06]
+                pool = sum(widths[i] for i in give)
+                if not give or pool <= debt:
+                    break
+                for i in short:
+                    widths[i] = floors[i]
+                for i in give:
+                    widths[i] -= debt * widths[i] / pool
         total = sum(widths)
         widths = [w / total for w in widths]
 

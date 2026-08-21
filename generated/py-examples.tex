@@ -36,7 +36,10 @@ ext.getBus('1041').mag.plot()    # voltage magnitude at bus 1041
 
 \begin{docsnote}{Note}
 
-Set \texttt{\$NB\_THREADS\ 0\ ;} in the solver settings file to use all available CPU cores for parallel simulation.
+Set \texttt{\$NB\_THREADS\ 0\ ;} in the solver settings file to use all available CPU cores
+for parallel simulation. The free version uses at most \textbf{2 cores} whatever this
+is set to; a \texttt{\$LICENSE} record in the data files lifts the cap. See
+\hyperref[ch-legal]{License}.
 
 \end{docsnote}
 

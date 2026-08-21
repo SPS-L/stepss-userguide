@@ -178,15 +178,12 @@
         \node[above=0,inner sep=0] at (current page.south) {%
             \includegraphics[width=\paperwidth]{\@coverimage}};
 
-        %% Add the affiliation on the left
-        \node[rotate=90,below right=40mm and 3mm] at (current page.west) {%
-            \ifdefvoid{\@affiliation}{}{\color{white}\titlestyle\@affiliation}};
-
-        %% Add the logo in the bottom left. It is a transparent PNG of dark
-        %% blue type, so it needs a plate to sit on: over a dark cover photo
-        %% the institution's name simply disappears.
-        \node[above right=10mm,fill=white,inner sep=5pt,rounded corners=2pt] at (current page.south west) {%
-            \includegraphics[width=0.46\linewidth]{figures/logo-cut-spsl.png}};
+        %% Add the STEPSS logo in the bottom left. The dark variant, the one
+        %% the documentation site serves to a dark theme: it carries its own
+        %% dark plate and light type, so it sits on the cover photo without
+        %% needing a white box behind it.
+        \node[above right=12mm] at (current page.south west) {%
+            \includegraphics[width=0.52\linewidth]{figures/stepss-logo-dark.pdf}};
 
         %% Add the banner with the title, subtitle, subject and author(s)
         \node[below=2cm,fill=black!85,minimum width={\paperwidth},inner ysep=25pt,opacity=0.78,text opacity=1] at (current page.north) {%

@@ -225,7 +225,7 @@ It is divided by the servo time constant \(T_{sm}\), rate-limited to \([zdot_{mi
 
 \textbf{Turbine power stages:}
 
-The gate opening drives three lags in series, the reheat stage carrying the initial valve opening \(ivo\) as a factor:
+The gate opening drives three lags in series, the reheat stage carrying the intercept valve factor \(ivo\):
 
 \[
 T_{hp}\,\dot{x}_{hp} = -x_{hp} + z, \qquad
@@ -259,7 +259,7 @@ Parameter & Index & Description \\
 \texttt{sigma} & 1 & Speed droop (pu/pu) \\
 \texttt{Tmes} & 2 & Speed measurement time constant (s) \\
 \texttt{Tsm} & 3 & Servo/gate time constant (s) \\
-\texttt{zdotmin} & 4 & Minimum gate rate (pu/s), also additional parameter \\
+\texttt{zdotmin} & 4 & Minimum gate rate (pu/s) \\
 \texttt{zdotmax} & 5 & Maximum gate rate (pu/s) \\
 \texttt{zmin} & 6 & Minimum gate opening (pu) \\
 \texttt{zmax} & 7 & Maximum gate opening (pu) \\
@@ -272,8 +272,22 @@ Parameter & Index & Description \\
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 10}, \texttt{nbzvar\ =\ 2}, \texttt{nbdata\ =\ 12}, \texttt{nbaddpar\ =\ 2}
-- Additional: \texttt{prm(13)\ =\ P0} (initial power), \texttt{prm(14)\ =\ ivo} (initial valve opening)
-- Observables: \texttt{z}, \texttt{PmHP}, \texttt{PmMP}, \texttt{PmLP}, \texttt{Pm}
+- Additional: \texttt{prm(13)\ =\ P0} (initial power), \texttt{prm(14)\ =\ ivo} (intercept valve factor)
+
+\begin{docsnote}{Caution}
+
+\texttt{ivo} is an \emph{additional} parameter: it is computed at initialisation rather than
+read from the record, and the engine sets it to 1 unconditionally. The intercept
+valve factor is therefore always 1 and cannot be given another value from a data
+file.
+
+\end{docsnote}
+
+\begin{itemize}
+\tightlist
+\item
+  Observables: \texttt{z}, \texttt{PmHP}, \texttt{PmMP}, \texttt{PmLP}, \texttt{Pm}
+\end{itemize}
 
 \subsection{Usage Example}\label{model-tor-custom:usage-example-2}
 

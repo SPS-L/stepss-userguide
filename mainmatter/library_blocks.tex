@@ -1,0 +1,69 @@
+\section{List of modelling blocks}
+
+The list of modelling blocks is given in the table below, together with a brief description.
+
+\begin{table}[h!]
+\centering
+\caption{List of modelling blocks}
+\begin{tabular}{|rl|} \hline
+\hyperlink{link_to_abs}{abs} & Absolute value of input \\
+\hyperlink{link_to_algeq}{algeq} & Algebraic equation \\
+\hyperlink{link_to_db}{db}& Deadband \\
+\hyperlink{link_to_finj}{f\_inj} & Estimate of frequency at bus of injector \\
+\hyperlink{link_to_ftwop1}{ftwop\_bus1} & Estimate of frequency at first bus of two-port \\
+\hyperlink{link_to_ftwop2}{ftwop\_bus2} & Estimate of frequency at second bus of two-port \\
+\hyperlink{link_to_fsa}{fsa} & Finite State Automaton \\
+\hyperlink{link_to_hyst}{hyst} & Hysteresis \\
+\hyperlink{link_to_int}{int} & Integrator with time constant \\
+\hyperlink{link_to_inlim}{inlim} & Integrator with time constant and non-windup limits on output \\
+\hyperlink{link_to_invlim}{invlim} & Integrator with time constant and non-windup variable limits on output \\
+\hyperlink{link_to_lim}{lim} & Limiter with constant bounds \\
+\hyperlink{link_to_limvb}{limvb} & Limiter with variable bounds \\
+\hyperlink{link_to_max1v1c}{max1v1c} & Maximum between a state and a constant \\ 
+\hyperlink{link_to_max2v}{max2v} & Maximum between two states \\
+\hyperlink{link_to_min1v1c}{min1v1c} & Minimum between a state and a constant  \\
+\hyperlink{link_to_min2v}{min2v} & Minimum between two states \\
+\hyperlink{link_to_nint}{nint} & Integer nearest to the input shifted by a constant \\
+\hyperlink{link_to_pictl}{pictl} & Proportional-Integral (PI) controller \\
+\hyperlink{link_to_pictllim}{pictllim} & Proportional-Integral (PI) controller with non-windup limit on integral term \\
+\hyperlink{link_to_pictl2lim}{pictl2lim} & PI controller with non-windup limit on integral term and limit on proportional term \\
+\hyperlink{link_to_pictlieee}{pictlieee} & PI controller with non-windup limit on integral term, compliant with IEEE standards \\
+\hyperlink{link_to_pwlin}{pwlin} & Piece-wise linear function of input \\
+\hyperlink{link_to_switch}{switch} & Set output to one among $n$ inputs, based on value of a controlling state \\
+\hyperlink{link_to_swsign}{swsign} & Switch between two input states, based on sign of a third input state \\
+\hyperlink{link_to_tf1p}{tf1p} & Transfer function between input and output: one time constant \\
+\hyperlink{link_to_tf1plim}{tf1plim} & same as tf1p with non-windup limits on output \\
+\hyperlink{link_to_tf1pvlim}{tf1pvlim} & same as tf1p with variable non-windup limits on output \\
+\hyperlink{link_to_tf1p2lim}{tf1p2lim} & same as tf1p with limits on rate of change of output and non-windup limits on output \\
+\hyperlink{link_to_tfder1p}{tfder1p} & Transfer function: derivative with one time constant \\
+\hyperlink{link_to_tf1p1z}{tf1p1z} & Transfer function between input and output: one zero and one pole \\
+\hyperlink{link_to_tf2p2z}{tf2p2z} & Transfer function between input and output: two real zeros and two real poles \\
+\hyperlink{link_to_timer}{timer} & Timer with delay varying piecewise linearly with monitored variable \\
+\hyperlink{link_to_timersc}{timersc} & Timer with delay varying as a staircase function of monitored variable  \\
+\hyperlink{link_to_tsa}{tsa} & Two-state automaton with transitions based on signs of two inputs \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Information provided for each block}
+
+Most blocks have input and output states. {\large \bf The names of those states must not be enclosed with backets}\footnote{since CODEGEN expects to find a state name, there is no ambiguity}. If used, the brackets will be treated as part of the state name, which most likely will to a wrong reference and the failure to compile the model.
+
+Most (but not all) blocks require parameters. Each of them is either a data (enclosed with braces) or a parameter in the sense defined in the previous chapter (also enclosed with braces) or a mathematical expression involving data and/or parameters.
+
+\begin{quote}
+\faHandPointRight ~ \rm Here are three examples of information that can be specified for a time constant:
+\begin{itemize}
+\item[] 2.
+\item[] \{T\}
+\item[] 1/\{omegac\}
+\end{itemize}
+\end{quote}
+
+%--------------------------------------------------------------------------------------------------
+\section{Library}
+
+
+
+
+

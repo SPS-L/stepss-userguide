@@ -52,7 +52,6 @@ This model is useful for open-loop tests, for machines that are not equipped wit
 
 \subsection{Parameters}\label{model-exc-custom:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2550}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7450}}
@@ -69,7 +68,6 @@ Description
 \endlastfoot
 \emph{(none)} & No user-supplied data parameters. The field voltage is taken from the initialisation (load-flow) value automatically. \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-exc-custom:usage-example}
 
@@ -134,7 +132,6 @@ f(1) = \frac{-V_f + K_A(V_{ref} - V)}{T_A}
 
 \subsection{Parameters}\label{model-exc-custom:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -147,7 +144,6 @@ Parameter & Description \\
 \texttt{Vfmin} & Minimum field voltage (pu) \\
 \texttt{Vfmax} & Maximum field voltage (pu) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-exc-custom:usage-example-1}
 
@@ -209,7 +205,6 @@ V_s(s) = \frac{1 + s T_1}{1 + s T_2} \cdot \frac{1 + s T_3}{1 + s T_4} \cdot x_{
 
 This is the standard two-stage phase-compensating PSS structure. The CODEGEN blocks in the \texttt{.txt} file are:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Block & CODEGEN type & Function \\
@@ -224,11 +219,9 @@ PSS washout & \texttt{tfder1p} & \(K_{STAB} \cdot sT_W/(1+sT_W)\) \\
 PSS lead--lag 1 & \texttt{tf1p1z} & \((1+sT_1)/(1+sT_2)\) \\
 PSS lead--lag 2 & \texttt{tf1p1z} & \((1+sT_3)/(1+sT_4)\) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Parameters}\label{model-exc-custom:parameters-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -247,7 +240,6 @@ Parameter & Description \\
 \texttt{T3} & PSS second lead--lag zero time constant (s) \\
 \texttt{T4} & PSS second lead--lag pole time constant (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Computed at initialisation:} \texttt{Vref\ =\ V\ +\ Vf\ /\ KA}
 
@@ -319,7 +311,6 @@ The OEL monitors field current \(I_f\). When \(I_f > IFLIM\), a timer begins acc
 
 \textbf{Parameters from Fortran source} (\texttt{prm} array):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Index & Name & Description \\
@@ -351,7 +342,6 @@ Index & Name & Description \\
 22 & \texttt{DVMIN} & PSS output lower limit (pu) \\
 23 & \texttt{DVMAX} & PSS output upper limit (pu) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-exc-custom:usage-example-3}
 
@@ -404,7 +394,6 @@ model reduces to \texttt{GENERIC1}.
 Indices 1 to 23 are exactly those of \hyperref[model-exc-custom:generic1-exc_generic1]{\texttt{GENERIC1}}. The four that
 follow are new:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Index & Name & Description \\
@@ -417,7 +406,6 @@ Index & Name & Description \\
 26 & \texttt{L5} & Regulator output lower limit (pu) \\
 27 & \texttt{L6} & Regulator output upper limit (pu) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Implementation details:}
 - \texttt{nbxvar\ =\ 8}, \texttt{nbzvar\ =\ 7}, \texttt{nbdata\ =\ 27}, \texttt{nbaddpar\ =\ 2}
@@ -502,7 +490,6 @@ The OEL uses a three-level piecewise-linear characteristic \((s_1, T_{oel1})\), 
 
 \textbf{Parameters from Fortran \texttt{associate} block} (39 data parameters + 4 additional):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Index & Name & Description \\
@@ -550,7 +537,6 @@ Index & Name & Description \\
 38 & \texttt{perm} & OEL permanent current limit (pu) \\
 39 & \texttt{LimInf} & PSS lower asymmetric limit (pu) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Usage Example}\label{model-exc-custom:usage-example-5}
 
@@ -631,7 +617,6 @@ V_{OEL} = \text{clip}(K_{oel} \cdot x_{oel2},\, 0,\, L_3)
 
 The CODEGEN block structure from the \texttt{.txt} file:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3529}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2321}}
@@ -662,11 +647,9 @@ OEL integrator & \texttt{inlim} & \(1/T_{oel}\) with \([L_1, L_2]\) \\
 OEL multiplier & \texttt{algeq} & \(K_{oel} \cdot x_{oel2}\) \\
 OEL output limiter & \texttt{lim} & \([0, L_3]\) \\
 \end{longtable}\end{small}
-}
 
 \subsection{Parameters}\label{model-exc-custom:parameters-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -695,7 +678,6 @@ Parameter & Description \\
 \texttt{L2} & OEL integrator upper limit \\
 \texttt{L3} & OEL output upper limit (pu) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Computed at initialisation:} \texttt{Vo\ =\ V\ +\ Vf\ /\ G}
 

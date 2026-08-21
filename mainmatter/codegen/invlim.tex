@@ -1,0 +1,69 @@
+\hypertarget{link_to_invlim}{}{\Large \bf invlim}
+
+{\it Integrator with (positive) time constant $T$ and non-windup limits on output. The lower and upper limits are variables.}
+
+\begin{center}
+\includegraphics{codegen/invlim.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& invlim \\
+name of variable $x_i$\\
+name of variable $x_{min}$\\
+name of variable $x_{max}$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $T$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables :  $z \in \{0, 1, -1 \}$
+
+Equations :
+\begin{eqnarray}
+T \dot{x}_j & = & x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0  \label{invlim-1} \\
+0 & = & x_j - x_{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1  \nonumber \\
+0 & = & x_j - x_{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1 \nonumber
+\end{eqnarray}
+
+\pagebreak
+Discrete transitions :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 0$}
+  \IF {$x_j > x_{max}$} 
+    \STATE $z \gets 1$
+  \ELSIF {$x_j < x_{min}$}
+    \STATE $z \leftarrow -1$
+  \ENDIF
+\ELSIF {$z = 1$}
+  \IF {$x_i < 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSIF {$z = -1$}
+  \IF {$x_i > 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_j > x_{max}$}
+    \STATE {$z \gets 1$}
+\ELSIF {$x_j < x_{min}$}
+    \STATE {$z \gets -1$}
+\ELSE
+    \STATE {$z \gets 0$}
+\ENDIF
+\end{algorithmic}
+\end{minipage} 
+
+\vspace*{4ex}
+A zero value for $T$ is not allowed. If too small a value is specified for $T$, the solver may encounter a singularity and the simulation may not proceed.

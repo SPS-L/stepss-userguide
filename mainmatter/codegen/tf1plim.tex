@@ -1,0 +1,78 @@
+\hypertarget{link_to_tf1plim}{}{\Large \bf tf1plim}
+
+{\it Transfer function between input and output: one time constant with non-windup limits on output}.
+
+\begin{center}
+\includegraphics{codegen/tf1plim.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& tf1plim\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $G$ \\
+data name, parameter name or math expression for $T$ \\
+data name, parameter name or math expression for $x_{min}$\\
+data name, parameter name or math expression for $x_{max}$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{-1,0,1\}$
+
+Equations :
+\begin{equation*}
+\begin{cases}
+T \: \dot{x}_j & = G \; x_i - x_j \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0 \\
+0 & = x_j - x_{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+0 & = x_j - x_{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1  
+\end{cases}
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 0$}
+  \IF {$x_j > x_{max}$} 
+    \STATE $z \gets 1$
+  \ELSIF {$x_j < x_{min}$}
+    \STATE $z \gets -1$
+  \ENDIF
+\ELSIF {$z = 1$}
+  \IF {$G \: x_i - x_j < 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSIF {$z = -1$}
+  \IF {$G \: x_i - x_j > 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+The time constant $T$ can be zero. In this case:
+\begin{itemize}
+\item the block behaves like a gain: $x_j = G x_i$
+\item the limits $x_{min}$ and $x_{max}$ remain in effect.
+\end{itemize}
+
+\vspace{2ex}
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_j \ge x_{max}$}
+   \STATE $z \gets 1$
+\ELSIF {$x_j \le x_{min}$}
+   \STATE $z \gets -1$
+\ELSE
+   \STATE $z \gets 0$
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+

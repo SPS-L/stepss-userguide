@@ -1,76 +1,62 @@
-\documentclass[11pt]{book}
-\usepackage{A4}
-\usepackage{times}
-\usepackage[utf8]{inputenc}
-\usepackage{xcolor}
-\usepackage{epsfig}
-\usepackage{bm}
-\usepackage{hyperref}
-\usepackage{graphics}
-\usepackage{enumitem}
-\setlist{nolistsep}
-\usepackage{algorithmic}
-\usepackage{fontawesome5}
-\usepackage{amsmath}
-\usepackage{mdframed}
+%% STEPSS: documentation of models and user guide.
+%%
+%% Built with three passes of pdflatex; see README.md. The chapters under
+%% generated/ are produced from stepss-docs by tools/from_docs.py and must not
+%% be edited by hand.
+
+\documentclass{sps-report}
+
+%% Everything the generated chapters need, and nothing else: see the file.
 \input{docs-preamble}
 
-%------------------------------------------------------------------------
+%% Figures live in figures/, wherever the chapter including them sits. The
+%% codegen block descriptions ask for codegen/<block>.pdf, which resolves
+%% against the first path below without any of those 42 files being touched.
+\graphicspath{{figures/}{./}}
+
 \begin{document}
-\sf
 
-\renewcommand{\labelitemi}{$\bullet$}
+%% ----------------------------------------------------------------------
+%%    Front matter
+%% ----------------------------------------------------------------------
+\frontmatter
 
-\thispagestyle{empty}
-\begin{center}
+\title{STEPSS}
+\subtitle{Static and Transient Electric Power Systems Simulation}
+\author{Petros Aristidou \quad Thierry Van Cutsem}
+\affiliation{Sustainable Power Systems Lab, Cyprus University of Technology}
+\coverimage{figures/cover.jpg}
+\definecolor{title}{HTML}{4884d6}
 
-\vspace*{10ex}
+\makecover
+\maketitlepage
 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.25]{logo.png}
-\end{figure}
-
-\vspace*{5ex}
-
-{\huge \bf STEPSS}
-
-{\Large Static and Transient Electric Power Systems Simulation}
-
-\vspace*{8ex}
-{\Large Documentation of models and user guide} 
-
-
-\vspace*{25ex}
-
-{\large \today}
-
-\end{center}
-
-\newpage
-%------------------------------------------------------------------------
-\include{legal}
+\include{frontmatter/legal}
 \label{ch-legal}
+
 \setcounter{tocdepth}{1}
 \tableofcontents
 
-\newpage
-%------------------------------------------------------------------------
+%% ----------------------------------------------------------------------
+%%    Main matter
+%% ----------------------------------------------------------------------
+\mainmatter
+
 \part{Information pertaining to all three modules}
 
 \chapter{A quick overview of STEPSS}\label{ch-overview}
-\include{overview}
+\include{mainmatter/overview}
 
 \chapter{Installing STEPSS}\label{ch-install}
-\include{install}
+\include{mainmatter/install}
 
 \include{generated/quickstart}
 
 \chapter{Organisation of the data files}\label{ch-files}
-\include{files}
+\include{mainmatter/files}
 
 \chapter{Modelling of network components}\label{ch-network}
-\include{network}
+\include{mainmatter/network}
 
 %------------------------------------------------------------------------
 \part{The STEPSS graphical interface}
@@ -83,22 +69,22 @@
 \part{Power Flow Computation with Helios}
 
 \chapter{Helios data}\label{ch-pf}
-\include{power-flow-data}
+\include{mainmatter/power-flow-data}
 
 %------------------------------------------------------------------------
 \part{Dynamic Simulation with RAMSES}
 
 \chapter{Reference frame and model initialization}\label{ch-refinit}
-\include{ref_and_init}
+\include{mainmatter/ref_and_init}
 
-\chapter{Synchronous machines, Th\'{e}venin equivalents and impedance loads}\label{ch-sync}
-\include{sync_thev_impload}
+\chapter[Synchronous machines and loads]{Synchronous machines, Th\'{e}venin equivalents and impedance loads}\label{ch-sync}
+\include{mainmatter/sync_thev_impload}
 
 \chapter{Disturbances}\label{ch-disturb}
-\include{disturbances}
+\include{mainmatter/disturbances}
 
 \chapter{Solver Settings}\label{ch-settings}
-\include{solvsett}
+\include{mainmatter/solvsett}
 
 \include{generated/model-dctl}
 \include{generated/eigenanalysis}
@@ -119,51 +105,48 @@
 %------------------------------------------------------------------------
 \part{Adding user-defined models with CODEGEN}
 
-\chapter{User-defined models: mathematical formulation and syntax of description}\label{ch-user_models}
-
-\include{user_models}
+\chapter[User-defined models]{User-defined models: mathematical formulation and syntax of description}\label{ch-user_models}
+\include{mainmatter/user_models}
 
 \chapter{Library of modelling blocks}\label{ch-libray_blocks}
+\include{mainmatter/library_blocks}
 
-\include{library_blocks}
-
-\include{codegen/abs}
-\include{codegen/algeq}
-\include{codegen/db}
-\include{codegen/f_inj}
-\include{codegen/f_twop_bus1}
-\include{codegen/f_twop_bus2}
-\include{codegen/fsa}
-\include{codegen/hyst}
-\include{codegen/int}
-\include{codegen/inlim}
-\include{codegen/invlim}
-\include{codegen/lim}
-\include{codegen/limvb}
-\include{codegen/max1v1c}
-\include{codegen/max2v}
-\include{codegen/min1v1c}
-\include{codegen/min2v}
-\include{codegen/nint}
-\include{codegen/pictl}
-\include{codegen/pictllim}
-\include{codegen/pictl2lim}
-\include{codegen/pictlieee}
-\include{codegen/pwlin}
-\include{codegen/switch}
-\include{codegen/swsign}
-\include{codegen/tf1p}
-\include{codegen/tf1plim}
-\include{codegen/tf1pvlim}
-\include{codegen/tf1p2lim}
-\include{codegen/tfder1p}
-\include{codegen/tf1p1z}
-\include{codegen/tf2p2z}
-\include{codegen/timer}
-\include{codegen/timersc}
-\include{codegen/tsa}
-
-\include{codegen/functions}
+\include{mainmatter/codegen/abs}
+\include{mainmatter/codegen/algeq}
+\include{mainmatter/codegen/db}
+\include{mainmatter/codegen/f_inj}
+\include{mainmatter/codegen/f_twop_bus1}
+\include{mainmatter/codegen/f_twop_bus2}
+\include{mainmatter/codegen/fsa}
+\include{mainmatter/codegen/hyst}
+\include{mainmatter/codegen/int}
+\include{mainmatter/codegen/inlim}
+\include{mainmatter/codegen/invlim}
+\include{mainmatter/codegen/lim}
+\include{mainmatter/codegen/limvb}
+\include{mainmatter/codegen/max1v1c}
+\include{mainmatter/codegen/max2v}
+\include{mainmatter/codegen/min1v1c}
+\include{mainmatter/codegen/min2v}
+\include{mainmatter/codegen/nint}
+\include{mainmatter/codegen/pictl}
+\include{mainmatter/codegen/pictllim}
+\include{mainmatter/codegen/pictl2lim}
+\include{mainmatter/codegen/pictlieee}
+\include{mainmatter/codegen/pwlin}
+\include{mainmatter/codegen/switch}
+\include{mainmatter/codegen/swsign}
+\include{mainmatter/codegen/tf1p}
+\include{mainmatter/codegen/tf1plim}
+\include{mainmatter/codegen/tf1pvlim}
+\include{mainmatter/codegen/tf1p2lim}
+\include{mainmatter/codegen/tfder1p}
+\include{mainmatter/codegen/tf1p1z}
+\include{mainmatter/codegen/tf2p2z}
+\include{mainmatter/codegen/timer}
+\include{mainmatter/codegen/timersc}
+\include{mainmatter/codegen/tsa}
+\include{mainmatter/codegen/functions}
 
 \include{generated/codegen-examples}
 \include{generated/cg-studio}

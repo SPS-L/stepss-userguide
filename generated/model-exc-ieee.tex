@@ -37,7 +37,6 @@ The \hyperref[doc:model-index]{Model Reference index} carries the same informati
 
 \section{Model Index}\label{model-exc-ieee:model-index}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1765}}
   >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1747}}
@@ -93,7 +92,6 @@ IEEE Reference
 \texttt{ST1A\_lim} & Registered & ST type 1 & & Integral OEL + SCL & IEEE 421.5 Type ST1A \\
 \texttt{ST2A} & Registered & ST type 2 & & & IEEE 421.5 Type ST2A (via EXPIC1) \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -160,7 +158,6 @@ where \(S_E(V_E)\) is the saturation function interpolated from the two-point sa
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -192,11 +189,9 @@ Parameter & Description & Unit/Type \\
 \texttt{KD} & Demagnetization factor & pu \\
 \texttt{VUEL} & UEL input signal & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2937}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7063}}
@@ -216,7 +211,6 @@ Description
 \texttt{AC1A\_RETRO} & Retrofit variant with internal PSS4B; uses first-order AVR without separate exciter block \\
 \texttt{AC1A\_RETRO\_PSS4B} & Retrofit variant with external PSS4B speed input \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example}
 
@@ -270,7 +264,6 @@ The variable upper limit is updated algebraically at each time step, making AC4A
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -293,11 +286,9 @@ Parameter & Description & Unit/Type \\
 \texttt{VRMIN} & Minimum output & pu \\
 \texttt{KC} & Field current derating factor & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Model & Description \\
@@ -307,7 +298,6 @@ Model & Description \\
 \endlastfoot
 \texttt{AC4A} & Base model, IEEE Type AC4A, no PSS or OEL \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-1}
 
@@ -365,7 +355,6 @@ The AC exciter with variable limits based on maximum field excitation voltage \(
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -398,11 +387,9 @@ Parameter & Description & Unit/Type \\
 \texttt{VE2} & Saturation voltage point 2 & pu \\
 \texttt{SE2} & Saturation factor at \(V_{E2}\) & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3097}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6903}}
@@ -421,7 +408,6 @@ Description
 \texttt{AC8B\_PSS3B\_lim} & Adds PSS3B dual-input stabilizer and integral OEL + SCL (stator current limiter) \\
 \texttt{AC8B\_lim} & Adds integral OEL and SCL without PSS \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-2}
 
@@ -458,7 +444,6 @@ The DC exciter with saturation:
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -481,11 +466,9 @@ Parameter & Description & Unit/Type \\
 \texttt{E2} & Saturation voltage point 2 & pu \\
 \texttt{SE2} & Saturation factor at \(E_2\) & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2489}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7511}}
@@ -502,7 +485,6 @@ Description
 \endlastfoot
 \texttt{DC3A} & Base model, IEEE Type DC3A, non-continuously acting rheostat controller \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-3}
 
@@ -586,7 +568,6 @@ Derivative feedback:
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2133}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.5939}}
@@ -628,11 +609,9 @@ Unit/Type
 \texttt{KLR} & Field current limiter gain & pu \\
 \texttt{ILR} & Field current limiter reference & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3489}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6511}}
@@ -657,7 +636,6 @@ Description
 \texttt{ST1A\_PSS4B\_MAXEX2} & Adds PSS4B + MAXEX2 \\
 \texttt{ST1A\_lim} & Integral OEL + stator current limiter (SCL), simplified structure without Kv/Rc/Xc \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-4}
 
@@ -713,7 +691,6 @@ The field voltage integrator:
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-5}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -740,11 +717,9 @@ Parameter & Description & Unit/Type \\
 \texttt{KI} & AC source voltage quadrature factor & pu \\
 \texttt{KC} & Commutation voltage drop factor & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-5}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Model & Description \\
@@ -756,7 +731,6 @@ Model & Description \\
 \texttt{EXPIC1\_PSS2B} & Adds PSS2B dual-input stabilizer \\
 \texttt{EXPIC1\_PSS2B\_MAXEX2} & Adds PSS2B + MAXEX2 field current limiter \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-5}
 
@@ -791,7 +765,6 @@ The \texttt{lim\_civ} block implements the deadband gating so that integration i
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-6}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -813,11 +786,9 @@ Parameter & Description & Unit/Type \\
 \texttt{E2} & Saturation point 2 & pu \\
 \texttt{SE2} & Saturation factor at \(E_2\) & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-6}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Model & Description \\
@@ -827,7 +798,6 @@ Model & Description \\
 \endlastfoot
 \texttt{IEEET5} & Base model, non-continuously acting DC exciter \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -847,7 +817,6 @@ where \(V_o = V_t + E_{fd,0}/K_E\) is computed from initial conditions to achiev
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-7}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -862,11 +831,9 @@ Parameter & Description & Unit/Type \\
 \texttt{EMIN} & Minimum field voltage & pu \\
 \texttt{EMAX} & Maximum field voltage & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-7}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3350}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6650}}
@@ -885,7 +852,6 @@ Description
 \texttt{SEXS\_IEEEST} & Adds IEEEST PSS (multi-mode: speed, power, or accelerating power input) \\
 \texttt{SEXS\_STAB3\_lim} & Adds STAB3 PSS + integral OEL \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-6}
 
@@ -918,7 +884,6 @@ The AVR:
 
 \subsubsection{Parameters}\label{model-exc-ieee:parameters-8}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit/Type \\
@@ -942,11 +907,9 @@ Parameter & Description & Unit/Type \\
 \texttt{EMIN} & Minimum field voltage & pu \\
 \texttt{EMAX} & Maximum field voltage & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Variants}\label{model-exc-ieee:variants-8}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Model & Description \\
@@ -957,7 +920,6 @@ Model & Description \\
 \texttt{ENTSOE\_simp} & Base ENTSO-E simplified model with integrated PSS \\
 \texttt{ENTSOE\_lim} & Adds integral OEL (same structure as \texttt{AC8B\_lim} OEL) \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-exc-ieee:usage-example-7}
 
@@ -1018,7 +980,6 @@ Combination and lead-lag chain (variant M=5, N=1 implemented):
 
 \textbf{PSS2B Parameters (additional to base exciter):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1039,7 +1000,6 @@ Parameter & Description \\
 \texttt{VS2MIN}, \texttt{VS2MAX} & Input 2 limits \\
 \texttt{VSTMIN}, \texttt{VSTMAX} & Output limits \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1061,7 +1021,6 @@ PSS3B processes two input channels through measurement filters and washout stage
 
 \textbf{PSS3B Parameters (additional):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1076,7 +1035,6 @@ Parameter & Description \\
 \texttt{A1}--\texttt{A8} & Second-order filter coefficients \\
 \texttt{VSTMIN}, \texttt{VSTMAX} & Output limits \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1106,7 +1064,6 @@ The speed signal \(\Delta\omega = \omega - 1\) passes through a digital transduc
 
 \textbf{PSS4B Parameters (additional):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1126,7 +1083,6 @@ Parameter & Description \\
 \texttt{KH}, \texttt{VHMax}, \texttt{VHMin} & High-band gain and limits \\
 \texttt{VSTMax}, \texttt{VSTMin} & Total output limits \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1144,7 +1100,6 @@ Input selection (\texttt{speedinput}): 1 = rotor speed deviation, 3 = electrical
 
 \textbf{IEEEST Parameters (additional):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1160,7 +1115,6 @@ Parameter & Description \\
 \texttt{KS4} & Inertia constant for accelerating power (= 2H) \\
 \texttt{TW4} & Derivative filter time constant \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1174,7 +1128,6 @@ The STAB3 is a simplified PSS that takes electrical power \(P_e\) as input, appl
 
 \textbf{STAB3 Parameters:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1188,7 +1141,6 @@ Parameter & Description \\
 \texttt{TX2} & Washout time constant \\
 \texttt{VLIM} & Output limit \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1212,7 +1164,6 @@ The MAXEX2 is a field current limiter derived from IEEE work, using a simplified
 
 \textbf{MAXEX2 Parameters:}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1229,7 +1180,6 @@ Parameter & Description \\
 \texttt{KMX} & Integrator time constant inverse (1/KMX = integration rate) \\
 \texttt{VLOW} & Lower limit of OEL output (e.g.~\ensuremath{-}1.0 pu) \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1249,7 +1199,6 @@ A stator current limiter (SCL) with analogous structure acts on \(I_{st} = \sqrt
 
 \textbf{Integral OEL Parameters (in \_lim variants):}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -1270,7 +1219,6 @@ Parameter & Description \\
 \texttt{KSCL} & SCL output gain \\
 \texttt{SCLLI} & SCL output lower limit \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

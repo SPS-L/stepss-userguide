@@ -40,7 +40,6 @@ model index-1; a singular \(g_y\) is reported rather than worked around.
 
 For each eigenvalue \(\lambda = \sigma \pm j\omega\):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Quantity & Definition \\
@@ -51,7 +50,6 @@ Quantity & Definition \\
 Frequency & \(f = \lvert\omega\rvert / 2\pi\) in Hz \\
 Damping ratio & \(\zeta = -\sigma / \lvert\lambda\rvert\) \\
 \end{longtable}\end{small}
-}
 
 A mode with \(\zeta < 0\) grows rather than decays: the operating point is
 small-signal unstable.
@@ -90,7 +88,6 @@ operating point: pausing mid-swing linearises about a non-equilibrium.
 
 \subsection{Required settings}\label{eigenanalysis:required-settings}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2266}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7734}}
@@ -108,7 +105,6 @@ Why
 \texttt{\$OMEGA\_REF\ SYN} & Under the centre-of-inertia frame the COI equations are computed by finite differences and never enter the assembled Jacobian, so reducing under COI would silently hold COI speed constant and produce a plausible, wrong spectrum \\
 \texttt{\$SCHEME\ DE} & Under the integrated scheme the pure differential-algebraic values exist only briefly inside the Newton loop \\
 \end{longtable}\end{small}
-}
 
 Both are refused rather than approximated. See \hyperref[eigenanalysis:refusals]{Refusals} below.
 
@@ -130,7 +126,6 @@ whitespace is safe.
 
 One line per mode, every mode written.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Column & Meaning \\
@@ -145,7 +140,6 @@ Column & Meaning \\
 \texttt{dom} & 1 if \(\mathrm{Re}(\lambda)\) exceeded the \texttt{real\_limit} filter \\
 \texttt{smp} & 1 if the eigenvalue is simple, 0 if degenerate \\
 \end{longtable}\end{small}
-}
 
 The header records \texttt{nstates}, \texttt{nalg}, the time, and the \texttt{real\_limit},
 \texttt{pf\_threshold} and \texttt{gap\_tol} values used.
@@ -183,7 +177,6 @@ Jacobian\ldots{}} beside it opens one back into a results window of its own, lea
 any window already up alone, so an archived run and a fresh one can be read side
 by side.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5073}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4927}}
@@ -201,7 +194,6 @@ In the archive
 \texttt{\textless{}name\textgreater{}\_modes.dat}, \texttt{\textless{}name\textgreater{}\_pf.dat}, \texttt{\textless{}name\textgreater{}\_ms.dat} & The results above \\
 \texttt{\textless{}name\textgreater{}\_eqs.dat}, \texttt{\textless{}name\textgreater{}\_var.dat}, \texttt{\textless{}name\textgreater{}\_val.dat}, \texttt{\textless{}name\textgreater{}\_struc.dat} & The unreduced Jacobian \\
 \end{longtable}\end{small}
-}
 
 \textbf{An archive is a record of a result, not an input that reproduces one.} The
 data files, the solver settings and the disturbance that produced the run are
@@ -243,7 +235,6 @@ The analysis refuses rather than returning a result it cannot justify. Every
 refusal writes no results files, states the reason in the log and through
 \hyperref[doc:py-api]{\texttt{getLastErr()}}, and exits with code \textbf{78}.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3868}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6132}}
@@ -263,7 +254,6 @@ Reason
 States above \texttt{\$EIG\_MAX\_STATES} & The dense solve is not practical at that size \\
 Singular \(g_y\) & The model is not index-1 \\
 \end{longtable}\end{small}
-}
 
 A run that produced nothing and exited \textbf{0} is a different problem, most likely
 an engine older than v3.60.
@@ -281,7 +271,6 @@ oscillation benchmark, and the \texttt{stepss} package ships an annotated notebo
 it under \texttt{examples/eigenanalysis/}. Analysed with and without its power system
 stabilisers:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1668}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2812}}
@@ -304,7 +293,6 @@ area 2 local
 \textbf{without PSS} & 0.625 Hz, \(\zeta\) = \textbf{-0.0233} & 1.085 Hz, \(\zeta\) = 0.099 & 1.116 Hz, \(\zeta\) = 0.097 \\
 \textbf{with PSS} & 0.624 Hz, \(\zeta\) = \textbf{+0.1087} & 1.242 Hz, \(\zeta\) = 0.288 & 1.295 Hz, \(\zeta\) = 0.287 \\
 \end{longtable}\end{small}
-}
 
 The inter-area damping ratio flips sign with the stabilisers: without them the
 0.62 Hz oscillation between the two areas grows and the operating point is

@@ -40,7 +40,6 @@ cg-studio
 
 The interface has three columns:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2287}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2450}}
@@ -65,7 +64,6 @@ Purpose
 \textbf{DSL preview} & Right panel (bottom) & Live syntax-highlighted preview of the generated DSL code \\
 \textbf{Topbar} & Top & Model type/name selectors, file operations, and settings \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -75,7 +73,6 @@ Purpose
 
 Use the \textbf{Type} dropdown in the topbar to select the model category:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 Type & Description & Mandatory outputs & Colour theme \\
@@ -88,7 +85,6 @@ Type & Description & Mandatory outputs & Colour theme \\
 \textbf{INJ} & Current injector & \texttt{ix}, \texttt{iy} & Orange \\
 \textbf{TWOP} & Two-port device & \texttt{ix1}, \texttt{iy1}, \texttt{ix2}, \texttt{iy2} & Purple \\
 \end{longtable}\end{small}
-}
 
 \textbf{New} in the topbar asks for the type before it clears the canvas, so a fresh
 model starts with the right RAMSES inputs and outputs already seeded.
@@ -105,7 +101,6 @@ The UI accent colour changes to reflect the active model type. Type the model na
 
 Each model type exposes a different set of RAMSES input variables in the palette's \textbf{I/O (\texttt{modelType})} category:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2068}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4569}}
@@ -128,7 +123,6 @@ Mandatory outputs
 \texttt{inj} & \texttt{vx}, \texttt{vy}, \texttt{omega} & \texttt{ix}, \texttt{iy} \\
 \texttt{twop} & \texttt{vx1}, \texttt{vy1}, \texttt{vx2}, \texttt{vy2}, \texttt{omega1}, \texttt{omega2} & \texttt{ix1}, \texttt{iy1}, \texttt{ix2}, \texttt{iy2} \\
 \end{longtable}\end{small}
-}
 
 The \texttt{exc} type also reserves \texttt{if} as a RAMSES name (usable in DSL expressions such as \texttt{{[}if{]}}) but it is not a palette input. See \hyperref[ch-user_models]{User-Defined Models} for the complete list of reserved names.
 
@@ -225,7 +219,6 @@ The four tabs below the canvas correspond to the four metadata sections of a COD
 
 \textbf{Purpose:} Declare named constants whose values are read from the RAMSES data record at runtime.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Column & Description & Example \\
@@ -237,7 +230,6 @@ Name & Identifier (max 20 chars) & \texttt{KA} \\
 Value & Optional default & \texttt{200.0} \\
 Comment & Annotation & \texttt{AVR\ gain} \\
 \end{longtable}\end{small}
-}
 
 In block arguments and expressions, reference data values with braces: \texttt{\{KA\}}.
 
@@ -245,7 +237,6 @@ In block arguments and expressions, reference data values with braces: \texttt{\
 
 \textbf{Purpose:} Define derived quantities computed once at initialisation from data and initial state values.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Column & Description & Example \\
@@ -257,7 +248,6 @@ Name & Identifier & \texttt{Vo} \\
 Expr & Fortran expression & \texttt{{[}vf{]}/\{KE\}+{[}vf{]}/\{KA\}} \\
 Comment & Annotation & \texttt{initial\ voltage} \\
 \end{longtable}\end{small}
-}
 
 Use \texttt{{[}name{]}} to reference state/input variables and \texttt{\{name\}} to reference data constants. Multi-line expressions are supported with the \texttt{\&} continuation marker.
 
@@ -265,7 +255,6 @@ Use \texttt{{[}name{]}} to reference state/input variables and \texttt{\{name\}}
 
 \textbf{Purpose:} Declare the internal state variables of the model and their initial-condition expressions.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Column & Description & Example \\
@@ -277,7 +266,6 @@ Name & State identifier & \texttt{avr1} \\
 Init & Initial value expression & \texttt{vf/\{KE\}} \\
 Comment & Annotation & \texttt{AVR\ integrator} \\
 \end{longtable}\end{small}
-}
 
 Every block output signal that represents a dynamic state should have a corresponding entry here. The mandatory output states for the selected model type (e.g., \texttt{vf} for EXC) must appear either as block outputs or in \texttt{\%states}.
 
@@ -285,7 +273,6 @@ Every block output signal that represents a dynamic state should have a correspo
 
 \textbf{Purpose:} List variables to be recorded during simulation. These are typically the states you want to monitor.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Column & Description & Example \\
@@ -295,7 +282,6 @@ Column & Description & Example \\
 \endlastfoot
 Name & Observable name & \texttt{vf} \\
 \end{longtable}\end{small}
-}
 
 Observables do not need expressions. They refer to state names already defined elsewhere in the model.
 
@@ -305,7 +291,6 @@ Click \textbf{``+ Add row''} to append a row. Click the \textbf{x} button on a r
 
 The bottom-right panel shows a \textbf{live syntax-highlighted preview} of the generated DSL code. It updates automatically (with a 600 ms debounce) after every change. The preview uses colour coding:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Colour & Meaning \\
@@ -319,7 +304,6 @@ Blue & Numeric literals \\
 Purple & Data/parameter references (\texttt{\{KA\}}) \\
 Cyan & State/input references (\texttt{{[}omega{]}}) \\
 \end{longtable}\end{small}
-}
 
 Click the \textbf{copy button} in the preview header to copy the DSL text to your clipboard.
 
@@ -508,7 +492,6 @@ The \texttt{codegen} executable must be installed and its path configured. Click
 
 \section{File Formats Summary}\label{cg-studio:file-formats-summary}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1671}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1634}}
@@ -533,13 +516,11 @@ Lossless?
 \textbf{DSL} & \texttt{.txt} & Input to \texttt{codegen} binary & Structure only, no canvas layout \\
 \textbf{Fortran} & \texttt{.f90} & Output from \texttt{codegen} & Export only, cannot be re-imported \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \section{Keyboard Shortcuts}\label{cg-studio:keyboard-shortcuts}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Shortcut & Action \\
@@ -553,7 +534,6 @@ Shortcut & Action \\
 \texttt{Delete} / \texttt{Backspace} & Delete selected block \\
 \texttt{Escape} & Close any open modal \\
 \end{longtable}\end{small}
-}
 
 Shortcuts are disabled while typing in text fields.
 
@@ -569,7 +549,6 @@ Click the \textbf{gear icon} in the topbar to configure:
 \caption{The Settings dialog over the editor, with three fields: codegen binary path set to codegen, server host set to 127.0.0.1, and server port set to 8765.}
 \end{figure}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3090}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2318}}
@@ -591,7 +570,6 @@ Description
 \textbf{Server host} & \texttt{127.0.0.1} & Bind address (change to \texttt{0.0.0.0} for network access) \\
 \textbf{Server port} & \texttt{8765} & HTTP port \\
 \end{longtable}\end{small}
-}
 
 Changes to host and port require a server restart. The codegen path takes effect immediately.
 
@@ -628,7 +606,6 @@ This walkthrough creates a simplified Automatic Voltage Regulator (AVR) as an EX
 
 Switch to the \textbf{\%data} tab and add rows:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Name & Value & Comment \\
@@ -640,7 +617,6 @@ Name & Value & Comment \\
 \texttt{TA} & & AVR time constant \\
 \texttt{VREF} & & Reference voltage \\
 \end{longtable}\end{small}
-}
 
 \subsection{Step 3: Place blocks}\label{cg-studio:step-3-place-blocks}
 
@@ -680,7 +656,6 @@ Drag the following blocks from the palette onto the canvas:
 
 Switch to the \textbf{\%states} tab and add:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Name & Init & Comment \\
@@ -690,7 +665,6 @@ Name & Init & Comment \\
 \endlastfoot
 \texttt{avr1} & \texttt{vf/\{KA\}} & AVR integrator state \\
 \end{longtable}\end{small}
-}
 
 \subsection{Step 6: Add observables}\label{cg-studio:step-6-add-observables}
 

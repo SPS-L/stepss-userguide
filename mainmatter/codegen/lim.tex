@@ -1,0 +1,67 @@
+\hypertarget{link_to_lim}{}{\Large \bf lim}
+
+{\it Limiter with constant bounds}
+\begin{center}
+\includegraphics{codegen/lim.pdf}
+\end{center}
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& lim \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $x_{min}$ \\
+data name, parameter name or math expression for $x_{max}$ 
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{-1,0,1\}$
+
+Equations :
+\begin{equation*}
+0 =
+\begin{cases}
+x_j - x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0  \\
+x_j - x_{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+x_j - x_{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 
+\end{cases}
+\end{equation*}
+
+\pagebreak
+Discrete transitions :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 0$}
+  \IF {$x_i > x_{max}$} 
+    \STATE $z \gets 1$
+  \ELSIF {$x_i < x_{min}$}
+    \STATE $z \leftarrow -1$
+  \ENDIF
+\ELSIF {$z = 1$}
+  \IF {$x_i < x_{max}$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSIF {$z = -1$}
+  \IF {$x_i > x_{min}$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace*{1ex}
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_j > x_{max}$}
+    \STATE {$z \gets 1$}
+\ELSIF {$x_j < x_{min}$}
+    \STATE {$z \gets -1$}
+\ELSE
+    \STATE {$z \gets 0$}
+\ENDIF
+\end{algorithmic}
+\end{minipage} 

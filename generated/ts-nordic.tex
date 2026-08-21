@@ -10,7 +10,6 @@ The Nordic test system is a well-established benchmark for voltage stability and
 
 \section{System Overview}\label{ts-nordic:system-overview}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4607}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5393}}
@@ -33,7 +32,6 @@ Transmission lines & 52 \\
 Voltage levels & 15 kV, 20 kV, 130 kV, 220 kV, 400 kV \\
 Installed generation & 16,550 MVA (11,500 MW dispatched at operating point A) \\
 \end{longtable}\end{small}
-}
 
 The system is divided into several areas interconnected through a meshed 400 kV transmission network. Lower voltage levels (130 kV, 220 kV) serve sub-transmission, while 15 kV and 20 kV buses connect generators and distribution loads.
 
@@ -79,7 +77,6 @@ Under-load tap changers are modeled with \texttt{DCTL\ LTC2} discrete controller
 
 The repository provides two main operating points plus a family of load-increase variants:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4439}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5561}}
@@ -98,7 +95,6 @@ Description
 \texttt{lf\_B.dat} / \texttt{dyn\_B.dat} / \texttt{volt\_rat\_B.dat} & Operating Point B, heavily stressed, closer to voltage collapse \\
 \texttt{lf\_B\_plus\_*.dat} / \texttt{volt\_rat\_B\_plus*.dat} & Operating Point B with total load increased by 25 to 500 MW \\
 \end{longtable}\end{small}
-}
 
 Operating Point B is the primary case for voltage stability studies; it features higher load levels in the central area and reduced reactive power reserves. The \texttt{B\_plus} variants (documented in \texttt{doc/variants.pdf}) progressively stress the system further and are useful for tracing the loadability limit.
 
@@ -106,7 +102,6 @@ Operating Point B is the primary case for voltage stability studies; it features
 
 \section{Repository Contents}\label{ts-nordic:repository-contents}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3362}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6638}}
@@ -133,7 +128,6 @@ Description
 \texttt{doc/} & Detailed system report (\texttt{Nordic\_test\_system\_V6.pdf}) and operating-point variants description (\texttt{variants.pdf}) \\
 \texttt{jupyterhub-tutorial/} & Self-contained tutorial with \texttt{Execute.ipynb}, a step-by-step voltage collapse notebook \\
 \end{longtable}\end{small}
-}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

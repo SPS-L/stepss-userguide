@@ -1,0 +1,48 @@
+\hypertarget{link_to_tsa}{}{\Large \bf tsa}
+
+{\it Two-state automaton with transitions based on signs of two inputs}
+
+\begin{center}
+\includegraphics{codegen/tsa.pdf}
+\end{center}
+
+The output state $x_k$ can take two values: $v_1$ or $v_2$. When $x_k=v_1$ the change to $v_2$ depends on the sign of $x_1$; when $x_k=v_2$ the change to $v_1$ depends on the sign of $x_2$.
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& 2sa \\
+name of variable $x_1$\\
+name of variable $x_2$\\
+name of variable $x_k$\\
+data name, parameter name or math expression for $v_1$\\
+data name, parameter name or math expression for $v_2$\\
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variable : $z \in \{1,2\}$ represents the state of the automaton
+
+Equations :
+\begin{equation*}
+0 = 
+\begin{cases}
+x_k - v_1 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+x_k - v_2 \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 2 
+\end{cases}
+\end{equation*}
+
+Discrete transitions :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 1$ and $x_1 > 0$}
+  \STATE $z \gets 2$
+  \ELSIF {$z = 2$ and $x_2 > 0$}
+     \STATE $z \gets 1$
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace*{2ex}
+Initialization of discrete variable : the initial value is $z=1$, i.e. $x_k=v_1$ is assumed initially.

@@ -1,0 +1,77 @@
+\hypertarget{link_to_pictllim}{}{\Large \bf pictllim}
+
+{\it Proportional-Integral (PI) controller with non-windup limit on the integral term}.
+
+\begin{center}
+\includegraphics{codegen/pictllim.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\&  pictllim \\
+name of variable $x_k$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $K_i$\\
+data name, parameter name or math expression for $K_p$\\
+data name, parameter name or math expression for $x_i^{min}$\\
+data name, parameter name or math expression for $x_i^{max}$
+}
+
+~ \hrule ~
+
+Internal states: $x_i$ 
+
+Discrete variables : $z \in \{-1,0,1\}$
+
+Equations :
+\begin{equation*}
+\begin{cases}
+\dot{x}_i & = K_i x_k \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0 \\
+0 & = x_i - x_i^{min} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 \\
+0 & = x_i - x_i^{max} \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  
+\end{cases}
+\end{equation*}
+\begin{equation*}
+0 = K_p x_k + x_i - x_j
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 0$}
+  \IF {$x_i > x_i^{max}$} 
+    \STATE $z \gets 1$
+  \ELSIF {$x_i < x_i^{min}$}
+    \STATE $z \leftarrow -1$
+  \ENDIF
+\ELSIF {$z = 1$}
+  \IF {$K_i x_k < 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ELSIF {$z = -1$}
+  \IF {$K_i x_k > 0$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+
+Initialization of the internal state and the discrete variable: 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$K_i x_k > 0$}
+   \STATE $z \gets 1$
+   \STATE $x_i \gets x_i^{max}$
+\ELSIF {$K_i x_k < 0$}
+   \STATE $z \gets -1$
+   \STATE $x_i \gets x_i^{min}$   
+\ELSE
+   \STATE $z \gets 0$
+   \STATE $x_i \gets x_j$
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+   

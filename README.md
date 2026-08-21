@@ -17,7 +17,12 @@ pdflatex stepss_doc.tex
 
 A third pass is worth running: the guide is long enough that the table of contents shifts page numbers on the second.
 
-Requirements: any LaTeX distribution providing `pdflatex` and the packages `times`, `epsfig`, `bm`, `hyperref`, `enumitem`, `algorithmic`, `fontawesome5`, `amsmath`, `mdframed`, `xcolor`, `longtable`, `booktabs`, `array`, `calc`, `graphicx` and `fvextra`. The custom page style `A4.STY` is included in the repository, and `docs-preamble.tex` holds everything the generated chapters need.
+Requirements: any LaTeX distribution providing `pdflatex` and a full TeX Live.
+The document class `sps-report.cls` is in the repository and pulls in what it
+needs; the notable ones are `newpx` (Palatino) for the body, `roboto` for the
+titles, `titlesec`, `titletoc`, `fancyhdr`, `tikz`, `caption`, `microtype`,
+`siunitx` and `cleveref`. `docs-preamble.tex` adds what the generated chapters
+need on top: `fvextra`, `xurl`, `hyphenat`, `array` and `calc`.
 
 One pre-built PDF is committed: `stepss_doc.pdf`, the build output of
 `stepss_doc.tex`.
@@ -29,18 +34,34 @@ is the only downstream copy.
 
 ## Project Structure
 
-The main entry point is `stepss_doc.tex`, which organises the guide in eight parts:
+```
+stepss_doc.tex        the document: parts, chapters, and nothing else
+sps-report.cls        the SPS-L report class
+docs-preamble.tex     what the generated chapters need on top of the class
+frontmatter/          legal.tex, the licence printed at the front
+mainmatter/           the hand-written chapters
+mainmatter/codegen/   one .tex per CODEGEN modelling block
+generated/            chapters mirrored from stepss-docs; do not edit
+figures/              every image, including figures/codegen/ block diagrams
+models/               standalone companion notes for individual device models
+tools/                the generator
+```
 
-- **Part I (All modules)**: `overview.tex`, `install.tex`, `generated/quickstart.tex`, `files.tex`, `network.tex`
-- **Part II (The graphical interface)**: `generated/gui-first-run.tex`, `generated/gui-interface.tex`, `generated/gui-running.tex`
-- **Part III (Power Flow, Helios)**: `power-flow-data.tex`
-- **Part IV (Dynamic Simulation, RAMSES)**: `ref_and_init.tex`, `sync_thev_impload.tex`, `disturbances.tex`, `solvsett.tex`, `generated/model-dctl.tex`, `generated/eigenanalysis.tex`
-- **Part V (Model library)**: `generated/model-index.tex` and the eight `generated/model-*.tex` chapters
-- **Part VI (User-defined models, CODEGEN)**: `user_models.tex`, `library_blocks.tex`, plus `codegen/` (one `.tex` file per modelling block, with block-diagram PDFs), then `generated/codegen-examples.tex` and `generated/cg-studio.tex`
-- **Part VII (STEPSS in Python)**: `generated/py-*.tex` and `generated/uramses.tex`
-- **Part VIII (Test systems and resources)**: `generated/ts-*.tex`, `generated/res-*.tex`
+The guide is in eight parts:
 
-Other notable files: `legal.tex` (the software license printed at the front of the guide), `models/` (companion PDF notes for specific device models, bundled with the GUI), `figures/` (screenshots and diagrams collected from stepss-docs).
+| Part | Covers | From |
+|---|---|---|
+| I | All modules: overview, installation, quick start, data files, network | `mainmatter/` + `generated/quickstart` |
+| II | The graphical interface | `generated/gui-*` |
+| III | Power flow with Helios | `mainmatter/power-flow-data.tex` |
+| IV | Dynamic simulation with RAMSES | `mainmatter/` + `generated/model-dctl`, `generated/eigenanalysis` |
+| V | Model library | `generated/model-*` |
+| VI | User-defined models with CODEGEN | `mainmatter/user_models.tex`, `mainmatter/library_blocks.tex`, `mainmatter/codegen/`, `generated/codegen-examples`, `generated/cg-studio` |
+| VII | STEPSS in Python | `generated/py-*`, `generated/uramses` |
+| VIII | Test systems and resources | `generated/ts-*`, `generated/res-*` |
+
+Every `\includegraphics` resolves through `\graphicspath{{figures/}{./}}`, so a
+figure is referenced by name wherever the chapter including it happens to sit.
 
 ## Generated chapters
 

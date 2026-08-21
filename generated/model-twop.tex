@@ -107,7 +107,6 @@ where \(p\) is the number of poles (monopolar or bipolar).
 
 \textbf{Rectifier control equation} (mode-dependent):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 \texttt{rec\_ctl} & Control mode & Constraint \\
@@ -120,11 +119,9 @@ where \(p\) is the number of poles (monopolar or bipolar).
 \texttt{-1} & Minimum \(\alpha\) & \(\alpha_{\min} - \alpha = 0\) \\
 \texttt{3} & Blocked & \(I_d = 0\) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Inverter control equation} (mode-dependent):
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 \texttt{inv\_ctl} & Control mode & Constraint \\
@@ -138,13 +135,11 @@ where \(p\) is the number of poles (monopolar or bipolar).
 \texttt{-1} & Reduced current & \(I_{red} - I_d = 0\) \\
 \texttt{3} & Blocked & \(\gamma = \pi/2\) \\
 \end{longtable}\end{small}
-}
 
 The current order \(I_{ord}\) is obtained from the desired current \(I_{des}\) through a first-order filter with time constant \(T_p\).
 
 \subsubsection{Parameters Table}\label{model-twop:parameters-table}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1940}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6774}}
@@ -180,7 +175,6 @@ Unit
 \texttt{nr} & Initial rectifier transformer ratio & pu/pu \\
 \texttt{ni} & Initial inverter transformer ratio & pu/pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Control Structure}\label{model-twop:control-structure}
 
@@ -328,7 +322,6 @@ I_{d,\max} = \frac{P_{nom}}{S_{nom}}, \quad I_{q,\max} = \sqrt{1 - i_{d,ref}^2}
 
 \subsubsection{Parameters Table}\label{model-twop:parameters-table-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit \\
@@ -356,7 +349,6 @@ Parameter & Description & Unit \\
 \texttt{Vs1} & AC voltage threshold for reactive support activation & pu \\
 \texttt{Vs2} & AC voltage for full reactive support & pu \\
 \end{longtable}\end{small}
-}
 
 Internal (auto-initialised) parameters: \texttt{Pref}, \texttt{Vdcref}, \texttt{Qref}, \texttt{Vacref}, \texttt{switch}.
 
@@ -449,7 +441,6 @@ I_{q,\max} = \sqrt{\max(1 - i_{d,ref}^2, 0)}
 
 \subsubsection{Parameters Table}\label{model-twop:parameters-table-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit \\
@@ -474,7 +465,6 @@ Parameter & Description & Unit \\
 \texttt{Vs1} & AC voltage threshold for reactive support & pu \\
 \texttt{Vs2} & AC voltage for full reactive support & pu \\
 \end{longtable}\end{small}
-}
 
 Internal (auto-initialised): \texttt{DeltaP}, \texttt{P0}, \texttt{Q0}, \texttt{Vac}, \texttt{switch}.
 
@@ -636,7 +626,6 @@ I_{q,\max,k} = \sqrt{\max(1 - i_{d,k}^2, 0)}, \quad I_{d,\max,k} = \frac{P_{nom}
 
 \textbf{Offshore Converter (1)}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit \\
@@ -657,11 +646,9 @@ Parameter & Description & Unit \\
 \texttt{Kiw\_1} & PLL integral gain & \\
 \texttt{betaV\_1} & QV droop slope (\(\Delta V / \Delta Q\)) & pu/pu \\
 \end{longtable}\end{small}
-}
 
 \textbf{Onshore Converter (2)}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit \\
@@ -682,11 +669,9 @@ Parameter & Description & Unit \\
 \texttt{alpha2\_2} & Q--\(V_{ac}\) droop: reactive power coefficient & \\
 \texttt{beta2\_2} & Q--\(V_{ac}\) droop: AC voltage coefficient & \\
 \end{longtable}\end{small}
-}
 
 \textbf{DC Link}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Parameter & Description & Unit \\
@@ -698,7 +683,6 @@ Parameter & Description & Unit \\
 \texttt{R\_dc} & DC line series resistance & pu \\
 \texttt{Vdc0} & Initial offshore DC voltage & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Control Structure}\label{model-twop:control-structure-3}
 

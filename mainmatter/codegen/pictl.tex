@@ -1,0 +1,29 @@
+\hypertarget{link_to_pictl}{}{\Large \bf pictl}
+
+{\it Proportional-Integral (PI) controller }
+
+\begin{center}
+\includegraphics{codegen/pictl.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& pictl \\
+name of variable $x_k$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $K_i$\\
+data name, parameter name or math expression for $K_p$ 
+}
+
+~ \hrule ~
+
+Internal states : $x_i$ 
+
+Discrete variables: none
+
+Equations :
+\begin{eqnarray}
+\dot{x}_i & = & K_i \: x_k \nonumber \\
+0 & = & K_p \: x_k + x_i - x_j \nonumber
+\end{eqnarray}
+
+Initialization of internal states: $x_i = x_j$

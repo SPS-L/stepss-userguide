@@ -1,0 +1,63 @@
+\hypertarget{link_to_abs}{}{\Large \bf abs}
+
+{\it Absolute value of input.
+
+}
+
+\begin{center}
+\includegraphics{codegen/abs.pdf}
+\end{center}
+
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf
+\& abs \\
+name of state $x_i$ \\
+name of state $x_j$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variable : $z \in \{-1, 1 \}$
+
+Equations :
+\begin{equation*}
+0 = 
+\begin{cases}
+x_j - x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+x_j + x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 
+\end{cases}
+\end{equation*}
+ 
+Discrete transitions :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 1$}
+  \IF {$x_i < 0$} 
+    \STATE $z \gets -1$
+  \ENDIF
+\ELSE
+  \IF {$x_i > 0$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+Initialization of discrete variables:
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i > 0$}
+	\STATE $z \gets 1$
+\ELSE 
+    \STATE $z \gets 0$
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+The model having a discontinuous derivative at $x_i=0$, it is implemented internally with a small  hysteresis; see model {\bf hyst} with $x_I = \epsilon, y_{IB} = -\epsilon, y_{IA} = \epsilon, x_D = - \epsilon, y_{DB} = -\epsilon, y_{DA} = \epsilon$, where $\epsilon$ is the absolute accuracy used to solve the algebraic equations in RAMSES.

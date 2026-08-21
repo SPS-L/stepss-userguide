@@ -1,0 +1,59 @@
+\hypertarget{link_to_swsign}{}{\Large \bf swsign}
+
+{\it Switch between two input states, based on the sign of a third input state}
+
+\begin{center}
+\includegraphics{codegen/switchsign.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& swsign\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+name of variable $x_k$\\
+name of variable $x_l$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{1,2\}$
+
+Equations :
+\begin{equation*}
+0 =
+\begin{cases}
+x_l - x_i \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1 \\
+x_l - x_j \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 2
+\end{cases}
+\end{equation*}
+
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z = 1$}
+  \IF {$x_k < 0$} 
+    \STATE $z \gets 2$
+  \ENDIF
+\ELSIF {$z = 2$}
+  \IF {$x_k \ge 0$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace*{2ex}
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_k < 0$} 
+    \STATE $z \gets 2$
+\ELSE
+    \STATE $z \gets 1$
+\ENDIF
+\end{algorithmic}
+\end{minipage}

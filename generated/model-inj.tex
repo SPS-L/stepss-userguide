@@ -60,7 +60,6 @@ When the recovery variable hits its limit (due to e.g.~Stalling or complete volt
 
 \subsubsection{Parameters}\label{model-inj:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1047}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1832}}
@@ -94,13 +93,11 @@ Unit
 11 & \texttt{beta2} & Transient voltage exponent for \(Q\) (type 2) & \\
 12 & \texttt{beta3} & Transient voltage exponent for \(Q\) (type 3) & \\
 \end{longtable}\end{small}
-}
 
 Internal computed parameters include the steady-state exponents for each component (derived from the transient exponents), initial conductance \(G_0\), susceptance \(B_0\), and initial voltage \(V_0\).
 
 \subsubsection{State Variables}\label{model-inj:state-variables}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -113,7 +110,6 @@ Variable & Description \\
 \texttt{xp} & Active power recovery variable (dimensionless) \\
 \texttt{xq} & Reactive power recovery variable (dimensionless) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Q}, \texttt{xp}, \texttt{xq}
 
@@ -155,7 +151,6 @@ The initial voltage \(V_0\) can differ from the transmission bus voltage if a di
 
 \subsubsection{Parameters}\label{model-inj:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1092}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1851}}
@@ -193,11 +188,9 @@ Unit
 15 & \texttt{foption} & 1 = use local bus frequency; 0 = use COI speed & flag \\
 16 & \texttt{Tmes} & Frequency measurement time constant & s \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{State Variables}\label{model-inj:state-variables-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -213,7 +206,6 @@ Variable & Description \\
 \texttt{df} & Frequency deviation \(\Delta f\) \\
 \texttt{u} & Regime switch (1 = above \(V_{\min}\), 0 = constant admittance) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Q}, \texttt{df}, \texttt{u}
 
@@ -249,7 +241,6 @@ where the ratio \(V/V_0\) governs the voltage dependence through \texttt{vrat}.
 
 \subsubsection{Parameters}\label{model-inj:parameters-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit \\
@@ -269,11 +260,9 @@ where the ratio \(V/V_0\) governs the voltage dependence through \texttt{vrat}.
 10 & \texttt{xQ\_max} & Maximum limit for \(x_Q\) & \\
 11 & \texttt{Tr} & Load recovery time constant & s \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{State Variables}\label{model-inj:state-variables-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -286,7 +275,6 @@ Variable & Description \\
 \texttt{xp} & Active power recovery variable \\
 \texttt{xq} & Reactive power recovery variable \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Q}, \texttt{xp}, \texttt{xq}
 
@@ -316,7 +304,6 @@ These references pass through a first-order filter with time constant \(T_{\math
 
 \subsubsection{Parameters}\label{model-inj:parameters-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit \\
@@ -326,13 +313,11 @@ These references pass through a first-order filter with time constant \(T_{\math
 \endlastfoot
 1 & \texttt{Tout} & Output filter time constant (recommended: 0.01 s) & s \\
 \end{longtable}\end{small}
-}
 
 Initial conditions \(P_0\), \(Q_0\), \(V_0\) are computed automatically at initialization.
 
 \subsubsection{State Variables}\label{model-inj:state-variables-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -348,7 +333,6 @@ Variable & Description \\
 \texttt{Q} & Observed reactive power \\
 \texttt{V} & Bus voltage magnitude \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Q}
 
@@ -384,7 +368,6 @@ During simulation the injected currents satisfy:
 
 \subsubsection{Parameters}\label{model-inj:parameters-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0879}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1645}}
@@ -407,13 +390,11 @@ Unit
 \endlastfoot
 1 & \texttt{XTH} & Short-circuit power of the equivalent (converted to \(X_{\mathrm{th}}\) at initialization) & MVA \\
 \end{longtable}\end{small}
-}
 
 Internal parameters \texttt{ETH} (Th\'evenin voltage magnitude, pu) and \texttt{phase} (internal angle, rad) are computed automatically.
 
 \subsubsection{State Variables}\label{model-inj:state-variables-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -424,7 +405,6 @@ Variable & Description \\
 \texttt{iy} & Injected \(y\)-current \\
 \texttt{ix} & Injected \(x\)-current \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Q} (in MW and Mvar at system base)
 
@@ -472,7 +452,6 @@ and the mechanical torque is the quadratic load curve:
 
 \subsubsection{Parameters}\label{model-inj:parameters-5}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1166}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1716}}
@@ -504,11 +483,9 @@ Unit
 9 & \texttt{B} & Linear torque-speed coefficient & \\
 10 & \texttt{LF} & Load factor (for SNOM inference) & \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{State Variables}\label{model-inj:state-variables-5}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -522,7 +499,6 @@ Variable & Description \\
 \texttt{psiqr} & \(q\)-axis rotor flux linkage \\
 \texttt{omegam} & Rotor mechanical speed \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Qmot+comp}, \texttt{Qmot}, \texttt{omega}, \texttt{Tm}
 
@@ -556,7 +532,6 @@ The swing equation is identical to \texttt{inj\_indmach1}.
 
 \subsubsection{Parameters}\label{model-inj:parameters-6}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit \\
@@ -577,11 +552,9 @@ The swing equation is identical to \texttt{inj\_indmach1}.
 11 & \texttt{B} & Linear torque-speed coefficient & \\
 12 & \texttt{LF} & Load factor (for SNOM inference) & \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{State Variables}\label{model-inj:state-variables-6}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -597,7 +570,6 @@ Variable & Description \\
 \texttt{psiqr2} & \(q\)-axis flux of second rotor cage \\
 \texttt{omegam} & Rotor mechanical speed \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Qmot+comp}, \texttt{Qmot}, \texttt{omega}
 
@@ -637,7 +609,6 @@ with a lower limit of \(\omega_m \ge 0\).
 
 \subsubsection{Parameters}\label{model-inj:parameters-7}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit \\
@@ -656,13 +627,11 @@ with a lower limit of \(\omega_m \ge 0\).
 9 & \texttt{B} & Linear torque-speed coefficient & \\
 10 & \texttt{LF} & Load factor & \\
 \end{longtable}\end{small}
-}
 
 Computed internally: \texttt{BSH} (shunt susceptance), \texttt{TM0} (initial mechanical torque), \texttt{LSS}, \texttt{LRR}.
 
 \subsubsection{State Variables}\label{model-inj:state-variables-7}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -676,7 +645,6 @@ Variable & Description \\
 \texttt{iym}, \texttt{ixm} & Stator current components (on machine base) \\
 \texttt{dPsidr}, \texttt{dPsiqr}, \texttt{domegam} & Time-derivative auxiliary states \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{omegam}
 
@@ -722,7 +690,6 @@ The injected currents in \(x\)-\(y\) frame are:
 
 \subsubsection{Parameters}\label{model-inj:parameters-8}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit \\
@@ -764,11 +731,9 @@ The injected currents in \(x\)-\(y\) frame are:
 32 & \texttt{CM2} & Control mode 2 flag & \\
 33 & \texttt{Vtrip} & Trip voltage threshold & pu \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{State Variables}\label{model-inj:state-variables-8}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -787,7 +752,6 @@ Variable & Description \\
 \texttt{DeltaW}, \texttt{DeltaWf} & Frequency deviation and filtered value \\
 \texttt{Pgen}, \texttt{Qgen} & Generated active and reactive power \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-inj:usage-example-8}
 
@@ -846,7 +810,6 @@ The plant controller (REPC\_A) optionally provides frequency response:
 
 \subsubsection{Parameters (selected key parameters)}\label{model-inj:parameters-selected-key-parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1380}}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1603}}
@@ -879,7 +842,6 @@ Unit
 63--97 & REEC\_A & Elec ctrl & LVRT/HVRT, current limits, inner PI & various \\
 98+ & REGC\_A & Generator & Generator electrical conversion & various \\
 \end{longtable}\end{small}
-}
 
 Full parameter list has 80+ entries; refer to a working example data file for the complete ordering.
 
@@ -924,7 +886,6 @@ The REEC\_A electrical controller supplies current commands with the same LVRT/H
 
 \subsubsection{Parameters (selected key parameters)}\label{model-inj:parameters-selected-key-parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1367}}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1649}}
@@ -954,7 +915,6 @@ Unit
 38--80 & REEC\_A & Elec ctrl & LVRT, current limits, PI gains & various \\
 81+ & REGC\_A & Generator & Converter electrical model & various \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-inj:usage-example-10}
 
@@ -992,7 +952,6 @@ Low-voltage power-logic (LVPL) limits active current during deep voltage sags vi
 
 \subsubsection{Parameters (selected)}\label{model-inj:parameters-selected}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1599}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2391}}
@@ -1026,7 +985,6 @@ Unit
 23--29 & Current control & \texttt{CM1}, \texttt{kRCI}, \texttt{kRCA}, \texttt{m}, \texttt{n}, \texttt{dbmin}, \texttt{dbmax} & \\
 34 & \texttt{BM} & Battery module flag & \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-inj:usage-example-11}
 
@@ -1108,7 +1066,6 @@ When \(I < I_{\mathrm{max}}\): \(\rho_s = 1\), the currents are unsaturated, and
 
 Default values correspond to a 1100 MVA converter. Per-unit values refer to the nominal apparent power of the converter.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lllll@{}}
 \toprule\noalign{}
 \# & Name & Description & Unit & Default \\
@@ -1127,7 +1084,6 @@ Default values correspond to a 1100 MVA converter. Per-unit values refer to the 
 9 & \texttt{Imax} & Maximum current (typically 1--1.2) & pu & 1.0 \\
 10 & \texttt{Te} & Time constant of current saturation & s & 0.001 \\
 \end{longtable}\end{small}
-}
 
 A very large \texttt{Rdroop} (e.g.~999) effectively disables participation in primary frequency control.
 
@@ -1137,7 +1093,6 @@ Five additional parameters are computed at initialization from the power-flow so
 
 The model has 33 states (2 output currents + 31 internal). Key internal states:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2782}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.5633}}
@@ -1169,7 +1124,6 @@ Unit
 \texttt{rho}, \texttt{rhos} & Current overload ratio and its saturated value & \\
 \texttt{Q} & Reactive power (on \texttt{Snom} base) & pu \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P}, \texttt{Pvirt}, \texttt{Q}, \texttt{Vm}, \texttt{vmd}, \texttt{vmq}, \texttt{deltam}, \texttt{omegam}, \texttt{w\_pll}, \texttt{I}, \texttt{id}, \texttt{id*}, \texttt{id*s}, \texttt{iq}, \texttt{iq*}, \texttt{iq*s}, \texttt{rho}, \texttt{rhos}.
 
@@ -1270,7 +1224,6 @@ With \(R_c = R\), \(X_c = \omega L\) and \(r = 1\), controlling \(V_c\) amounts 
 
 Default values correspond to a 1200 MVA converter. Per-unit values refer to the nominal apparent power of the converter.
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1005}}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1524}}
@@ -1319,7 +1272,6 @@ Default
 23 & \texttt{iqmax} & Limit (\ensuremath{\pm}) on quadrature current component \(i_{q1}\) & pu & 1.001 \\
 24 & \texttt{vqswitch} & 1 = voltage control, 0 = reactive power control & flag & 1 \\
 \end{longtable}\end{small}
-}
 
 Setting \texttt{Vs1} and \texttt{Vs2} to large negative values (as in the defaults above) disables the dynamic voltage support; a more elaborate control is recommended for that function. Typical values of \texttt{Kiv} are 50 pu/s for voltage control and 10 pu/s for reactive power control.
 
@@ -1329,7 +1281,6 @@ Six additional parameters are computed at initialization from the power-flow sol
 
 The model has 52 states (2 output currents + 50 internal). Key internal states:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2931}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.5676}}
@@ -1363,7 +1314,6 @@ Unit
 \texttt{mult\_V} & Voltage/reactive controller freezing factor & \\
 \texttt{iq\_1}, \texttt{iq\_2}, \texttt{iqref} & Reactive current components and reference & pu \\
 \end{longtable}\end{small}
-}
 
 \textbf{Observables:} \texttt{P\_MW}, \texttt{Q\_Mvar}, \texttt{Vc}, \texttt{Vm}, \texttt{vmd}, \texttt{vmq}, \texttt{I}, \texttt{w\_pll}, \texttt{theta\_pll\_deg}, \texttt{mult\_pll}, \texttt{Idmax}, \texttt{Md}, \texttt{idref}, \texttt{id}, \texttt{id\_pi}, \texttt{iq\_1}, \texttt{iq\_2}, \texttt{iqref}, \texttt{iq}.
 
@@ -1402,7 +1352,6 @@ with hard clamps at \texttt{SOCmin} and \texttt{SOCmax} that modify the active p
 
 \subsubsection{Parameters (key parameters)}\label{model-inj:parameters-key-parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1349}}
   >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1752}}
@@ -1437,7 +1386,6 @@ Unit
 74--75 & \texttt{pmax}, \texttt{pmin} & REEC\_C & Active current limits (pu on SNOM) & pu \\
 76 & \texttt{Tpord} & REEC\_C & Active power order time constant & s \\
 \end{longtable}\end{small}
-}
 
 Full parameter listing has approximately 125 parameters; refer to a working example data file for the complete ordering.
 
@@ -1445,7 +1393,6 @@ Full parameter listing has approximately 125 parameters; refer to a working exam
 
 The BESS model uses over 40 internal states reflecting the three sub-models. Key states include:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Variable & Description \\
@@ -1460,7 +1407,6 @@ Variable & Description \\
 \texttt{PLLPhaseAngle} & PLL phase angle \\
 \texttt{Pgen}, \texttt{Qgen} & Generated powers \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-inj:usage-example-14}
 
@@ -1504,7 +1450,6 @@ reactive current at the bus.
 
 The record carries 17 data parameters, in order:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1337}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1739}}
@@ -1540,11 +1485,9 @@ Description
 16 & \texttt{Bmin} & Minimum susceptance (Mvar at 1 pu voltage) \\
 17 & \texttt{Bnom} & Susceptance base used for the per-unit conversion (Mvar) \\
 \end{longtable}\end{small}
-}
 
 One additional parameter is computed at initialisation:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 \# & Name & Description \\
@@ -1554,7 +1497,6 @@ One additional parameter is computed at initialisation:
 \endlastfoot
 18 & \texttt{Vref} & Voltage reference, set from the power flow solution \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Observables}\label{model-inj:observables}
 
@@ -1583,7 +1525,6 @@ have no effect.
 
 \subsubsection{Parameters}\label{model-inj:parameters-12}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0870}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1508}}
@@ -1606,14 +1547,12 @@ Unit
 \endlastfoot
 1 & \texttt{Tf} & Frequency measurement time constant, recommended 0.05 to 0.10; values below 0.05 are clamped & s \\
 \end{longtable}\end{small}
-}
 
 Three additional parameters are set at initialisation: \texttt{wnom} (nominal angular
 frequency), \texttt{vm0} and \texttt{va0} (the initial bus voltage magnitude and angle).
 
 \subsubsection{Observables}\label{model-inj:observables-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1648}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6281}}
@@ -1637,7 +1576,6 @@ Unit
 \texttt{thref} & Accumulated angle of the DQ reference frame with respect to the nominally rotating frame, zero at \(t = 0\) & rad \\
 \texttt{dwref} & Speed deviation of the DQ reference frame from nominal & rad/s \\
 \end{longtable}\end{small}
-}
 
 \begin{docsnote}{Caution}
 

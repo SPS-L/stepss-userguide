@@ -82,7 +82,6 @@ where \(\tau_{delay} = \tau_{first}\) for the first operation, \(\tau_{next}\) t
 
 \subsubsection{Parameters}\label{model-dctl:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2626}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1923}}
@@ -110,7 +109,6 @@ Description
 \texttt{delay\_first} & \texttt{w(8)} & Delay before first tap change (s) \\
 \texttt{delay\_next} & \texttt{w(9)} & Delay between subsequent tap changes (s) \\
 \end{longtable}\end{small}
-}
 
 \begin{docsnote}{Caution}
 
@@ -142,7 +140,6 @@ Same deadband, direction, and timer logic as \texttt{dctl\_ltc}. The voltage set
 
 \subsubsection{Parameters}\label{model-dctl:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -161,7 +158,6 @@ Field & Working variable & Description \\
 \texttt{delay\_first} & \texttt{w(9)} & First tap change delay (s) \\
 \texttt{delay\_next} & \texttt{w(10)} & Subsequent tap change delay (s) \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-dctl:usage-example-1}
 
@@ -199,7 +195,6 @@ where \(\tau_{max}\) is the maximum delay and \texttt{accel} is the acceleration
 
 \subsubsection{Parameters}\label{model-dctl:parameters-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -218,7 +213,6 @@ Field & Working variable & Description \\
 \texttt{delay\_max} & \texttt{w(9)} & Maximum delay before tap change (s) \\
 \texttt{accel} & \texttt{w(10)} & Acceleration factor (s), smaller = faster \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-dctl:usage-example-2}
 
@@ -250,7 +244,6 @@ End-stop flags \texttt{w(15)} and \texttt{w(16)} prevent further tap changes whe
 
 \subsubsection{Parameters}\label{model-dctl:parameters-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -272,7 +265,6 @@ Field & Working variable & Description \\
 \texttt{X\_comp} & \texttt{w(18)} & Line drop compensation reactance (pu) \\
 \texttt{ratio2\_factor} & \texttt{w(20)} & Secondary ratio correction factor (pu) \\
 \end{longtable}\end{small}
-}
 
 14 fields required (includes from-bus, to-bus, circuit ID for PSS/E format).
 
@@ -308,7 +300,6 @@ Once tripped (\texttt{w(8)\ =\ -1}), the controller is permanently latched and t
 
 \subsubsection{Parameters}\label{model-dctl:parameters-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -321,7 +312,6 @@ Field & Working variable & Description \\
 \texttt{Vmin} & \texttt{w(3)} & Under-voltage pickup threshold (pu) \\
 \texttt{T\_delay} & \texttt{w(4)} & Time delay before tripping (s) \\
 \end{longtable}\end{small}
-}
 
 Internal variables: \texttt{w(5)} = measured voltage, \texttt{w(6)} = start time of violation, \texttt{w(7)} = simulation time, \texttt{w(8)} = controller state.
 
@@ -365,7 +355,6 @@ Controller terminates when total shedding reaches the fraction \texttt{frac\_loa
 
 \subsubsection{Parameters}\label{model-dctl:parameters-5}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2466}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2227}}
@@ -395,7 +384,6 @@ Description
 \texttt{P\_max\_step} & \texttt{w(10)} & Maximum load shedding per step (MW) \\
 \texttt{max\_steps} & \texttt{w(11)} & Maximum number of shedding steps \\
 \end{longtable}\end{small}
-}
 
 Internal variables: \texttt{w(12)}--\texttt{w(18)} (previous voltage, timers, area accumulator, step counter, total shed).
 
@@ -419,7 +407,6 @@ The FRT envelope is defined by four (voltage, time) breakpoints: \((V_1, t_1), (
 
 The FRT curve defines the minimum voltage \(V(t)\) that must be sustained:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Segment & Condition \\
@@ -433,13 +420,11 @@ Segment & Condition \\
 \(V_4 \le V < V_3\) & Must recover within \(t_3\) s \\
 \(V < V_4\) & Immediate trip \\
 \end{longtable}\end{small}
-}
 
 Two internal timers (\texttt{w(8)}, \texttt{w(9)}) track time spent in violation zones.
 
 \subsubsection{Parameters}\label{model-dctl:parameters-6}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2057}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2434}}
@@ -466,7 +451,6 @@ Description
 \texttt{t3} & \texttt{w(6)} & Time limit for zone 3 (s) \\
 \texttt{Val4} & \texttt{w(7)} & Voltage threshold 4 (pu), below this: trip immediately \\
 \end{longtable}\end{small}
-}
 
 8 fields required. Field 1 is the injector name, fields 2--8 map to \texttt{Val1,\ t1,\ Val2,\ t2,\ Val3,\ t3,\ Val4}.
 
@@ -508,7 +492,6 @@ The controller latches once tripped and cannot reset. State variable \texttt{w(7
 
 \subsubsection{Parameters}\label{model-dctl:parameters-7}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2589}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2219}}
@@ -532,7 +515,6 @@ Description
 \texttt{upper\_bound} & \texttt{w(4)} & Upper bound for the variable \\
 \texttt{T\_trip} & \texttt{w(5)} & Time out-of-bounds before tripping (s) \\
 \end{longtable}\end{small}
-}
 
 5 fields required.
 
@@ -569,7 +551,6 @@ The timer resets if the speed returns within bounds. The controller latches perm
 
 \subsubsection{Parameters}\label{model-dctl:parameters-8}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -581,7 +562,6 @@ Field & Working variable & Description \\
 \texttt{omega\_max} & \texttt{w(2)} & Maximum rotor speed threshold (pu) \\
 \texttt{T\_delay} & \texttt{w(3)} & Time delay before tripping (s) \\
 \end{longtable}\end{small}
-}
 
 3 fields required. Internal variables: \texttt{w(4)} = measured speed, \texttt{w(5)} = violation start time, \texttt{w(6)} = current time, \texttt{w(7)} = state.
 
@@ -615,7 +595,6 @@ The action is immediate (no time delay); the oversize factor allows temporary ov
 
 \subsubsection{Parameters}\label{model-dctl:parameters-9}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2553}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2324}}
@@ -637,7 +616,6 @@ Description
 \texttt{nb\_lines} & \texttt{w(2)} & Number of protected lines \\
 \texttt{line\_1}, \ldots{} & \texttt{w(3-)} & Names of protected branches (space-separated) \\
 \end{longtable}\end{small}
-}
 
 \subsubsection{Usage Example}\label{model-dctl:usage-example-9}
 
@@ -670,7 +648,6 @@ The direction parameter defines whether increasing the tap increases or decrease
 
 \subsubsection{Parameters}\label{model-dctl:parameters-10}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -688,7 +665,6 @@ Field & Working variable & Description \\
 \texttt{delay\_first} & \texttt{w(8)} & First change delay (s) \\
 \texttt{delay\_next} & \texttt{w(9)} & Subsequent change delay (s) \\
 \end{longtable}\end{small}
-}
 
 9 fields required. Internal variables: \texttt{w(10)} = power setpoint, \texttt{w(11)} = time of last change, \texttt{w(12)} = active delay, \texttt{w(13)} = state.
 
@@ -710,7 +686,6 @@ An optional over-run tolerance parameter \texttt{allowed\_overrun} specifies how
 
 \subsubsection{Parameters}\label{model-dctl:parameters-11}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2450}}
@@ -731,7 +706,6 @@ Description
 \texttt{ratio} & \texttt{w(1)} & Ratio to real time (1.0 = real time, \textgreater1 = faster) \\
 \texttt{allowed\_overrun} & \texttt{w(2)} & Allowed over-run before error (s), optional \\
 \end{longtable}\end{small}
-}
 
 1 or 2 fields. Only one \texttt{DCTL\ RT} controller may be active per simulation.
 
@@ -774,7 +748,6 @@ It interacts directly with the HVDC two-port model's internal parameters.
 
 \subsubsection{Parameters}\label{model-dctl:parameters-12}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2683}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2076}}
@@ -811,7 +784,6 @@ Description
 \texttt{Idred} & \texttt{w(17)} & Reduced DC current (kA) \\
 \texttt{gammamin} & \texttt{w(18)} & Minimum extinction angle (degrees) \\
 \end{longtable}\end{small}
-}
 
 18 fields required. Internal variables: \texttt{w(19)}--\texttt{w(22)} (operation modes and tap-change timers).
 
@@ -850,7 +822,6 @@ At each evaluation, the controller scans all synchronous machines and checks:
 
 \subsubsection{Parameters}\label{model-dctl:parameters-13}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2690}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2437}}
@@ -873,7 +844,6 @@ Description
 \texttt{deadtime} & \texttt{w(3)} & Deadtime before action (s) \\
 \texttt{stop\_sim} & \texttt{w(4)} & 1 = stop simulation on violation, 0 = warn only \\
 \end{longtable}\end{small}
-}
 
 4 fields required. Internal: \texttt{w(5)} = last violation time.
 
@@ -904,7 +874,6 @@ Analogous to \texttt{dctl\_sim\_minmaxspeed} but for \textbf{bus voltages}. The 
 
 \subsubsection{Parameters}\label{model-dctl:parameters-14}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Field & Working variable & Description \\
@@ -917,7 +886,6 @@ Field & Working variable & Description \\
 \texttt{deadtime} & \texttt{w(3)} & Deadtime before action (s) \\
 \texttt{stop\_sim} & \texttt{w(4)} & 1 = stop on violation, 0 = warn only \\
 \end{longtable}\end{small}
-}
 
 4 fields required. Internal: \texttt{w(5)} = last violation time.
 
@@ -949,7 +917,6 @@ The controller accumulates per-bus variances and a system-wide sum.
 
 \subsubsection{Parameters}\label{model-dctl:parameters-15}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3129}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6871}}
@@ -967,7 +934,6 @@ Description
 \texttt{aver\_time\_window} & Averaging time window (s) for EMA computation \\
 \texttt{nb\_list} & Number of buses to monitor (bus names follow in subsequent RAMSES data records) \\
 \end{longtable}\end{small}
-}
 
 2 fields required. Only one \texttt{VOLT\_VAR} controller may exist per simulation. Parameters are stored in module-level variables (\texttt{volt\_var\_mod}) rather than \texttt{w(*)}.
 

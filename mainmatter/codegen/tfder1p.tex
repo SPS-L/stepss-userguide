@@ -1,0 +1,38 @@
+\hypertarget{link_to_tfder1p}{}{\Large \bf tfder1p}
+
+{\it Transfer function: derivative with one time constant}
+
+\begin{center}
+\includegraphics{codegen/tfder1p.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& tfder1p\\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $G$\\
+data name, parameter name or math expression for $T$
+}
+
+~ \hrule ~
+
+Internal states : $x_1$  
+
+Discrete variables : none
+
+\setcounter{equation}{0}
+
+Equations :
+\begin{eqnarray}
+T \: \dot{x}_1 & = & x_j \label{tfder1p-1} \\
+0 & = & G \: x_i - x_1 - x_j \label{tfder1p-2}
+\end{eqnarray}
+
+Initialization of internal states: ~~~ $x_1 = G \: x_i$
+
+\vspace{2ex}
+The model allows $T=0$. In this case:
+\begin{itemize}
+\item $x_j=0$ as expected;
+\item Eq.~\eqref{tfder1p-2} is useless but is integrated with the rest of the model.
+\end{itemize}

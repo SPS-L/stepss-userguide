@@ -1,0 +1,79 @@
+\hypertarget{link_to_db}{}{\Large \bf db}
+
+{\it Deadband.
+
+}
+
+\begin{center}
+\includegraphics{codegen/db.pdf}
+\end{center}
+
+Syntax : \hspace*{10ex}\parbox[t]{\textwidth}{\sf 
+\& db \\
+name of variable $x_i$\\
+name of variable $x_j$\\
+data name, parameter name or math expression for $\delta_1$ \\
+data name, parameter name or math expression for $s_1$ \\
+data name, parameter name or math expression for $a_1$\\
+data name, parameter name or math expression for $\delta_2$\\
+data name, parameter name or math expression for $s_2$ \\
+data name, parameter name or math expression for $a_2$
+}
+
+~ \hrule ~
+
+Internal states : none
+
+Discrete variables : $z \in \{0, 1, -1 \}$
+
+Equations :
+\begin{equation*}
+0 = 
+\begin{cases}
+x_j \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 0 \nonumber \\
+x_j - s_2 - a_2 (x_i - \delta_2) \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = 1  \\
+x_j - s_1 - a_1 (x_i - \delta_1) \;\;\;\;\;\;\;\;\;\; \mbox{if} \;\; z = -1 
+\end{cases}
+\end{equation*}
+
+\pagebreak
+Discrete transitions : 
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$z \in \{0, 1 \}$}
+  \IF {$x_i < \delta_1$} 
+    \STATE $z \gets -1$
+  \ENDIF
+\ELSIF {$z \in \{-1, 0 \}$}
+  \IF {$x_i > \delta_2$}
+    \STATE $z \gets 1$
+  \ENDIF
+\ELSIF {$z \in \{-1, 1 \}$}
+  \IF {$\delta_1 < x_i < \delta_2$}
+    \STATE $z \gets 0$
+  \ENDIF
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+Initialization of discrete variables :
+
+\hspace*{20ex}\begin{minipage}[t]{15cm}
+\begin{algorithmic} 
+\IF {$x_i > \delta_2$}
+    \STATE {$z \gets 1$}
+\ELSIF {$x_i < \delta_1$}
+    \STATE {$z \gets -1$}
+\ELSE
+    \STATE {$z \gets 0$}
+\ENDIF
+\end{algorithmic}
+\end{minipage}
+
+\vspace{2ex}
+The data must obey $\delta_1 < \delta_2$, $a_1 \ge 0$ and $a_2 \ge 0$ (see for instance the diagram above).
+
+A particular case is $s_1= s_2 = 0$ and $a_1 = a_2 = 1$ (but all values are allowed for these four parameters).
+
+The pwlin4, pwlin5 or pwlin6 block can be used as an alternative to this block.

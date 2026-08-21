@@ -1,0 +1,294 @@
+Disturbances need to have a continuity.
+
+
+\section{\index{CONTINUE SOLVER}Continue Solver}\label{sec-continue-solver}
+
+time(s) CONTINUE SOLVER disc\_meth max\_h(s)
+	min\_h(s) latency(pu) upd\_over  
+	
+Discretization method (disc\_meth): 
+\begin{itemize}
+	\item TR: Trapezoidal 
+	\item BE: Backward Euler 
+	\item BD: BDF2 
+\end{itemize}
+Jacobian update override (upd\_over):
+\begin{itemize}
+	\item ALL: force a full Jacobian refactorisation
+	\item NET: force a refactorisation of the network Jacobian
+	\item ABL: force an update of the injector Jacobian at every bus
+	\item IBL: force nothing in addition, but keep the bus Jacobian updates already requested by the other disturbances applied at this time instant
+	\item NOT: override, discarding even those; the bus Jacobian flags are restored to their values on entry
+\end{itemize}
+It is mainly used to modify the settings of the solver and has to
+exist at the first line. For example:
+
+0.000 CONTINUE SOLVER BD 0.0200 0.001 0. ALL
+
+
+\section{\index{CONTINUE DISPLAY}Continue Display}
+
+time(s) CONTINUE DISPLAY new\_plot\_step(s)
+
+Changes the sampling time step used for the output of observed
+variables from that point of the simulation onwards. For example,
+reducing the output sampling to one point per second after $t=20$~s:
+
+20.000 CONTINUE DISPLAY 1.0
+
+
+\section{Set stopping criteria for voltage}
+
+Define in the data files the following record:
+
+ DCTL SIM\_MINMAXVOLT CTRL\_Name VMAX(pu) VMIN(pu)
+	DEADTIME(s) Stop\_Simulation(T/F) ;
+
+
+
+\section{Set stopping criteria for machine speed}
+
+Define in the data files the following record:
+
+DCTL SIM\_MINMAXSPEED CTRL\_Name MAX\_SPEED(pu)
+	MIN\_SPEED(pu) DEADTIME(s) Stop\_Simulation(T/F) ;
+
+
+\section{\index{STOP}Stop}
+
+time(s) STOP 
+
+It is used to signal the end of the simulation and has to exist at the last line. 
+
+For example:
+
+100.000 STOP 
+
+\section{\index{BREAKER}Trip line}
+
+time(s) BREAKER BRANCH name\_of\_line orig\_break(0/1)
+	extrem\_break(0/1) 
+	
+Used to open/close the breakers of a line. 
+
+For example, opening both ends of a line:
+
+10.000 BREAKER BRANCH 1044-4032 0 0 
+
+\section{\index{BREAKER}Trip synchronous machine / injector}
+
+time(s) BREAKER SYNC\_MACH/INJ name\_of\_synch\_mach/name\_of\_injector
+	breaker(0/1) 
+	
+Used to open/close the breaker (trip) of a synchronous machine or injector. 
+
+For example:
+
+10.000 BREAKER INJ L\_11 0
+
+\section{\index{BREAKER}Trip two-port}
+
+time(s) BREAKER TWOP name\_of\_twoport 0
+
+Used to disconnect a two-port component (e.g.\ an HVDC link) at both
+ends. Only opening is supported, so the breaker status must be 0.
+
+For example:
+
+10.000 BREAKER TWOP hvdc1 0
+
+\section{\index{FAULT}Three phase short-circuit (with use of resistance to
+	ground)}
+
+This demands two commands:
+
+time(s) FAULT BUS name\_of\_bus rfault {[}xfault{]}
+	
+time(s) CLEAR BUS name\_of\_bus
+
+The first line is used to declare the starting of the short-circuit.
+The fault has a resistance of \emph{rfault+j{*}xfault} to the ground
+where the values of rfault and xfault are in Ohm. If xfault is not
+defined, a fully resistive fault is assumed.
+
+Example of a 100ms short-circuit directly to ground:
+
+10.000 FAULT BUS 1044 0. 0.\\
+10.100 CLEAR BUS 1044
+	
+
+\section{\index{VFAULT}Three phase short-circuit (with use of voltage reached
+	after fault)}
+
+This demands two commands:
+
+time(s) VFAULT BUS name\_of\_bus Voltage\_reached\_after\_fault
+	
+time(s) CLEAR BUS name\_of\_bus
+
+The first line is used to declare the starting of the short-circuit.
+Internally, RAMSES creates a temporary shunt admittance $B_{fault}$
+at the faulted bus and iteratively adjusts it using a secant method
+until the bus voltage matches the target value (declared in pu) to
+within $\pm 0.5\,\%$. The injected currents are $i_x = B_{fault}\,v_x$
+and $i_y = -B_{fault}\,v_y$. Up to 10 correction steps are attempted;
+if convergence is not reached, the simulation halts with an error
+message.
+
+Example of a 100ms short-circuit where the voltage at the faulted
+bus reached 0.5 pu after the fault:
+
+10.000 VFAULT BUS 1044 0.5\\
+10.100 CLEAR BUS 1044
+	
+
+\textbf{Supported:} Version 3.13 and above.
+
+
+\section{\index{CHGPRM}Change parameters}\label{sec-chgprm}
+
+Used to change the parameters of a model during the simulation.
+
+
+\subsection{BRANCH}
+
+time(s) CHGPRM BRANCH name\_of\_line MAGN/PHAN
+	$\pm$increment 
+
+\subsection{SHUNT}
+
+time(s) CHGPRM SHUNT name\_of\_shunt QNOM $\pm$increment
+
+The increment should be expressed in MVAr and it
+is per unitized internally by RAMSES.
+
+
+\subsection{EXC}
+
+time(s) CHGPRM EXC name\_of\_equipment name\_of\_parameter
+	$\pm$increment (MVAr/\%) duration(s) 
+	
+The units is
+not obligatory. If nothing is given then the parameter is modified
+in absolute value. If MVAr is given, then the increment is per unitized
+using \emph{Snom} of the machine before applying the change. If \%
+is given, then the parameter is changed as a percentage of the original
+value. If $duration=0$ then a step change is applied, otherwise the
+change is applied as a ramp over the given duration (in seconds).
+
+For example:
+
+10.000 CHGPRM EXC g1 V0 +10 \% 10 
+
+This
+means the parameter V0 of the exciter of synchronous machine g1 is
+ramped by +10\% between 10 and 20 seconds.
+
+
+\subsection{TOR}
+
+time(s) CHGPRM TOR name\_of\_equipment name\_of\_parameter
+	$\pm$increment (MW/\%) duration(s) 
+	
+The units is
+not obligatory. If nothing is given then the parameter is modified
+in absolute value. If MW is given, then the increment is per unitized
+using \emph{Pnom} of the machine before applying the change. If \%
+is given, then the parameter is changed as a percentage of the original
+value. If $duration=0$ then a step change is applied, otherwise the
+change is applied as a ramp over the given duration (in seconds). 
+
+For example:
+
+10.000 CHGPRM TOR g1 P0 +1 MW 10 
+
+This
+means the parameter P0 of the torque controller of synchronous machine
+g1 is ramped by +1 MW between 10 and 20 seconds.
+
+
+\subsection{INJ/TWOP/DCTL}
+
+time(s) CHGPRM INJ/TWOP/DCTL name\_of\_equipment
+	name\_of\_parameter $\pm$increment (MW/MVAr/\%/SETP) duration(s)
+
+The units is not obligatory. If nothing is given
+then the parameter is modified in absolute value. If MW or MVAr is
+given, then the increment is per unitized using system's \emph{Sbase}
+before applying the change. If \% is given, then the parameter is
+changed as a percentage of the original value. IF SETP is given then
+the value increment is actually the new setpoint. If $duration=0$
+then a step change is applied, otherwise the change is applied as
+a ramp over the given duration (in seconds). 
+
+For example:
+
+10.000 CHGPRM INJ L\_11 P0 +50 \% 60 \\
+10.000 CHGPRM INJ L\_11 Q0 +30 \% 60 
+	
+	This means the
+parameter P0 (resp. Q0) of the injector L\_11 is ramped by +50\% (resp.
+30\%) between 10 and 70 seconds. In this case, if L\_11 is a load
+model, it can be used to simulate a load increase.
+
+
+\section{\index{JAC}Export Jacobian matrix}
+
+time(s) JAC 'name\_of\_filename' 
+
+Also, make sure to add these to your settings:
+
+\$OMEGA\_REF SYN ;
+	
+\$SCHEME IN;
+
+
+\section{\index{EIG}Small-signal stability analysis}
+
+time(s) EIG 'name\_of\_filename'
+
+Reduces the linearised differential-algebraic model to a state matrix, solves
+the eigenproblem, and writes the modes, participation factors and mode shapes.
+The analysis runs inside RAMSES; no external tool is required.
+
+Required settings:
+
+\$OMEGA\_REF SYN ;
+
+\$SCHEME DE ;
+
+Three files are written, named from the given basename:
+
+\begin{itemize}
+\item {\tt <name>\_modes.dat}: one line per mode, giving the index, the real and
+imaginary parts of the eigenvalue, the damping ratio, the frequency in Hz, a
+dominance flag, and a simplicity flag;
+\item {\tt <name>\_pf.dat}: participation factors, with the family, device and
+variable name of each state;
+\item {\tt <name>\_ms.dat}: mode shapes, as magnitude and angle of each machine's
+rotor speed, normalised so the largest magnitude in a mode is unity and angles
+are relative to it.
+\end{itemize}
+
+The damping ratio is $\zeta = -\sigma/|\lambda|$ for $\lambda = \sigma \pm
+j\omega$, and the frequency is $|\omega|/2\pi$. A mode with $\zeta < 0$ grows
+rather than decays.
+
+The simplicity flag deserves attention. Identical device models with identical
+parameters produce identical eigenvalues, and the eigenvectors of a repeated
+eigenvalue are not unique. Participation factors and mode shapes of such a mode
+are therefore basis-dependent and carry no physical meaning. The flag is unity
+when the eigenvalue is well separated from every other and zero otherwise; do
+not interpret the rows of a mode flagged zero.
+
+Unlike JAC, which logs a warning and skips, EIG refuses when it cannot produce a
+result it can justify: it writes nothing, states the reason in the log, and
+terminates with exit code 78. This occurs under the COI reference frame, under
+the integrated scheme, above the \$EIG\_MAX\_STATES limit, and when the
+algebraic block is singular.
+
+\section{\index{LFRESV}Export load flow}
+
+Takes a snapshot of the system and exports the load flow at a specific time.
+
+time(s) LFRESV 'name\_of\_filename' 

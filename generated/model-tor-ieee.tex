@@ -19,7 +19,6 @@ SYNC_MACH name bus FP FQ P Q SNOM Pnom H D IBRATIO
 
 RAMSES adds the \texttt{tor\_} prefix to the model name automatically, so both \texttt{DEGOV1} and \texttt{tor\_DEGOV1} resolve to the same model. The IEEE governor names are:
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2299}}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2888}}
@@ -46,7 +45,6 @@ Available since
 \texttt{TGOV1} & \texttt{tor\_TGOV1} & \texttt{tor\_TGOV1D} & 3.50 \\
 \texttt{HYGOV} & \texttt{tor\_HYGOV} & \texttt{tor\_hygov} & 3.50 \\
 \end{longtable}\end{small}
-}
 
 Only the first two columns are valid in a data file. The third column is the name of the Fortran subroutine, which you need only when registering the model in URAMSES.
 
@@ -133,7 +131,6 @@ The droop characteristic is:
 
 \subsection{Parameters}\label{model-tor-ieee:parameters}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2266}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7734}}
@@ -162,7 +159,6 @@ Description
 \texttt{R} & Speed droop (pu/pu) \\
 \texttt{TE} & Engine time constant (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Internal parameters:} \texttt{V60} (selected reference input, mechanical torque or electrical power according to \texttt{SWM}) and \texttt{REF} (\texttt{V60\ \ensuremath{\cdot}\ R}), both set at initialisation
 
@@ -240,7 +236,6 @@ T_m \cdot \omega = P_m
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-1}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -255,7 +250,6 @@ Parameter & Description \\
 \texttt{T2} & Turbine lead time constant, zero (s) \\
 \texttt{T3} & Turbine lag time constant, pole (s) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Internal parameter:} \texttt{C\ =\ Tm\ \ensuremath{\cdot}\ R} (initialised from the load-flow mechanical torque)
 
@@ -346,7 +340,6 @@ T_m \cdot \omega = P_m
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-2}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -364,7 +357,6 @@ Parameter & Description \\
 \texttt{VMIN} & Minimum valve position (pu) \\
 \texttt{DTURB} & Turbine damping factor (pu torque / pu speed) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Internal parameter:} \texttt{LR\ =\ Tm} (load reference, set at initialisation)
 
@@ -444,7 +436,6 @@ T_m = \frac{P_m}{\omega}
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-3}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -460,7 +451,6 @@ Parameter & Description \\
 \texttt{T3} & Lag time constant, reheater pole (s) \\
 \texttt{Dt} & Turbine damping coefficient (pu torque / pu speed deviation) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Internal parameter:} \texttt{C\ =\ Tm\ \ensuremath{\cdot}\ R} (initialised from load-flow mechanical torque)
 
@@ -564,7 +554,6 @@ P_m = T_m \cdot \omega
 
 \subsection{Parameters}\label{model-tor-ieee:parameters-4}
 
-{\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Parameter & Description \\
@@ -585,7 +574,6 @@ Parameter & Description \\
 \texttt{Dturb} & Turbine damping factor \\
 \texttt{Qnl} & No-load water flow (pu) \\
 \end{longtable}\end{small}
-}
 
 \textbf{Internal parameter:} \texttt{Po\ =\ (P\ /\ At)\ +\ Qnl} (initial gate setpoint from load-flow)
 

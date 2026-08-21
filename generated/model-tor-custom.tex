@@ -203,45 +203,51 @@ The \texttt{tor\_thermal\_generic1} model is a \textbf{generic multi-stage steam
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.60\linewidth]{figures/tor_thermal_generic1}
-\caption{Thermal generic governor block diagram}
+\includegraphics[width=0.98\linewidth]{figures/tor-thermal-generic1-light}
+\caption{THERMAL\_GENERIC1 block diagram.}
 \end{figure}
 
 \textbf{Speed governor:}
 
-A speed measurement with time constant \(T_{mes}\) feeds a droop-based error:
+The speed deviation is divided by the droop \(\sigma\) and measured with time constant \(T_{mes}\):
 
 \[
-e_{gov} = P_0 - P_{meas} \cdot \sigma + (1 - \omega)
+T_{mes}\,\dot{x}_1 = -x_1 + \frac{\omega - 1}{\sigma}
 \]
 
-where \(\sigma\) is the droop coefficient.
+The gate demand is what remains of the power setpoint after that term and the current gate position are taken off:
 
-The gate/valve demand is computed by an integrator with rate limits \([zdot_{min},\, zdot_{max}]\) and position limits \([z_{min},\, z_{max}]\), filtered through a servo time constant \(T_{sm}\).
+\[
+e_{gov} = P_0 - x_1 - z
+\]
+
+It is divided by the servo time constant \(T_{sm}\), rate-limited to \([zdot_{min},\, zdot_{max}]\), and integrated into the gate opening \(z\) within \([z_{min},\, z_{max}]\).
 
 \textbf{Turbine power stages:}
 
-The steam chest dynamics drive three stages with power fractions \(F_{hp}\), \(F_{mp}\), \((1-F_{hp}-F_{mp})\):
+The gate opening drives three lags in series, the reheat stage carrying the initial valve opening \(ivo\) as a factor:
 
 \[
-\frac{d T_{mHP}}{dt} = \frac{1}{T_{hp}}(F_{hp} \cdot z - T_{mHP})
+T_{hp}\,\dot{x}_{hp} = -x_{hp} + z, \qquad
+T_r\,\dot{x}_r = -x_r + x_{hp}, \qquad
+T_{lp}\,\dot{x}_{lp} = -x_{lp} + ivo\,x_r
 \]
+
+Each stage contributes its own fraction of the power, and the three fractions sum to one:
 
 \[
-\frac{d T_{mMP}}{dt} = \frac{1}{T_r}(F_{mp} \cdot T_{mHP}/F_{hp} - T_{mMP})
+P_{mHP} = F_{hp}\,x_{hp}, \qquad
+P_{mMP} = F_{mp}\,ivo\,x_r, \qquad
+P_{mLP} = (1 - F_{hp} - F_{mp})\,x_{lp}
 \]
+
+Total mechanical power, and the torque delivered to the shaft:
 
 \[
-\frac{d T_{mLP}}{dt} = \frac{1}{T_{lp}}((1-F_{hp}-F_{mp}) \cdot T_{mMP}/F_{mp} - T_{mLP})
+P_m = P_{mHP} + P_{mMP} + P_{mLP}, \qquad T_m = \frac{P_m}{\omega}
 \]
 
-Total mechanical power:
-
-\[
-P_m = T_{mHP} + T_{mMP} + T_{mLP}
-\]
-
-\textbf{Parameters from Fortran \texttt{associate} block:}
+\textbf{Parameters:}
 
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -350,7 +356,7 @@ T_m = \sqrt{H} \cdot (Q - Q_v \cdot \sqrt{H})
 P_m = T_m \cdot \omega
 \]
 
-\textbf{Parameters from Fortran \texttt{associate} block:}
+\textbf{Parameters:}
 
 \begin{small}\begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}

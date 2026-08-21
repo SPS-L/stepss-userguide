@@ -794,8 +794,8 @@ The doubly-fed induction generator (DFIG) topology allows decoupled control of a
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.60\linewidth]{figures/inj_wt3}
-\caption{WT3 (DFIG) wind turbine model block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-wt3-light}
+\caption{WT3 block diagram.}
 \end{figure}
 
 \subsubsection{Scientific Description}\label{model-inj:scientific-description-9}
@@ -819,6 +819,22 @@ with limiter \([I_{ql1}, I_{qh1}]\).
 The plant controller (REPC\_A) optionally provides frequency response:
 
 \[\Delta P_{\mathrm{ref}} = D_{\mathrm{dn}}\,\mathrm{sat}(\Delta f, f_{\mathrm{dbd1}}, 0) + D_{\mathrm{up}}\,\mathrm{sat}(\Delta f, 0, f_{\mathrm{dbd2}})\]
+
+\textbf{Network interface.} REGC\_A injects a current rather than a voltage behind an
+impedance. The filtered active and reactive current commands \(I_{pf}\), \(I_{qf}\) are
+resolved into the network frame with the PLL angle and rescaled from the machine
+rating to the system base:
+
+\[i_x = \left(I_{pf}\cos\theta_{\mathrm{pll}} + I_{qf}\sin\theta_{\mathrm{pll}}\right)\frac{S_{\mathrm{nom}}}{S_{\mathrm{base}}}\]
+
+\[i_y = \left(I_{pf}\sin\theta_{\mathrm{pll}} - I_{qf}\cos\theta_{\mathrm{pll}}\right)\frac{S_{\mathrm{nom}}}{S_{\mathrm{base}}}\]
+
+The PLL angle itself tracks the \(q\)-axis component of the filtered terminal voltage:
+
+\[v_q = -v_{x,\mathrm{filt}}\sin\theta_{\mathrm{pll}} + v_{y,\mathrm{filt}}\cos\theta_{\mathrm{pll}}\]
+
+\hyperref[model-inj:wt4-inj_wt4-type-4-wind-turbine-full-converter]{WT4} and
+\hyperref[model-inj:bess-inj_bess-battery-energy-storage-system]{BESS} use the same interface.
 
 \subsubsection{Parameters (selected key parameters)}\label{model-inj:parameters-selected-key-parameters}
 
@@ -878,8 +894,8 @@ A Type 4 wind turbine with full-rated converter. Unlike Type 3, the generator is
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.60\linewidth]{figures/inj_wt4}
-\caption{WT4 full-converter wind turbine model block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-wt4-light}
+\caption{WT4 block diagram.}
 \end{figure}
 
 \subsubsection{Scientific Description}\label{model-inj:scientific-description-10}
@@ -1046,8 +1062,8 @@ The PLL is frozen (hysteresis) when the PCC voltage falls below 0.4 pu and react
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\linewidth]{figures/inj_gfor_vsm}
-\caption{GFOR virtual synchronous machine active power and phase angle control block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfor-vsm-light}
+\caption{Grid-forming virtual synchronous machine block diagram.}
 \end{figure}
 
 \[2H\frac{d\omega_m}{dt} = P^* - P_{\mathrm{virt}} - D\left(\omega_m - \tilde{\omega}_g\right) + \frac{1 - \omega_m}{R_{\mathrm{droop}}}\]
@@ -1070,8 +1086,8 @@ The current overload ratio \(\rho = \sqrt{(i_d^*)^2 + (i_q^*)^2}\,/\,I_{\mathrm{
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.45\linewidth]{figures/inj_gfor_currentlim}
-\caption{GFOR current limitation: proportional scaling of the dq current vector back to the Imax circle}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfor-currentlim-light}
+\caption{Grid-forming current limitation.}
 \end{figure}
 
 and the modulated voltage is set to the value that yields the saturated currents:
@@ -1182,8 +1198,8 @@ with the analogous transformation for the converter-side currents (\(i_{xt} = k\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\linewidth]{figures/inj_gfol_pll}
-\caption{GFOL phase locked loop block diagram with blocking hysteresis}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfol-pll-light}
+\caption{Grid-following phase-locked loop block diagram.}
 \end{figure}
 
 The \(q\)-axis voltage error drives a PI controller whose output is the grid frequency estimate \(\tilde{\omega}_g\) (state \texttt{w\_pll}); integrating \(\omega_N(\tilde{\omega}_g - \omega_{\mathrm{ref}})\) gives the PLL angle. The PI gains follow from the PLL response time \(\tau\):
@@ -1196,8 +1212,8 @@ The PLL is blocked once the PCC voltage \(V\) falls below \texttt{Vpllb} and rea
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.55\linewidth]{figures/inj_gfol_currentctl}
-\caption{GFOL dq current control loops block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfol-currentctl-light}
+\caption{Grid-following inner current control.}
 \end{figure}
 
 \[v_{md} = \frac{v_d}{r} - \tilde{\omega}_g L\, i_q + \left(K_p + \frac{K_i}{s}\right)\left(i_d^{\mathrm{ref}} - i_d\right)\]
@@ -1212,8 +1228,8 @@ combined with the transformer voltage-current relationship in the \(d\)-\(q\) fr
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\linewidth]{figures/inj_gfol_pctl}
-\caption{GFOL active power control and rate-limited d-axis current limit block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfol-pctl-light}
+\caption{Grid-following active power control.}
 \end{figure}
 
 The measured active power is filtered with time constant \(T_{\mathrm{lpf}}\) and compared with the setpoint \(P^0\); a PI controller (\(K_{pp}\), \(K_{ip}\)) with non-windup limits \(\pm I_d^{\max}\) produces \(i_d^{\mathrm{ref}}\). The limit gives \textbf{priority to the reactive current}:
@@ -1226,8 +1242,8 @@ and \(I_d^{\max}\) tracks this static value through a first-order lag (\(T_{\mat
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.85\linewidth]{figures/inj_gfol_qctl}
-\caption{GFOL voltage/reactive power control and dynamic voltage support block diagram}
+\includegraphics[width=0.98\linewidth]{figures/inj-gfol-qctl-light}
+\caption{Grid-following voltage and reactive power control.}
 \end{figure}
 
 Depending on \texttt{vqswitch}, either the compensated voltage or the reactive power is controlled:

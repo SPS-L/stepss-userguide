@@ -1,8 +1,8 @@
 \documentclass[11pt]{book}
 \usepackage{A4}
 \usepackage{times}
-\usepackage[latin1]{inputenc}
-\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
 \usepackage{epsfig}
 \usepackage{bm}
 \usepackage{hyperref}
@@ -13,6 +13,7 @@
 \usepackage{fontawesome5}
 \usepackage{amsmath}
 \usepackage{mdframed}
+\input{docs-preamble}
 
 %------------------------------------------------------------------------
 \begin{document}
@@ -49,6 +50,7 @@
 \newpage
 %------------------------------------------------------------------------
 \include{legal}
+\label{ch-legal}
 \setcounter{tocdepth}{1}
 \tableofcontents
 
@@ -59,13 +61,23 @@
 \chapter{A quick overview of STEPSS}\label{ch-overview}
 \include{overview}
 
-\chapter{Installing STEPSS}
+\chapter{Installing STEPSS}\label{ch-install}
 \include{install}
-\chapter{Organisation of the data files}
+
+\include{generated/quickstart}
+
+\chapter{Organisation of the data files}\label{ch-files}
 \include{files}
 
 \chapter{Modelling of network components}\label{ch-network}
 \include{network}
+
+%------------------------------------------------------------------------
+\part{The STEPSS graphical interface}
+
+\include{generated/gui-first-run}
+\include{generated/gui-interface}
+\include{generated/gui-running}
 
 %------------------------------------------------------------------------
 \part{Power Flow Computation with Helios}
@@ -76,20 +88,33 @@
 %------------------------------------------------------------------------
 \part{Dynamic Simulation with RAMSES}
 
-\chapter{Reference frame and model initialization}
+\chapter{Reference frame and model initialization}\label{ch-refinit}
 \include{ref_and_init}
 
-\chapter{Synchronous machines, Th\'{e}venin equivalents and impedance loads}
+\chapter{Synchronous machines, Th\'{e}venin equivalents and impedance loads}\label{ch-sync}
 \include{sync_thev_impload}
 
-\chapter{Disturbances}
+\chapter{Disturbances}\label{ch-disturb}
 \include{disturbances}
 
 \chapter{Solver Settings}\label{ch-settings}
 \include{solvsett}
 
-\chapter{Discrete Controllers}
-\include{disc_cont}
+\include{generated/model-dctl}
+\include{generated/eigenanalysis}
+
+%------------------------------------------------------------------------
+\part{Model library}
+
+\include{generated/model-index}
+\include{generated/model-sync}
+\include{generated/model-sync-conv}
+\include{generated/model-exc-ieee}
+\include{generated/model-exc-custom}
+\include{generated/model-tor-ieee}
+\include{generated/model-tor-custom}
+\include{generated/model-inj}
+\include{generated/model-twop}
 
 %------------------------------------------------------------------------
 \part{Adding user-defined models with CODEGEN}
@@ -139,5 +164,29 @@
 \include{codegen/tsa}
 
 \include{codegen/functions}
+
+\include{generated/codegen-examples}
+\include{generated/cg-studio}
+
+%------------------------------------------------------------------------
+\part{STEPSS in Python}
+
+\include{generated/py-overview}
+\include{generated/py-install}
+\include{generated/py-examples}
+\include{generated/py-api}
+\include{generated/py-helios}
+\include{generated/uramses}
+
+%------------------------------------------------------------------------
+\part{Test systems and resources}
+
+\include{generated/ts-index}
+\include{generated/ts-5bus}
+\include{generated/ts-kundur}
+\include{generated/ts-nordic}
+\include{generated/ts-gb}
+\include{generated/res-repos}
+\include{generated/res-refs}
 
 \end{document}

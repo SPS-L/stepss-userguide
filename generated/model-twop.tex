@@ -178,18 +178,11 @@ Unit
 
 \subsubsection{Control Structure}\label{model-twop:control-structure}
 
-\begin{Verbatim}
-Pset or Idset --> [Power/Current -> Ides] --> [1st-order filter Tp] --> Iord
-                                                                              |
-                                                                         rectifier
-                                                                         firing angle alpha
-                                                                              |
-                                                              Vdr ------------+
-                                                               |
-                                                              --- RL --- Vdi
-                                                                          |
-                                                               inverter: voltage/gamma control
-\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/twop-hvdc-lcc-control-light}
+\caption{The HVDC\_LCC control chain.}
+\end{figure}
 
 The rectifier minimises \(\alpha\) (advances firing) to maintain the current order. The inverter maintains DC voltage via the compounding characteristic \(V_{set} = V_{di} + R_{comp} I_d\).
 
@@ -354,21 +347,11 @@ Internal (auto-initialised) parameters: \texttt{Pref}, \texttt{Vdcref}, \texttt{
 
 \subsubsection{Control Structure}\label{model-twop:control-structure-1}
 
-\begin{Verbatim}
-Pref, Vdcref -> [P-V droop: alpha1*DeltaP + beta1*DeltaVdc] -> [Integr. 1/Kid] -> idref_unlim
-                                                                              |
-                                                                         [Limiter Idmin/Idmax]
-                                                                              | idref
-                                                     [Inner current PI] <----+
-                  vd, omega*L*iq ------------------------------------------> vmd
-                  vq, omega*L*id ------------------------------------------> vmq
-
-Qref, Vacref -> [Q-Vac droop: alpha2*DeltaQ + beta2*DeltaVac] -> [Integr. 1/Kiq] -> iqref1_unlim
-                                                                              |
-FRT boost ----> iqref2 ------------------------------------------------> iqref = iqref1 + iqref2
-                                                                              |
-                                                     [Inner current PI] <----+
-\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/twop-hvdc-vsc-control-light}
+\caption{The HVDC\_VSC control, one strip per axis.}
+\end{figure}
 
 \subsubsection{Usage Example}\label{model-twop:usage-example-1}
 
@@ -470,13 +453,11 @@ Internal (auto-initialised): \texttt{DeltaP}, \texttt{P0}, \texttt{Q0}, \texttt{
 
 \subsubsection{Control Structure}\label{model-twop:control-structure-2}
 
-\begin{Verbatim}
-omega1 -------------> Kwi*(1-omega1) ->+
-P0, DeltaP -> DeltaP/Snom --------------+-> N1 -> [Int. 1/Kip] -> N1a -> idref_unlim
-                                 |               |                      |
-                                 +---------------+         Kpp*N1 -----+
-                                                                    [Lim] -> idref -> [Inner PI] -> vmd
-\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/twop-hvdc-vsc-sc-control-light}
+\caption{The grid-forming HVDC\_VSC\_SC control.}
+\end{figure}
 
 \subsubsection{Usage Example}\label{model-twop:usage-example-2}
 
@@ -684,31 +665,13 @@ Parameter & Description & Unit \\
 \texttt{Vdc0} & Initial offshore DC voltage & pu \\
 \end{longtable}\end{small}
 
-\subsubsection{Control Structure}\label{model-twop:control-structure-3}
+\subsubsection{Arrangement}\label{model-twop:arrangement}
 
-\begin{Verbatim}
-Wind farm -> Bus 1 (offshore AC)
-                  |
-          +-------+--------+
-          |  Converter 1   |  PLL -> id/iq transform
-          |  Grid-forming  |
-          |  P/omega droop     |  idref <- P0+DeltaP droop + Kwi*Deltaomega
-          |  QV droop      |  iqref <- betaV*DeltaQ
-          +-------+--------+
-                  | idc1, vdc1
-          +-------+--------------------------+
-          |   DC CABLE: Rdc, Hdc1, Hdc2      |
-          +-------+--------------------------+
-                  | idc2, vdc2
-          +-------+--------+
-          |  Converter 2   |  PLL -> id/iq transform
-          |  Grid-following|
-          |  Vdc control   |  idref <- Kpd*DeltaVdc + Kpd*integralDeltaVdc
-          |  Q/Vac droop   |  iqref <- alpha2*DeltaQ + beta2*DeltaVac
-          +-------+--------+
-                  |
-          Bus 2 (onshore AC grid)
-\end{Verbatim}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/twop-dcl-vsc-topology-light}
+\caption{The DCL\_VSC arrangement.}
+\end{figure}
 
 The offshore converter establishes the AC voltage and frequency for the wind farm. The onshore converter maintains DC voltage. An optional hub coordinator can inject a power correction \(\Delta P\) to the offshore converter via the parameter \texttt{DeltaP}.
 

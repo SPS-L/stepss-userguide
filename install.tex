@@ -1,24 +1,17 @@
-{\bf \large The material of this chapter is specific to the Windows 64-bit version of STEPSS and its Java-based Graphic User Interface (GUI).
+{\bf \large Before going any further, you have to read and accept the legal terms detailed at the beginning of this document.}
 
-Before going any further, you have to read and accept the legal terms detailed at the beginning of this document.}
-
-STEPSS is not restricted to Windows. Installers are published for Windows, macOS and Linux, RAMSES also builds on Linux and macOS with the GNU Fortran compiler, and stepss, the Python interface, is installed with {\tt pip} on both Windows and Linux. Those routes are documented online at\\
-\hspace*{5ex}{\tt https://stepss.sps-lab.org}
+This chapter covers STEPSS GUI, for which installers are published for Windows, macOS and Linux. The other edition, stepss, the Python interface, is installed with {\tt pip} on all three; see its own chapter. Both are documented online at\\
+\hspace*{5ex}\url{https://stepss.sps-lab.org}
 
 Every version of STEPSS is published on its releases page, which is the place to download it from:\\
-\hspace*{5ex}{\tt https://github.com/SPS-L/stepss-java-ui/releases}
-
-Copies of the third-party installers mentioned in this chapter are also kept on a \hypertarget{Google}{Google drive}, to save navigating vendor web pages:\\
-\hspace*{-7ex}{\tt https://drive.google.com/drive/folders/1HcUSD-FOx6192HURJnxltYJuKuNA8Vwz?usp=drive\_link}
-
-{\bf \large Note that those third-party files are not part of STEPSS}.
+\hspace*{5ex}\url{https://github.com/SPS-L/stepss-java-ui/releases}
 
 %------------------------------------------------------------------------------------------------------
 \section{Installing STEPSS}
 
-STEPSS comes two ways. The {\bf installer} carries its own Java, so nothing else has to be installed and any Java already on the machine is neither needed nor disturbed. The {\bf archive}, {\tt stepss.jar}, is a single file that leaves nothing behind, and needs a Java you have installed yourself. Either way, everything required to run the simulations and display the results, executables and libraries included, travels with STEPSS.
+STEPSS is installed from an {\bf installer}, which carries its own Java, so nothing else has to be installed and any Java already on the machine is neither needed nor disturbed. Everything required to run the simulations and display the results, executables and libraries included, travels with STEPSS.
 
-On Debian and Ubuntu there is a third route, an {\bf APT repository}. It delivers the same installer, with the difference that later releases arrive through {\tt apt upgrade} rather than being downloaded by hand.
+On Debian and Ubuntu there is a second route to the same installer, an {\bf APT repository}. It delivers the same package, with the difference that later releases arrive through {\tt apt upgrade} rather than being downloaded by hand.
 
 \subsection{Using the installer (recommended)}
 
@@ -40,7 +33,7 @@ To remove it, uninstall it the way you would any other application: {\em Add or 
 \subsection{Using the APT repository (Debian and Ubuntu)}
 
 On Debian and Ubuntu, STEPSS can be installed as an ordinary package from the repository the laboratory publishes at\\
-\hspace*{5ex}{\tt https://apt.sps-lab.org}\\
+\hspace*{5ex}\url{https://apt.sps-lab.org}\\
 It carries the same {\tt .deb} as the previous section. What it adds is that {\tt apt upgrade} then moves you to each later release along with the rest of the system, instead of leaving you to notice that one was published.
 
 The setup is done once. Copy the following block into a terminal:
@@ -81,51 +74,6 @@ Four things to know about this route:
 \item It is {\bf not} an official Ubuntu or Debian repository, and nothing in it has been through Canonical's or Debian's review. That is also why the setup above is needed at all.
 \end{itemize}
 
-\subsection{Using the archive}
-
-The archive route needs a 64-bit Java Runtime Environment (JRE), version~11 or later, installed on your computer. Any recent JRE or JDK is fine. To check whether you have Java, and which version:
-\begin{enumerate}
-\item open a Windows Command prompt
-\item in the latter, enter the command:\\
-\hspace*{5ex}{\tt java -version}
-
-It should display a message similar to the one shown in Fig.~\ref{fig_install_java}.
-\item close the command prompt.
-\end{enumerate}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.8]{java_check.jpg}
-\caption{Checking the presence of the Java environment}\label{fig_install_java}
-\end{figure}
-
-If the command is not recognised, no Java is installed. In that case, install a 64-bit JRE or JDK as follows:
-\begin{enumerate}
-\item download a Java SE Development Kit (64-bit) from the \hyperlink{Google}{Google drive}, or a current release from {\tt https://adoptium.net/} or {\tt https://www.oracle.com/java/technologies/downloads/}
-\item install by double-clicking on that file and following the instructions
-\item for an easy execution, associate {\tt stepss.jar} with Java following the standard Windows procedure:
-\begin{enumerate}
-\item right-click on the {\tt stepss.jar} icon
-\item select open with
-\item choose always use this application.
-\end{enumerate}
-\end{enumerate}
-
-There is no need to uninstall any Java version you already have, as long as it is 64-bit Java~11 or later.
-
-Apart from the Java machine, this route does not require any installation in the usual meaning of the term.
-Just download the {\tt stepss.jar} file from the releases page and drop it in any convenient place of the computer. The Windows desktop is a very convenient location.
-
-Leave the archive intact; in particular do not uncompress it !
-
-STEPSS is launched by merely double-clicking on {\tt stepss.jar} (or a shortcut to the latter).
-
-When STEPSS is launched it creates a temporary working folder and copies all needed executables and libraries into that folder.
-
-To remove STEPSS from your computer, just delete the archive file. STEPSS does not leave anything in your computer !
-
-The archive installs nothing beside itself and needs nothing installed for plotting: STEPSS draws its own curves, both while a simulation runs and afterwards.
-
 %--------------------------------------------------------------------------------------------------------
 \section{Installing a Fortran Compiler}
 
@@ -135,7 +83,7 @@ Compiling a model of your own produces a simulator built from the URAMSES kit th
 
 On Windows, these come from MSYS2:
 \begin{enumerate}
-\item install MSYS2 from {\tt https://www.msys2.org/}
+\item install MSYS2 from \url{https://www.msys2.org/}
 \item open an MSYS2 terminal and install the toolchain:\\
 \hspace*{5ex}{\tt pacman -S mingw-w64-x86\_64-gcc-fortran mingw-w64-x86\_64-openblas make}
 \end{enumerate}

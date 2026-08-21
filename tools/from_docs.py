@@ -23,6 +23,7 @@ that fixes what its LaTeX writer gets wrong for this document.
 from __future__ import annotations
 
 import argparse
+import math
 import pathlib
 import re
 import shutil
@@ -47,7 +48,7 @@ BANNER = (
 # the guide; stepss_doc.tex includes them by stem.
 MANIFEST: list[tuple[str, str, str]] = [
     # Part: getting started
-    ("getting-started/quickstart", "quickstart", "Three ways to drive the engines"),
+    ("getting-started/quickstart", "quickstart", "Driving the engines: GUI and Python"),
     # Part: STEPSS GUI
     ("gui/first-run", "gui-first-run", "First run of STEPSS GUI"),
     ("gui/interface", "gui-interface", "The STEPSS GUI interface"),
@@ -449,6 +450,100 @@ def demote_block(block: str) -> str:
 
 
 # -------------------------------------------------------------- postprocess
+# ------------------------------------------------------------- table widths
+LT_RE = re.compile(r"(?s)(\\begin\{longtable\}\[\]\{@\{\}\n)(.*?)(@\{\}\})(.*?)(\\end\{longtable\})")
+COLSPEC_RE = re.compile(r">\{\\(raggedright|raggedleft|centering)\\arraybackslash\}p\{[^}]*\\real\{([0-9.]+)\}\}")
+SKIP_ROW = ("\\toprule", "\\midrule", "\\bottomrule", "\\endhead",
+            "\\endlastfoot", "\\endfirsthead", "\\noalign")
+
+
+def strip_markup(cell: str) -> str:
+    """Leaves roughly the ink a cell puts on the page.
+
+    The link target is not ink: \\hyperref[doc:ts-kundur]{Kundur two-area} sets
+    fifteen characters, not thirty-nine, and counting the label made every
+    column of cross-references come out too wide.
+    """
+    t = re.sub(r"\\begin\{minipage\}[^\n]*|\\end\{minipage\}", " ", cell)
+    t = re.sub(r"\\(raggedright|raggedleft|centering|arraybackslash|tightlist)\b", " ", t)
+    t = re.sub(r"\\href\{[^}]*\}", "", t)
+    t = re.sub(r"\\hyperref\[[^\]]*\]", "", t)
+    t = re.sub(r"\\[a-zA-Z@]+\s*", "", t)
+    return t
+
+
+def visible_len(cell: str) -> int:
+    """Roughly what the cell will occupy: LaTeX markup is not ink."""
+    t = strip_markup(cell)
+    t = re.sub(r"[{}$\\]", "", t)
+    return len(" ".join(t.split()))
+
+
+def longest_token(cell: str) -> int:
+    t = strip_markup(cell)
+    t = re.sub(r"[{}$\\]", "", t)
+    return max((len(w) for w in t.split()), default=1)
+
+
+def split_cells(row: str) -> list[str]:
+    return re.split(r"(?<!\\)&", row)
+
+
+def retable(tex: str) -> str:
+    """Rewrites pandoc's column widths from the cells rather than the source.
+
+    Pandoc takes each \real{} from the width of the column in the pipe table it
+    parsed, which is how wide the author drew it in Markdown and has nothing to
+    do with what is in it. A "What it is for" column holding sixty words and a
+    "Buses" column holding one number come out the same size, and the prose is
+    then squeezed into a ribbon down the page.
+
+    Widths here are proportional to the square root of the mean cell length,
+    which separates a prose column from a number column without letting one
+    long cell take the whole table, with a floor from the longest unbreakable
+    token so a column can always fit its widest identifier.
+    """
+
+    def fix(m: re.Match) -> str:
+        head, spec, close, body, end = m.groups()
+        cols = COLSPEC_RE.findall(spec)
+        n = len(cols)
+        if n < 2:
+            return m.group(0)
+
+        lengths = [[] for _ in range(n)]
+        tokens = [1] * n
+        for raw in body.split("\\\\"):
+            if any(k in raw for k in SKIP_ROW) and "&" not in raw:
+                continue
+            cells = split_cells(raw)
+            if len(cells) != n:
+                continue
+            for i, cell in enumerate(cells):
+                lengths[i].append(visible_len(cell))
+                tokens[i] = max(tokens[i], longest_token(cell))
+        if not any(lengths):
+            return m.group(0)
+
+        raws = []
+        for i in range(n):
+            mean = sum(lengths[i]) / len(lengths[i]) if lengths[i] else 1.0
+            raws.append(max(math.sqrt(max(mean, 1.0)), 0.55 * math.sqrt(tokens[i])))
+        total = sum(raws)
+        widths = [max(r / total, 0.05) for r in raws]
+        total = sum(widths)
+        widths = [w / total for w in widths]
+
+        new_spec = "".join(
+            "  >{\\%s\\arraybackslash}p{(\\linewidth - %d\\tabcolsep) * \\real{%.4f}}\n"
+            % (align, 2 * n, w)
+            for (align, _), w in zip(cols, widths)
+        )
+        return head + new_spec + close + body + end
+
+    return LT_RE.sub(fix, tex)
+
+
 def postprocess(tex: str, stem: str) -> str:
     # pandoc labels every heading with a slug taken from its text, which is
     # what a same-page link on the site points at. Keep them, so those links
@@ -466,6 +561,7 @@ def postprocess(tex: str, stem: str) -> str:
     # Its \texttt already escapes; \passthrough is only defined in its template.
     tex = tex.replace("\\passthrough", "")
     # A table wider than the text block is worse than a smaller one.
+    tex = retable(tex)
     tex = tex.replace("\\begin{longtable}", "\\begin{small}\\begin{longtable}")
     tex = tex.replace("\\end{longtable}", "\\end{longtable}\\end{small}")
     # fancyvrb's Verbatim, not the plain one, so fvextra can break a data

@@ -59,3 +59,27 @@
 % the margin rather than silently past the page edge.
 \usepackage{fvextra}
 \fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+
+% ---------------------------------------------------------------- contents
+% book.cls gives a section entry 2.3em for its number, which fits "9.9" and
+% not "17.10". With 42 chapters, every chapter past the ninth that has ten
+% sections ran its number into its title.
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{4.5em}{3.6em}}
+\makeatother
+
+% ------------------------------------------------------------- line breaks
+% A URL is one unbreakable word to TeX and several of them are wider than the
+% text block. xurl lets \url break at any character rather than only at the
+% punctuation url.sty allows.
+\usepackage{xurl}
+
+% Typewriter text is not hyphenated by default, so a long identifier such as
+% add_keyblock_resource sets as one box and runs into the margin. htt lets
+% those break too.
+\usepackage[htt]{hyphenat}
+
+% Room for the paragraph breaker to work with before it gives up and
+% overfills a line.
+\setlength{\emergencystretch}{3em}

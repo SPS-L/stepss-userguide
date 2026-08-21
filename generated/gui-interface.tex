@@ -107,8 +107,9 @@ Seven buttons enable once a run succeeds:
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3663}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6337}}
+@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Button
@@ -254,8 +255,9 @@ run:
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3387}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6613}}
+@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Button
@@ -333,10 +335,11 @@ actions, and both are remembered between sessions.
 \caption{The Tools menu open, holding Save command file, Save observables file, Open in editor with Ctrl+N, Select external simulator with Ctrl+R, Select working directory, Open working folder with Ctrl+E, Open terminal in working folder with Ctrl+T and Close all curve windows with Ctrl+G, then below a separator the Dark theme and Check for updates at startup ticks, both unticked.}
 \end{figure}
 
-The command file that \textbf{Save command file} writes is the same one
-\texttt{ramses\ -t} reads, so a case set up here can be handed to the command line
-unchanged. \hyperref[doc:quickstart]{Quick Start} compares the three ways to
-drive the engines.
+\textbf{Save command file} writes out the file the engine reads, listing the data,
+disturbance, trajectory and observables files of the case in the order it
+expects. It is what a run is made of, in one file.
+\hyperref[doc:quickstart]{Quick Start} compares the two ways to drive the
+engines.
 
 \section{The status bar}\label{gui-interface:the-status-bar}
 

@@ -22,9 +22,18 @@ Requirements: any LaTeX distribution providing `pdflatex` and the packages `time
 Two pre-built PDFs are committed, and they are kept identical:
 
 - `stepss_doc.pdf`: the build output of `stepss_doc.tex`, and the source of the copy published at [stepss.sps-lab.org](https://stepss.sps-lab.org/).
-- `userguide.pdf`: the same document under the file name the Java GUI expects. It is bundled, together with the companion notes in `models/`, into `DOC.zip` in [stepss-java-ui](https://github.com/SPS-L/stepss-java-ui) and extracted at run time.
+- `userguide.pdf`: the same document under an older file name.
 
-After rebuilding, refresh both copies, then regenerate `DOC.zip` in `stepss-java-ui` and update `public/stepss_docs.pdf` in `stepss-docs` so the GUI and the website ship the current guide.
+After rebuilding, refresh both copies and update `public/stepss_docs.pdf` in
+[stepss-docs](https://github.com/SPS-L/stepss-docs), which is what the website
+serves at [/stepss_docs.pdf](https://stepss.sps-lab.org/stepss_docs.pdf).
+
+`userguide.pdf` no longer has a consumer. It was bundled into a `DOC.zip` that
+STEPSS GUI extracted at run time; the GUI's **Help, User Guide** now opens the
+documentation site instead, and `DOC.zip` survives in stepss-java-ui only as an
+example string in one code comment. It is still refreshed here so the two
+committed copies do not disagree, but nothing downstream reads it, and a
+544-page PDF stored twice is 12 MB of the repository.
 
 ## Project Structure
 

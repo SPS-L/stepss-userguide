@@ -138,7 +138,7 @@ Browser-based visual editor for building CODEGEN user-defined models with drag-a
 \item
   \textbf{Repository}: \href{https://github.com/SPS-L/stepss-cg-studio}{github.com/SPS-L/stepss-cg-studio}
 \item
-  \textbf{Requirements}: Python 3.10 or later
+  \textbf{Requirements}: Python 3.10 or later. On macOS also \texttt{brew\ install\ gcc}, which the bundled CODEGEN links against.
 \item
   \textbf{Install}: \texttt{pip\ install\ stepss-cg-studio}
 \item
@@ -146,6 +146,11 @@ Browser-based visual editor for building CODEGEN user-defined models with drag-a
 \item
   \textbf{Documentation}: \hyperref[doc:cg-studio]{CODEGEN Studio guide} on this site
 \end{itemize}
+
+The wheel bundles the CODEGEN executables for Linux, Windows and macOS, so Run
+Codegen works on a fresh install with nothing to configure. That makes it
+mixed-licence: see \hyperref[ch-legal]{License}. Its
+version names the CODEGEN it carries, so 5.3.0 and 5.3.1 both run CODEGEN 5.3.
 
 \begin{docsnote}{Note}
 

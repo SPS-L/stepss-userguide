@@ -473,18 +473,25 @@ The same mandatory-output validation runs first. If validation passes:
 \item
   The editor generates the DSL text
 \item
-  The backend writes it to a temporary file and invokes the \texttt{codegen} binary
+  The backend writes it to a temporary file and invokes the bundled CODEGEN
 \item
   On \textbf{success}, a modal displays the generated \texttt{.f90} source code with options to \textbf{``Download .f90''} or \textbf{``Close''}
 \item
-  On \textbf{failure}, a modal shows the error output from the \texttt{codegen} binary
+  On \textbf{failure}, a modal shows the error output from CODEGEN
 \end{enumerate}
 
 The downloaded \texttt{.f90} file follows the naming convention \texttt{exc\_simple\_avr.f90} (type prefix + model name) and is ready to compile and link with RAMSES.
 
-\begin{docsnote}{Codegen binary required}
+\begin{docsnote}{Nothing to install or configure}
 
-The \texttt{codegen} executable must be installed and its path configured. Click the \textbf{gear icon} in the topbar to open Settings, then set the \textbf{``Codegen binary path''} to the full path of your \texttt{codegen} executable (or just \texttt{codegen} if it is on your system \texttt{PATH}).
+CODEGEN ships inside the wheel, for Linux x86-64, Windows x86-64 and macOS
+Apple Silicon, so this works on a fresh \texttt{pip\ install\ stepss-cg-studio}. There
+is no binary to obtain and no path to set; Settings shows which CODEGEN release
+this install runs, and the package version names it too.
+
+macOS is the one platform that needs anything else: \texttt{brew\ install\ gcc}, because
+Apple does not support fully static executables and that build links against
+\texttt{libgfortran}.
 
 \end{docsnote}
 
@@ -546,17 +553,17 @@ Click the \textbf{gear icon} in the topbar to configure:
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.98\linewidth]{figures/cg-studio-settings}
-\caption{The Settings dialog over the editor, with three fields: codegen binary path set to codegen, server host set to 127.0.0.1, and server port set to 8765.}
+\caption{The Settings dialog over the editor, with three rows: Bundled CODEGEN showing v5.2.0 as flat monospace text rather than an editable field, server host set to 127.0.0.1, and server port set to 8765.}
 \end{figure}
 
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3090}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2318}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4592}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2826}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2488}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4686}}
 @{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
-Setting
+Row
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Default
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -566,12 +573,20 @@ Description
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textbf{Codegen binary path} & \texttt{codegen} & Full path to the \texttt{codegen} executable \\
+\textbf{Bundled CODEGEN} & (read-only) & Which CODEGEN release this install runs \\
 \textbf{Server host} & \texttt{127.0.0.1} & Bind address (change to \texttt{0.0.0.0} for network access) \\
 \textbf{Server port} & \texttt{8765} & HTTP port \\
 \end{longtable}\end{small}
 
-Changes to host and port require a server restart. The codegen path takes effect immediately.
+Changes to host and port require a server restart.
+
+\textbf{Bundled CODEGEN is not a setting.} It reports what the wheel carries, and
+the two leading components of the package's own version name the same release:
+\texttt{stepss-cg-studio} 5.3.0 and 5.3.1 both run CODEGEN 5.3, and 5.4.0 is the first
+release on CODEGEN 5.4. Running a different generator therefore means
+installing a different \texttt{stepss-cg-studio}, not repointing the editor. Earlier
+versions had a ``Codegen binary path'' field, which existed only because no
+CODEGEN was shipped; an upgrade drops it from \texttt{config.json} automatically.
 
 Settings are stored in a platform-specific config file:
 

@@ -46,6 +46,16 @@ The \hyperref[ch-network]{TRFO record} combines the transformer model with load 
 
 \end{docsnote}
 
+Every controller in this section is a timed automaton rather than a transfer
+function: it watches a quantity, waits out a delay, then acts. The tap changers
+share the sequence below, and differ only in how the delay is computed.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/dctl-ltc-timing-light}
+\caption{Tap changer timing diagram.}
+\end{figure}
+
 \subsection{\texorpdfstring{LTC (\texttt{dctl\_ltc}): Load Tap Changer (Standard)}{LTC (dctl\_ltc): Load Tap Changer (Standard)}}\label{model-dctl:ltc-dctl_ltc-load-tap-changer-standard}
 
 \subsubsection{Description}\label{model-dctl:description}
@@ -278,6 +288,17 @@ DCTL  OLTC2  OLTC_TR2  FROM_BUS  TO_BUS  1  1  0.88  1.12  25  0.0075
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \section{Protection}\label{model-dctl:protection}
+
+The protection and ride-through models share a definite-time sequence: the
+monitored quantity crosses a threshold, a timer runs, and the trip is issued only
+if the quantity is still beyond the threshold when the timer expires. A quantity
+that recovers first resets the timer, so a transient dip passes without action.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/dctl-relay-timing-light}
+\caption{Definite-time relay timing diagram.}
+\end{figure}
 
 \subsection{\texorpdfstring{UVPROT (\texttt{dctl\_uvprot}): Under-Voltage Protection Relay}{UVPROT (dctl\_uvprot): Under-Voltage Protection Relay}}\label{model-dctl:uvprot-dctl_uvprot-under-voltage-protection-relay}
 

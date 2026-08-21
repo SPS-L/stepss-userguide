@@ -42,6 +42,12 @@ All of the above are built into every RAMSES distribution (standalone executable
 
 The exponential recovery load model captures the transient and steady-state voltage and frequency dependency of aggregated loads. Immediately after a voltage disturbance, the load behaves according to a transient voltage exponent; it then recovers exponentially to a steady-state behaviour described by a different exponent. The model supports separate active (\(P\)) and reactive (\(Q\)) power recovery dynamics, each with individual minimum/maximum limiters on the recovery variable.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/inj-load-light}
+\caption{Exponential recovery load block diagram.}
+\end{figure}
+
 \subsubsection{Scientific Description}\label{model-inj:scientific-description}
 
 The model is parameterized in terms of initial active and reactive conductance/susceptance, \(G_0 = P_0/V_0^2\) and \(B_0 = -Q_0/V_0^2\). Two recovery state variables \(x_P\) and \(x_Q\) evolve according to:
@@ -664,6 +670,12 @@ INJEC  INDM1  MTR3  BUS_MV  1.  1.  0.  0.  10.0  0.01  0.10  2.50  0.015  0.10 
 
 A generic inverter-based generation model suitable for representing aggregated distributed generation or any grid-following IBR. The model includes a Phase-Locked Loop (PLL), inner current control with active (\(I_p\)) and reactive (\(I_q\)) current commands, LVRT/HVRT logic with voltage-dependent reactive current injection, frequency-responsive active power modulation, and reconnection logic after disconnection events.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/inj-ibg-light}
+\caption{Generic inverter-based generator block diagram.}
+\end{figure}
+
 \subsubsection{Scientific Description}\label{model-inj:scientific-description-8}
 
 The PLL tracks the terminal voltage angle \(\theta\) via a second-order PI controller with a freeze option below \(V_{\mathrm{min,pll}}\):
@@ -937,6 +949,12 @@ Callable since 3.79. Earlier releases compiled this model under no name, so a da
 \subsubsection{Description}\label{model-inj:description-11}
 
 A photovoltaic generator model with similar WECC-derived structure to the wind turbine models. The model includes a plant controller (voltage/reactive power regulation), an electrical controller (current limits, LVRT), and generator/converter representation. Unlike wind turbines, there is no mechanical drive train; the active power set-point follows an irradiance input or a fixed reference. LVRT/HVRT logic and current limiting are identical to the Type 4 wind model.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/inj-pvg-light}
+\caption{Photovoltaic generator block diagram.}
+\end{figure}
 
 \subsubsection{Scientific Description}\label{model-inj:scientific-description-11}
 
@@ -1350,6 +1368,12 @@ with hard clamps at \texttt{SOCmin} and \texttt{SOCmax} that modify the active p
 
 \[P_{\min} = \begin{cases} 0 & \mathrm{SOC} \le \mathrm{SOC}_{\min}\\ P_{\min,\mathrm{rated}} & \text{otherwise}\end{cases}\]
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/inj-bess-light}
+\caption{Battery energy storage block diagram.}
+\end{figure}
+
 \subsubsection{Parameters (key parameters)}\label{model-inj:parameters-key-parameters}
 
 \begin{small}\begin{longtable}[]{@{}
@@ -1445,6 +1469,12 @@ model starts in equilibrium:
 
 where \(B_p\) is the droop and \(B_{svc,0}\) the initial susceptance implied by the
 reactive current at the bus.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/inj-svc-generic1-light}
+\caption{Generic static var compensator block diagram.}
+\end{figure}
 
 \subsubsection{Parameters}\label{model-inj:parameters-11}
 

@@ -101,6 +101,12 @@ IEEE Reference
 
 The AC1A is a rotating AC exciter with a self-excited field winding and non-linear saturation. It corresponds to IEEE Std 421.5-2016 Type AC1A. The generator terminal voltage \(V_t\) is compensated for line drop and filtered before being compared with the reference. An AC alternator supplies the field through a rectifier whose output depends on the commutation voltage \(V_E\) and field current \(I_{fd}\).
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-ac1a-light}
+\caption{AC1A block diagram.}
+\end{figure}
+
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description}
 
 The voltage regulator processes the error signal through a lead-lag network and a limited amplifier:
@@ -227,6 +233,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 
 The AC4A is a simplified static representation of an AC exciter system with an inner-loop voltage-dependent output limit. It corresponds to IEEE Std 421.5-2016 Type AC4A. The upper output limit is a function of field current: \(V_{RMAX,eff} = V_{RMAX} - K_C \cdot I_{fd}\).
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-ac4a-light}
+\caption{AC4A block diagram.}
+\end{figure}
+
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-1}
 
 \[\Delta V = V_{REF} - V_c\]
@@ -313,6 +325,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 \subsection{AC8B}\label{model-exc-ieee:ac8b}
 
 The AC8B is a rotating AC exciter with a PID voltage regulator (rather than the proportional-integral amplifier of earlier types). It corresponds to IEEE Std 421.5-2016 Type AC8B. The PID structure, proportional gain \(K_{PR}\), integral gain \(K_{IR}\), and derivative gain \(K_{DR}\), provides improved transient response compared to Type AC1A.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-ac8b-light}
+\caption{AC8B block diagram.}
+\end{figure}
 
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-2}
 
@@ -426,6 +444,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 
 The DC3A represents a non-continuously acting (rheostat-type) DC excitation system. It corresponds to IEEE Std 421.5-2016 Type DC3A. Rather than a proportional amplifier, it uses a three-position switch (VRMIN / VRH / VRMAX) driven by an integrator that holds the rheostat position \(V_{RH}\). The switch position is determined by whether the error signal \(V_{ERR}\) falls inside or outside a deadband \(\pm K_V\).
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-dc3a-light}
+\caption{DC3A block diagram.}
+\end{figure}
+
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-3}
 
 \[V_{ERR} = V_{REF} - V_c\]
@@ -502,6 +526,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 \subsection{ST1A}\label{model-exc-ieee:st1a}
 
 The ST1A is a static (thyristor) excitation system with two cascaded lead-lag networks in the voltage regulator path and an inner field current limiter (KLR/ILR). It corresponds to IEEE Std 421.5-2016 Type ST1A. The output limits are proportional to terminal voltage \(V_t\), and field current derating applies through \(K_C\): \(uplim = V_t \cdot V_{RMAX} - K_C \cdot I_{fd}\).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-st1a-light}
+\caption{ST1A block diagram.}
+\end{figure}
 
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-4}
 
@@ -652,6 +682,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 
 The EXPIC1 model implements a static exciter with an AC rotating bus-fed rectifier and an integrating (PI-type) amplifier path: \(K_A(1 + sT_A)/s\). The output \(V_B\) is proportional to the AC voltage phasor magnitude, creating a bus-fed topology analogous to IEEE Type ST2A. When \(K_P = K_I = 0\), the rectifier gain is unity.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-st2a-light}
+\caption{ST2A block diagram.}
+\end{figure}
+
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-5}
 
 The AC exciter voltage and rectifier:
@@ -749,6 +785,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 
 The IEEET5 (also referenced as DC5A in some conventions) is a non-continuously acting exciter similar to DC3A but uses an inner limiter block \texttt{lim\_civ} that gates the integrator holding signal within a deadband \(\pm K_V\). This creates the three-state (hold/raise/lower) behavior of rheostatic controllers.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-ieeet5-light}
+\caption{IEEET5 block diagram.}
+\end{figure}
+
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-6}
 
 \[V_{ERR} = V_{REF} - V_c\]
@@ -804,6 +846,12 @@ Model & Description \\
 \subsection{SEXS}\label{model-exc-ieee:sexs}
 
 The SEXS (Simplified Excitation System) is a minimal two-parameter static exciter model from CIGR\'E publications, widely used for cases where detailed exciter data is unavailable. It has no measurement filter, no line drop compensation, and no rate feedback, just a lead-lag network and a limited first-order block.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-sexs-light}
+\caption{SEXS block diagram.}
+\end{figure}
 
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-7}
 
@@ -867,6 +915,12 @@ SYNC_MACH g1  g1  1. 1.  0.  0.   800. 760. 3. 0. 0.95
 \subsection{ENTSOE\_simp}\label{model-exc-ieee:entsoe_simp}
 
 The ENTSO-E simplified exciter combines a built-in speed-signal PSS with a simple lead-lag AVR and first-order exciter block. It is the standard ENTSO-E model for dynamic studies where detailed exciter data is unavailable.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-entsoe-simp-light}
+\caption{ENTSOE\_simp block diagram.}
+\end{figure}
 
 \subsubsection{Mathematical Description}\label{model-exc-ieee:mathematical-description-8}
 
@@ -1003,6 +1057,12 @@ Parameter & Description \\
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/pss-pss2b-light}
+\caption{PSS2B block diagram.}
+\end{figure}
+
 \subsection{PSS3B: Two-Input Second-Order Filter Stabilizer}\label{model-exc-ieee:pss3b-two-input-second-order-filter-stabilizer}
 
 PSS3B processes two input channels through measurement filters and washout stages, then combines them and applies two cascaded second-order lead-lag filters. It corresponds to IEEE Std 421.5-2016 Type PSS3B.
@@ -1037,6 +1097,12 @@ Parameter & Description \\
 \end{longtable}\end{small}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/pss-pss3b-light}
+\caption{PSS3B block diagram.}
+\end{figure}
 
 \subsection{PSS4B: Three-Band Multi-Input Stabilizer}\label{model-exc-ieee:pss4b-three-band-multi-input-stabilizer}
 
@@ -1086,6 +1152,12 @@ Parameter & Description \\
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/pss-pss4b-light}
+\caption{PSS4B block diagram.}
+\end{figure}
+
 \subsection{IEEEST: Single-Input Stabilizer}\label{model-exc-ieee:ieeest-single-input-stabilizer}
 
 The IEEEST is a general-purpose single-input PSS with selectable input signal (speed deviation, electrical power, or computed accelerating power). It corresponds to IEEE Std 421.5-2016 Type PSS1A. Two second-order lead-lag filters provide frequency shaping before two first-order lead-lags and a washout stage.
@@ -1118,6 +1190,12 @@ Parameter & Description \\
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/pss-ieeest-light}
+\caption{IEEEST block diagram.}
+\end{figure}
+
 \subsection{STAB3: Power-Input Stabilizer}\label{model-exc-ieee:stab3-power-input-stabilizer}
 
 The STAB3 is a simplified PSS that takes electrical power \(P_e\) as input, applies two sequential first-order filters and a washout-type derivative block, producing a stabilizing signal.
@@ -1147,6 +1225,12 @@ Parameter & Description \\
 \section{OEL and Limiter Models}\label{model-exc-ieee:oel-and-limiter-models}
 
 Over-Excitation Limiters (OEL) prevent sustained field current overloads that would thermally damage the field winding. They generate a signal \(V_{OEL}\) that reduces the AVR output when field current exceeds thermal limits.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/pss-stab3-light}
+\caption{STAB3 block diagram.}
+\end{figure}
 
 \subsection{MAXEX2: Field Current Limiter with Timer and Hysteresis}\label{model-exc-ieee:maxex2-field-current-limiter-with-timer-and-hysteresis}
 
@@ -1182,6 +1266,12 @@ Parameter & Description \\
 \end{longtable}\end{small}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-maxex2-light}
+\caption{MAXEX2 block diagram.}
+\end{figure}
 
 \subsection{Integral OEL (\_lim variants)}\label{model-exc-ieee:integral-oel-_lim-variants}
 
@@ -1223,3 +1313,9 @@ Parameter & Description \\
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 For full documentation of the CODEGEN DSL primitives used in these models (\texttt{tf1p}, \texttt{tf1p1z}, \texttt{tf1plim}, \texttt{inlim}, \texttt{pictl}, etc.), see the \hyperref[ch-libray_blocks]{CODEGEN Blocks} reference.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/exc-integral-oel-light}
+\caption{Integral over-excitation limiter block diagram.}
+\end{figure}

@@ -152,6 +152,7 @@ CODE_MAP = {
     "\u03c3": "sigma", "\u03c4": "tau", "\u03c6": "phi", "\u03c8": "psi",
     "\u03c9": "omega",
     "\u00e9": "e", "\u00e8": "e", "\u00c9": "E", "\u00e0": "a", "\u00fc": "u",
+    "\u00b0": " deg",
 }
 TEXT_MAP = {
     "\u2013": "--", "\u2014": "---", "\u2212": "\\ensuremath{-}", "\u00d7": "\\ensuremath{\\times}",
@@ -168,6 +169,9 @@ TEXT_MAP = {
     "\u279c": "\\ensuremath{\\rightarrow}", "\u25ba": "\\ensuremath{\\blacktriangleright}",
     "\u25c4": "\\ensuremath{\\blacktriangleleft}", "\u2022": "\\ensuremath{\\bullet}",
     "\u21d2": "\\ensuremath{\\Rightarrow}", "\u2500": "--", "\u2502": "|",
+    # Degrees. \ensuremath rather than \textdegree so it needs no textcomp,
+    # and the angle it is attached to is a number either way.
+    "\u00b0": "\\ensuremath{^\\circ}",
 }
 # Anything box-drawing that reaches prose is a diagram that lost its fence;
 # fall back to the ASCII form rather than failing the run.

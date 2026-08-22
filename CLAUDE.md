@@ -24,7 +24,7 @@ pdflatex stepss_doc.tex
 pdflatex stepss_doc.tex
 ```
 
-Output: `stepss_doc.pdf`, about 540 pages. Prerequisites: a LaTeX distribution
+Output: `stepss_doc.pdf`, about 440 pages. Prerequisites: a LaTeX distribution
 with `pdflatex` and the packages listed below.
 
 **Check the log for `\end occurred inside a group`, which is not an error and

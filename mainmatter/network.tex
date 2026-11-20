@@ -26,6 +26,22 @@ All buses must be declared through BUS records. If the software finds (in other 
 
 {\bf \large Caveat}. The above record is used in the RAMSES module. For the initial power flow computation with Helios, an extended version of the BUS record is used with six fields instead of two. Please refer to Section~\ref{sec-pf-bus}. Thus, when RAMSES is initialized, if a BUS record has six fields, only the first two are read, the others are ignored.
 
+\subsection{DC buses}\label{sec-netw-busdc}
+
+A DC bus is declared with its own record, with keyword BUSDC:
+
+\hspace*{5ex}{\tt BUSDC NAME VNOM ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the name of the bus, following the same rules as a BUS name
+\item {\tt VNOM} is the nominal \emph{pole-to-neutral} DC voltage, in kV.
+\end{itemize}
+
+Because VNOM is a pole-to-neutral voltage, the impedance base of a DC line is $Z_B = 2\,V_{NOM}^2/S_B$ instead of the $V_{NOM}^2/S_B$ of an AC line.
+
+AC and DC buses share one set of names: a BUSDC record must not reuse the name of a BUS, and the reverse. A DC bus is joined to other DC buses by DC lines (Section~\ref{sec-netw-dcline}), and to the AC network only through a converter, such as the DC side of the {\tt HVDC\_VSC} two-port model.
+
 %----------------------------------------------------------------------------------
 \section{Lines and cables}
 
@@ -68,6 +84,18 @@ All lines are memorized, even those that are out of service. A line out of servi
 As mentioned in Section~\ref{sec-netw-buses}, a line must not connect two buses with different nominal voltages.
 
 To have a line connected through a single end, add a bus at the open end and set BR to a nonzero value.
+
+\subsection{DC lines and cables}\label{sec-netw-dcline}
+
+A LINE record whose two buses are both DC buses (Section~\ref{sec-netw-busdc}) is a DC line or cable. It uses the same record, but only the resistance enters the model: in DC steady state the series reactance and the shunt capacitance carry no current, so the branch is the pure conductance
+\[
+G = \frac{1}{R}, \qquad R \mbox{ in per unit on } Z_B = \frac{2\,V_{NOM}^2}{S_B}.
+\]
+X and WC2 are ignored, and RAMSES writes one line per DC line that sets either, {\tt X and WC2 ignored in the DC network}, to the log. A resistance below the minimum series impedance is raised to it and logged as {\tt resistance changed to}.
+
+A LINE joining an AC bus to a DC bus is refused with the message {\tt links an AC with a DC bus}.
+
+{\bf \large Caveat}. Up to RAMSES 3.85 a DC line was built with the AC formulas, so a nonzero X lowered its conductance and WC2 added a susceptance to the DC bus equations. A case whose DC lines carry X or WC2 starts from a different DC operating point on 3.85 and earlier than on later releases. Setting both to zero gives the same result on every release.
 
 %-------------------------------------------------------------------------------
 \section{Switches}\label{sec-netw-switch}

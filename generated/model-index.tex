@@ -111,26 +111,36 @@ Documented on
 
 \section{Injectors}\label{model-index:injectors}
 
-\hyperref[doc:model-inj]{Injector Models}
+Injector Models
 
-\begin{small}\begin{longtable}[]{@{}ll@{}}
+\begin{small}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2892}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3361}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3747}}
+@{}}
 \toprule\noalign{}
-Data-file name & State \\
+\begin{minipage}[b]{\linewidth}\raggedright
+Data-file name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+State
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Documented on
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\texttt{LOAD}, \texttt{RESTLD} & Built in \\
-\texttt{INDMACH1}, \texttt{INDMACH2} & Built in \\
-\texttt{SVC\_GENERIC1} & Built in \\
-\texttt{THEVEQ} & Built in \\
-\texttt{PQ}, \texttt{IBG} & Registered \\
-\texttt{WT3}, \texttt{WT4} & Registered \\
-\texttt{BESS}, \texttt{GFOL}, \texttt{GFOR} & Registered \\
-\texttt{vfd\_load}, \texttt{PMU} & Registered \\
-\texttt{VFAULT} & Registered, added automatically by RAMSES \\
-\texttt{INDM1}, \texttt{PV} & Registered, since 3.79 \\
-\texttt{inj\_norton} & Excluded from the build \\
+\texttt{LOAD}, \texttt{RESTLD}, \texttt{THEVEQ} & Built in & \hyperref[doc:model-inj-loads]{Loads and Equivalents} \\
+\texttt{PQ}, \texttt{vfd\_load} & Registered & \hyperref[doc:model-inj-loads]{Loads and Equivalents} \\
+\texttt{INDMACH1}, \texttt{INDMACH2} & Built in & \hyperref[doc:model-inj-indmach]{Induction Machines} \\
+\texttt{INDM1} & Registered, since 3.79 & \hyperref[doc:model-inj-indmach]{Induction Machines} \\
+\texttt{WT3}, \texttt{WT4}, \texttt{BESS} & Registered & \hyperref[doc:model-inj-wecc]{WECC Wind and Storage} \\
+\texttt{IBG}, \texttt{GFOL}, \texttt{GFOR} & Registered & \hyperref[doc:model-inj-conv]{Converter Models} \\
+\texttt{PV} & Registered, since 3.79 & \hyperref[doc:model-inj-conv]{Converter Models} \\
+\texttt{SVC\_GENERIC1} & Built in & \hyperref[doc:model-inj-comp]{Compensation and Measurement} \\
+\texttt{PMU} & Registered & \hyperref[doc:model-inj-comp]{Compensation and Measurement} \\
+\texttt{VFAULT} & Registered, added automatically by RAMSES & \hyperref[ch-sync]{Dynamic Data Records} \\
+\texttt{inj\_norton} & Excluded from the build & \\
 \end{longtable}\end{small}
 
 \section{Two-Port Models}\label{model-index:two-port-models}

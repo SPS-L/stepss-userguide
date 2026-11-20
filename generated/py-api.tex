@@ -1166,6 +1166,166 @@ the window mid-run stops the redraws and leaves the run going.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+\section{\texorpdfstring{\texttt{stepss.ssa}: Small-Signal Stability Analysis}{stepss.ssa: Small-Signal Stability Analysis}}\label{py-api:stepss.ssa-small-signal-stability-analysis}
+
+RAMSES performs the analysis itself and writes three files named from a
+basename. \texttt{stepss.ssa} drives that run and reads them back, so no parsing is
+needed.
+
+Needs RAMSES 3.79 or newer, which is what writes the v2 files this module
+reads.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Running}\label{py-api:running}
+
+\subsubsection{\texorpdfstring{\texttt{ssa.run(case,\ basename=\textquotesingle{}ssa\textquotesingle{},\ t=None,\ workdir=None,\ jacobian=False,\ ram=None,\ keep\_open=False)}}{ssa.run(case, basename=\textquotesingle ssa\textquotesingle, t=None, workdir=None, jacobian=False, ram=None, keep\_open=False)}}\label{py-api:ssa.runcase-basenamessa-tnone-workdirnone-jacobianfalse-ramnone-keep_openfalse}
+
+Run one analysis and return its results. \texttt{t} is when to linearise, in
+seconds; left at \texttt{None} it defaults to the earliest instant the engine
+accepts, 0.001 s. The case is copied rather than modified, and the copy is
+given \texttt{\$SCHEME\ DE} and \texttt{\$OMEGA\_REF\ SYN} in a generated file read last, because
+the engine refuses the analysis under either of the values a case that says
+nothing about them lands on. Anything already on disk under \texttt{basename} is
+cleared first, since the only evidence a run produced results is that its
+modes file is there afterwards.
+
+\begin{Verbatim}
+import stepss
+from stepss import ssa
+
+case = stepss.cfg('cmd.txt')
+res = ssa.run(case, basename='ssa', workdir='run1')
+res.summary()
+\end{Verbatim}
+
+Pass \texttt{jacobian=True} to write the four Jacobian tables at the instant of the
+reduction as well.
+
+\subsubsection{\texorpdfstring{\texttt{ssa.load(directory,\ basename)} and \texttt{ssa.basenames(directory)}}{ssa.load(directory, basename) and ssa.basenames(directory)}}\label{py-api:ssa.loaddirectory-basename-and-ssa.basenamesdirectory}
+
+Read a run produced anywhere, and list the runs in a directory.
+
+\begin{Verbatim}
+print(ssa.basenames('run1'))     # ['ssa']
+res = ssa.load('run1', 'ssa')
+\end{Verbatim}
+
+\subsubsection{\texorpdfstring{\texttt{ssa.load\_archive(path,\ into=None)}}{ssa.load\_archive(path, into=None)}}\label{py-api:ssa.load_archivepath-intonone}
+
+Open a \texttt{.ssa} archive, in \texttt{.zip} or \texttt{.tar.gz}, whichever interface wrote it.
+Returns \texttt{(results,\ manifest)}. The manifest records the run's basename, the
+engine version and the analysis time, and an archive with none, one written by
+something other than STEPSS, is refused rather than read.
+
+\texttt{into} names where to unpack; a temporary directory is used when it is omitted.
+The results are read from there and the returned \texttt{Results} goes on naming it, so
+that directory has to outlive the object.
+
+\subsubsection{\texorpdfstring{\texttt{ssa.save\_archive(results,\ path,\ saved\_by=None)}}{ssa.save\_archive(results, path, saved\_by=None)}}\label{py-api:ssa.save_archiveresults-path-saved_bynone}
+
+Write one run to a \texttt{.ssa} archive the graphical interface opens with \textbf{Load
+dynamic Jacobian}. \texttt{res.save(path)} is the same thing as a method.
+
+\begin{Verbatim}
+absent = res.save('kundur.ssa.zip')                 # as a method
+absent = ssa.save_archive(res, 'kundur.ssa.zip')    # or as a function
+\end{Verbatim}
+
+The format comes from the file name: \texttt{.tar.gz} or \texttt{.tgz} for a gzipped tar,
+anything else for a zip. Everything goes under one directory named for the run,
+manifest first, so unpacking by hand gives a folder rather than eight loose
+files.
+
+The return value is the member names that were \textbf{not} on disk, which for a run
+made without \texttt{jacobian=True} is the four Jacobian tables. An empty list means
+every one of the seven was archived.
+
+Two refusals worth knowing. A run whose modes file is gone is refused, because
+there is no analysis to archive. And a basename of 45 characters or more is
+refused on the tar path alone: member names would pass the 100-byte limit that
+format allows, and the resulting archive is one the Java reader mangles without
+saying so. Save as \texttt{.zip}, or shorten the basename.
+
+The archive is written through a \texttt{.part} file and moved into place, so a failure
+partway through leaves no truncated file that looks like an archive until
+someone opens it.
+
+\texttt{ssa.save} is kept as an alias for the same function, because releases 3.81.1
+and 3.81.2 shipped under that name.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Filtering}\label{py-api:filtering}
+
+\subsubsection{\texorpdfstring{\texttt{res.electromechanical(lo=0.1,\ hi=2.5)}}{res.electromechanical(lo=0.1, hi=2.5)}}\label{py-api:res.electromechanicallo0.1-hi2.5}
+
+The rotor band, one member of each conjugate pair, sorted by frequency.
+
+\subsubsection{\texorpdfstring{\texttt{res.dominant(real\_limit=-1.0)}}{res.dominant(real\_limit=-1.0)}}\label{py-api:res.dominantreal_limit-1.0}
+
+The modes whose real part is above the limit, strictly greater than. This is
+the filter that used to be a parameter of the run, and it is now a question
+asked of results already in hand: widening it costs nothing.
+
+Both return a \texttt{ModeView}, which composes and carries \texttt{.rows}, \texttt{.lam},
+\texttt{.table()} and \texttt{.to\_frame()}:
+
+\begin{Verbatim}
+res.electromechanical().dominant(-1.0).table()
+\end{Verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Reading one mode}\label{py-api:reading-one-mode}
+
+\subsubsection{\texorpdfstring{\texttt{res.participation(mode,\ floor=0.05,\ allow\_degenerate=False)}}{res.participation(mode, floor=0.05, allow\_degenerate=False)}}\label{py-api:res.participationmode-floor0.05-allow_degeneratefalse}
+
+Participation factors, largest first. \texttt{floor} is applied here, not by the
+engine: the file carries every entry above the run's own \texttt{pf\_floor}, so
+lowering it shows more without re-running anything.
+
+\subsubsection{\texorpdfstring{\texttt{res.mode\_shape(mode,\ allow\_degenerate=False)}}{res.mode\_shape(mode, allow\_degenerate=False)}}\label{py-api:res.mode_shapemode-allow_degeneratefalse}
+
+Each machine's rotor-speed phasor: magnitude normalised so the largest is 1,
+angle relative to that entry.
+
+Both refuse a mode whose \texttt{simple} flag is false. In a degenerate eigenspace the
+eigenvectors are not unique, so both quantities are basis-dependent and would
+come out differently on another machine.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Plotting}\label{py-api:plotting}
+
+\subsubsection{\texorpdfstring{\texttt{view.splane(ax=None,\ zeta=0.05,\ annotate=True,\ interactive=None)}}{view.splane(ax=None, zeta=0.05, annotate=True, interactive=None)}}\label{py-api:view.splaneaxnone-zeta0.05-annotatetrue-interactivenone}
+
+The s-plane, fitted to the modes on screen. Under an interactive backend
+(\texttt{\%matplotlib\ widget}) clicking a pole prints it, dragging a rectangle zooms,
+and a double click restores the fitted window.
+
+\subsubsection{\texorpdfstring{\texttt{res.mode\_shape\_plot(mode,\ ax=None,\ allow\_degenerate=False)} and \texttt{res.participation\_plot(mode,\ floor=0.05,\ ax=None,\ allow\_degenerate=False)}}{res.mode\_shape\_plot(mode, ax=None, allow\_degenerate=False) and res.participation\_plot(mode, floor=0.05, ax=None, allow\_degenerate=False)}}\label{py-api:res.mode_shape_plotmode-axnone-allow_degeneratefalse-and-res.participation_plotmode-floor0.05-axnone-allow_degeneratefalse}
+
+The polar dial and a horizontal bar chart. Each takes and returns an \texttt{Axes}, so
+two runs go side by side in one figure.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{The state matrix}\label{py-api:the-state-matrix}
+
+\subsubsection{\texorpdfstring{\texttt{res.state\_matrix}}{res.state\_matrix}}\label{py-api:res.state_matrix}
+
+The matrix the engine reduced, as an \texttt{(nstates,\ nstates)} array. It lives in
+the engine rather than in any file, so it is available on a live run only, and
+a later analysis replaces it: read it before starting the next one.
+
+\subsubsection{\texorpdfstring{\texttt{sim.runSsa(basename,\ t=None)} and \texttt{sim.getStateMatrix()}}{sim.runSsa(basename, t=None) and sim.getStateMatrix()}}\label{py-api:sim.runssabasename-tnone-and-sim.getstatematrix}
+
+The low-level entries \texttt{ssa.run} is built on, for a caller driving the run
+themselves.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
 \section{Complete Example}\label{py-api:complete-example}
 
 \begin{Verbatim}

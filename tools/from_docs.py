@@ -68,7 +68,16 @@ MANIFEST: list[tuple[str, str, str]] = [
     ("models/custom-exciters", "model-exc-custom", "Other excitation controllers"),
     ("models/ieee-governors", "model-tor-ieee", "IEEE turbine-governor models"),
     ("models/custom-governors", "model-tor-custom", "Other turbine-governor models"),
-    ("models/custom-injectors", "model-inj", "Injector models"),
+    ("models/injectors/index", "model-inj", "Injector models"),
+    ("models/injectors/loads", "model-inj-loads", "Load and equivalent models"),
+    ("models/injectors/induction-machines", "model-inj-indmach", "Induction machine models"),
+    ("models/injectors/wecc", "model-inj-wecc", "WECC wind and storage models"),
+    ("models/injectors/converters", "model-inj-conv", "Converter models"),
+    (
+        "models/injectors/compensation-measurement",
+        "model-inj-comp",
+        "Compensation and measurement models",
+    ),
     ("models/two-port-models", "model-twop", "Two-port models"),
     # Part: CODEGEN
     ("developer/codegen-examples", "codegen-examples", "Worked CODEGEN examples"),
@@ -136,6 +145,7 @@ NOTE_KINDS = {"note": "Note", "tip": "Tip", "caution": "Caution", "danger": "War
 # to be ASCII, because verbatim takes no commands; outside one it can be the
 # proper LaTeX.
 CODE_MAP = {
+    "\u00b2": "^2",
     "\u2500": "-", "\u2502": "|", "\u250c": "+", "\u2510": "+", "\u2514": "+",
     "\u2518": "+", "\u251c": "+", "\u2524": "+", "\u252c": "+", "\u2534": "+",
     "\u253c": "+", "\u2550": "=", "\u2551": "|",
@@ -155,6 +165,7 @@ CODE_MAP = {
     "\u00b0": " deg",
 }
 TEXT_MAP = {
+    "\u00b2": "\\ensuremath{^2}",
     "\u2013": "--", "\u2014": "---", "\u2212": "\\ensuremath{-}", "\u00d7": "\\ensuremath{\\times}",
     "\u00b7": "\\ensuremath{\\cdot}", "\u2192": "\\ensuremath{\\rightarrow}", "\u2190": "\\ensuremath{\\leftarrow}",
     "\u2194": "\\ensuremath{\\leftrightarrow}", "\u2264": "\\ensuremath{\\le}", "\u2265": "\\ensuremath{\\ge}",
@@ -432,6 +443,9 @@ def preprocess(text: str, used: set[str], unresolved: set[str]) -> str:
     text, _ = strip_frontmatter(text)
     text = re.sub(r"(?m)^import\s+.*?;\s*$\n?", "", text)
     prose, blocks = mask_code(text)
+    # The site folds each usage example in <details>; print has nothing to
+    # fold, so the wrapper and its "Show the data record" caption go.
+    prose = re.sub(r"(?m)^<details>\s*\n<summary>.*?</summary>\s*\n|^</details>\s*\n", "", prose)
     prose = convert_asides(prose)
     prose = convert_admonitions(prose)
     prose = convert_components(prose)

@@ -70,55 +70,33 @@ The well-known Park transformation is used to replace time-varying inductances a
 
 Using the EMFL per unit system, the relationship between magnetic flux linkages and currents is:
 
-\[
-\begin{pmatrix} \psi_d \\ \psi_f \\ \psi_{d1} \end{pmatrix} = \begin{pmatrix} L_\ell + M_d & M_d & S_{d1} M_d \\ M_d & L_{\ell f} + M_d & S_{d1} M_d \\ S_{d1} M_d & S_{d1} M_d & L_{\ell d1} + S_{d1} M_d \end{pmatrix} \begin{pmatrix} i_d \\ i_f \\ i_{d1} \end{pmatrix}
-\]
+\[\begin{pmatrix} \psi_d \\ \psi_f \\ \psi_{d1} \end{pmatrix} = \begin{pmatrix} L_\ell + M_d & M_d & S_{d1} M_d \\ M_d & L_{\ell f} + M_d & S_{d1} M_d \\ S_{d1} M_d & S_{d1} M_d & L_{\ell d1} + S_{d1} M_d \end{pmatrix} \begin{pmatrix} i_d \\ i_f \\ i_{d1} \end{pmatrix}\]
 
-\[
-\begin{pmatrix} \psi_q \\ \psi_{q1} \\ \psi_{q2} \end{pmatrix} = \begin{pmatrix} L_\ell + M_q & S_{q1} M_q & S_{q2} M_q \\ S_{q1} M_q & L_{\ell q1} + S_{q1} M_q & S_{q2} M_q \\ S_{q2} M_q & S_{q2} M_q & L_{\ell q2} + S_{q2} M_q \end{pmatrix} \begin{pmatrix} i_q \\ i_{q1} \\ i_{q2} \end{pmatrix}
-\]
+\[\begin{pmatrix} \psi_q \\ \psi_{q1} \\ \psi_{q2} \end{pmatrix} = \begin{pmatrix} L_\ell + M_q & S_{q1} M_q & S_{q2} M_q \\ S_{q1} M_q & L_{\ell q1} + S_{q1} M_q & S_{q2} M_q \\ S_{q2} M_q & S_{q2} M_q & L_{\ell q2} + S_{q2} M_q \end{pmatrix} \begin{pmatrix} i_q \\ i_{q1} \\ i_{q2} \end{pmatrix}\]
 
 The \(d\) and \(q\) components of the air-gap flux are:
 
-\[
-\psi_{ad} = M_d(i_d + i_f + S_{d1} i_{d1})
-\]
+\[\psi_{ad} = M_d(i_d + i_f + S_{d1} i_{d1})\]
 
-\[
-\psi_{aq} = M_q(i_q + S_{q1} i_{q1} + S_{q2} i_{q2})
-\]
+\[\psi_{aq} = M_q(i_q + S_{q1} i_{q1} + S_{q2} i_{q2})\]
 
 Individual flux linkages in terms of air-gap flux:
 
-\[
-\psi_d = L_\ell i_d + \psi_{ad}
-\]
+\[\psi_d = L_\ell i_d + \psi_{ad}\]
 
-\[
-\psi_f = L_{\ell f} i_f + \psi_{ad}
-\]
+\[\psi_f = L_{\ell f} i_f + \psi_{ad}\]
 
-\[
-\psi_{d1} = L_{\ell d1} i_{d1} + S_{d1} \psi_{ad}
-\]
+\[\psi_{d1} = L_{\ell d1} i_{d1} + S_{d1} \psi_{ad}\]
 
-\[
-\psi_q = L_\ell i_q + \psi_{aq}
-\]
+\[\psi_q = L_\ell i_q + \psi_{aq}\]
 
-\[
-\psi_{q1} = L_{\ell q1} i_{q1} + S_{q1} \psi_{aq}
-\]
+\[\psi_{q1} = L_{\ell q1} i_{q1} + S_{q1} \psi_{aq}\]
 
-\[
-\psi_{q2} = L_{\ell q2} i_{q2} + S_{q2} \psi_{aq}
-\]
+\[\psi_{q2} = L_{\ell q2} i_{q2} + S_{q2} \psi_{aq}\]
 
 Rotor currents from flux linkages:
 
-\[
-i_f = \frac{\psi_f - \psi_{ad}}{L_{\ell f}}, \qquad i_{d1} = \frac{\psi_{d1} - S_{d1} \psi_{ad}}{L_{\ell d1}}, \qquad i_{q1} = \frac{\psi_{q1} - S_{q1} \psi_{aq}}{L_{\ell q1}}, \qquad i_{q2} = \frac{\psi_{q2} - S_{q2} \psi_{aq}}{L_{\ell q2}}
-\]
+\[i_f = \frac{\psi_f - \psi_{ad}}{L_{\ell f}}, \qquad i_{d1} = \frac{\psi_{d1} - S_{d1} \psi_{ad}}{L_{\ell d1}}, \qquad i_{q1} = \frac{\psi_{q1} - S_{q1} \psi_{aq}}{L_{\ell q1}}, \qquad i_{q2} = \frac{\psi_{q2} - S_{q2} \psi_{aq}}{L_{\ell q2}}\]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -126,25 +104,17 @@ i_f = \frac{\psi_f - \psi_{ad}}{L_{\ell f}}, \qquad i_{d1} = \frac{\psi_{d1} - S
 
 Let \(M_d^u\) and \(M_q^u\) be the unsaturated direct- and quadrature-axis mutual inductances. The saturated values \(M_d\) and \(M_q\) are:
 
-\[
-M_d = \frac{M_d^u}{1 + m \left(\sqrt{\psi_{ad}^2 + \psi_{aq}^2}\right)^n}
-\]
+\[M_d = \frac{M_d^u}{1 + m \left(\sqrt{\psi_{ad}^2 + \psi_{aq}^2}\right)^n}\]
 
-\[
-M_q = \frac{M_q^u}{1 + m \left(\sqrt{\psi_{ad}^2 + \psi_{aq}^2}\right)^n}
-\]
+\[M_q = \frac{M_q^u}{1 + m \left(\sqrt{\psi_{ad}^2 + \psi_{aq}^2}\right)^n}\]
 
 where \(m\) and \(n\) are the saturation exponents specified in the \texttt{SYNC\_MACH} record.
 
 Substituting into the air-gap flux expressions yields the algebraic equations:
 
-\[
-\psi_{ad} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_d^u} + \frac{1}{L_{\ell f}} + \frac{S_{d1}}{L_{\ell d1}} \right) - i_d - \frac{1}{L_{\ell f}} \psi_f - \frac{S_{d1}}{L_{\ell d1}} \psi_{d1} = 0
-\]
+\[\psi_{ad} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_d^u} + \frac{1}{L_{\ell f}} + \frac{S_{d1}}{L_{\ell d1}} \right) - i_d - \frac{1}{L_{\ell f}} \psi_f - \frac{S_{d1}}{L_{\ell d1}} \psi_{d1} = 0\]
 
-\[
-\psi_{aq} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_q^u} + \frac{S_{q1}}{L_{\ell q1}} + \frac{S_{q2}}{L_{\ell q2}} \right) - i_q - \frac{S_{q1}}{L_{\ell q1}} \psi_{q1} - \frac{S_{q2}}{L_{\ell q2}} \psi_{q2} = 0
-\]
+\[\psi_{aq} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_q^u} + \frac{S_{q1}}{L_{\ell q1}} + \frac{S_{q2}}{L_{\ell q2}} \right) - i_q - \frac{S_{q1}}{L_{\ell q1}} \psi_{q1} - \frac{S_{q2}}{L_{\ell q2}} \psi_{q2} = 0\]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -160,23 +130,15 @@ All synchronous machines have their rotor positions referred to the \(x\) axis o
 
 The \(d\) and \(q\) components of the stator voltage and current relate to the network \((x, y)\) components through the rotor angle \(\delta\):
 
-\[
-\begin{pmatrix} v_d \\ v_q \end{pmatrix} = \begin{pmatrix} -\sin\delta & \cos\delta \\ \cos\delta & \sin\delta \end{pmatrix} \begin{pmatrix} v_x \\ v_y \end{pmatrix}
-\]
+\[\begin{pmatrix} v_d \\ v_q \end{pmatrix} = \begin{pmatrix} -\sin\delta & \cos\delta \\ \cos\delta & \sin\delta \end{pmatrix} \begin{pmatrix} v_x \\ v_y \end{pmatrix}\]
 
-\[
-\begin{pmatrix} i_d \\ i_q \end{pmatrix} = \begin{pmatrix} -\sin\delta & \cos\delta \\ \cos\delta & \sin\delta \end{pmatrix} \begin{pmatrix} i_x \\ i_y \end{pmatrix}
-\]
+\[\begin{pmatrix} i_d \\ i_q \end{pmatrix} = \begin{pmatrix} -\sin\delta & \cos\delta \\ \cos\delta & \sin\delta \end{pmatrix} \begin{pmatrix} i_x \\ i_y \end{pmatrix}\]
 
 After transformation, the air-gap flux algebraic equations in \((x, y)\) coordinates become:
 
-\[
-\psi_{ad} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_d^u} + \frac{1}{L_{\ell f}} + \frac{S_{d1}}{L_{\ell d1}} \right) + \sin\delta\, i_x - \cos\delta\, i_y - \frac{1}{L_{\ell f}} \psi_f - \frac{S_{d1}}{L_{\ell d1}} \psi_{d1} = 0
-\]
+\[\psi_{ad} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_d^u} + \frac{1}{L_{\ell f}} + \frac{S_{d1}}{L_{\ell d1}} \right) + \sin\delta\, i_x - \cos\delta\, i_y - \frac{1}{L_{\ell f}} \psi_f - \frac{S_{d1}}{L_{\ell d1}} \psi_{d1} = 0\]
 
-\[
-\psi_{aq} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_q^u} + \frac{S_{q1}}{L_{\ell q1}} + \frac{S_{q2}}{L_{\ell q2}} \right) - \cos\delta\, i_x - \sin\delta\, i_y - \frac{S_{q1}}{L_{\ell q1}} \psi_{q1} - \frac{S_{q2}}{L_{\ell q2}} \psi_{q2} = 0
-\]
+\[\psi_{aq} \left( \frac{1 + m(\sqrt{\psi_{ad}^2 + \psi_{aq}^2})^n}{M_q^u} + \frac{S_{q1}}{L_{\ell q1}} + \frac{S_{q2}}{L_{\ell q2}} \right) - \cos\delta\, i_x - \sin\delta\, i_y - \frac{S_{q1}}{L_{\ell q1}} \psi_{q1} - \frac{S_{q2}}{L_{\ell q2}} \psi_{q2} = 0\]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -184,16 +146,12 @@ After transformation, the air-gap flux algebraic equations in \((x, y)\) coordin
 
 \subsection{Original form}\label{model-sync:original-form}
 
-\[
-v_d = -R_a i_d - \omega \psi_q \qquad\qquad v_q = -R_a i_q + \omega \psi_d
-\]
+\[v_d = -R_a i_d - \omega \psi_q \qquad\qquad v_q = -R_a i_q + \omega \psi_d\]
 
-\[
-\frac{d\psi_f}{dt} = \omega_N (K_f v_f - R_f i_f) \qquad
+\[\frac{d\psi_f}{dt} = \omega_N (K_f v_f - R_f i_f) \qquad
 \frac{d\psi_{d1}}{dt} = -\omega_N R_{d1} i_{d1} \qquad
 \frac{d\psi_{q1}}{dt} = -\omega_N R_{q1} i_{q1} \qquad
-\frac{d\psi_{q2}}{dt} = -\omega_N R_{q2} i_{q2}
-\]
+\frac{d\psi_{q2}}{dt} = -\omega_N R_{q2} i_{q2}\]
 
 where \(R_a\) is the stator (armature) resistance, \(R_f\) the field winding resistance, \(R_{d1}\), \(R_{q1}\), \(R_{q2}\) the rotor winding resistances, \(\omega\) the rotor speed (pu), \(\omega_N = 2\pi f_{nom}\) the nominal angular frequency (rad/s), \(v_f\) the field voltage, and \(K_f\) a coefficient to pass from per unit values of the excitation system to per unit values of the machine.
 
@@ -201,51 +159,33 @@ The stator equations are transformed to the \((x, y)\) frame using the rotation 
 
 \subsection{\texorpdfstring{Stator equations (algebraic, in \(x\)-\(y\) frame)}{Stator equations (algebraic, in x-y frame)}}\label{model-sync:stator-equations-algebraic-in-x-y-frame}
 
-\[
-0 = \sin\delta\, v_x - \cos\delta\, v_y + (R_a \sin\delta - \omega L_\ell \cos\delta)\, i_x - (R_a \cos\delta + \omega L_\ell \sin\delta)\, i_y - \omega \psi_{aq}
-\]
+\[0 = \sin\delta\, v_x - \cos\delta\, v_y + (R_a \sin\delta - \omega L_\ell \cos\delta)\, i_x - (R_a \cos\delta + \omega L_\ell \sin\delta)\, i_y - \omega \psi_{aq}\]
 
-\[
-0 = -\cos\delta\, v_x - \sin\delta\, v_y - (R_a \cos\delta + \omega L_\ell \sin\delta)\, i_x - (R_a \sin\delta - \omega L_\ell \cos\delta)\, i_y + \omega \psi_{ad}
-\]
+\[0 = -\cos\delta\, v_x - \sin\delta\, v_y - (R_a \cos\delta + \omega L_\ell \sin\delta)\, i_x - (R_a \sin\delta - \omega L_\ell \cos\delta)\, i_y + \omega \psi_{ad}\]
 
 \subsection{Rotor equations (differential)}\label{model-sync:rotor-equations-differential}
 
-\[
-\frac{d\psi_f}{dt} = \omega_N \left( K_f v_f - R_f \frac{\psi_f - \psi_{ad}}{L_{\ell f}} \right)
-\]
+\[\frac{d\psi_f}{dt} = \omega_N \left( K_f v_f - R_f \frac{\psi_f - \psi_{ad}}{L_{\ell f}} \right)\]
 
-\[
-\frac{d\psi_{d1}}{dt} = -\omega_N R_{d1} \frac{\psi_{d1} - S_{d1} \psi_{ad}}{L_{\ell d1}}
-\]
+\[\frac{d\psi_{d1}}{dt} = -\omega_N R_{d1} \frac{\psi_{d1} - S_{d1} \psi_{ad}}{L_{\ell d1}}\]
 
-\[
-\frac{d\psi_{q1}}{dt} = -\omega_N R_{q1} \frac{\psi_{q1} - S_{q1} \psi_{aq}}{L_{\ell q1}}
-\]
+\[\frac{d\psi_{q1}}{dt} = -\omega_N R_{q1} \frac{\psi_{q1} - S_{q1} \psi_{aq}}{L_{\ell q1}}\]
 
-\[
-\frac{d\psi_{q2}}{dt} = -\omega_N R_{q2} \frac{\psi_{q2} - S_{q2} \psi_{aq}}{L_{\ell q2}}
-\]
+\[\frac{d\psi_{q2}}{dt} = -\omega_N R_{q2} \frac{\psi_{q2} - S_{q2} \psi_{aq}}{L_{\ell q2}}\]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \section{Rotor Motion}\label{model-sync:rotor-motion}
 
-\[
-\frac{1}{\omega_N} \frac{d\delta}{dt} = \omega - \omega_{ref}
-\]
+\[\frac{1}{\omega_N} \frac{d\delta}{dt} = \omega - \omega_{ref}\]
 
-\[
-2H \frac{d\omega}{dt} = K_m T_m - T_e - D(\omega - \omega_{ref})
-\]
+\[2H \frac{d\omega}{dt} = K_m T_m - T_e - D(\omega - \omega_{ref})\]
 
 where \(H\) is the inertia constant (in s), \(T_m\) the mechanical torque produced by the turbine, \(K_m\) a coefficient to pass from per unit values of the turbine to per unit values of the machine, and \(\omega_{ref}\) the angular speed of the reference axes: \(\omega_{coi}\) in the COI reference frame, or 1 pu in the synchronous frame (selected by the \texttt{\$OMEGA\_REF} solver setting).
 
 The electromagnetic torque \(T_e\) is:
 
-\[
-T_e = \psi_{ad} i_q - \psi_{aq} i_d = \psi_{ad}(\cos\delta\, i_x + \sin\delta\, i_y) - \psi_{aq}(-\sin\delta\, i_x + \cos\delta\, i_y)
-\]
+\[T_e = \psi_{ad} i_q - \psi_{aq} i_d = \psi_{ad}(\cos\delta\, i_x + \sin\delta\, i_y) - \psi_{aq}(-\sin\delta\, i_x + \cos\delta\, i_y)\]
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -263,29 +203,21 @@ These are balanced by:
 
 The synchronous machine model uses the EMFL per unit system, while the excitation system typically uses its own per unit system. The parameter \texttt{IBRATIO} bridges these two bases:
 
-\[
-IBRATIO = \frac{I_{fB}^{mac}}{I_{fB}^{exc}}
-\]
+\[IBRATIO = \frac{I_{fB}^{mac}}{I_{fB}^{exc}}\]
 
 where \(I_{fB}^{mac}\) is the field winding base current in the machine model and \(I_{fB}^{exc}\) is the base current in the excitation system model. The relationship between per-unit field currents in the two systems is:
 
-\[
-IBRATIO = \frac{i_{f,pu}^{exc}}{i_{f,pu}^{mac}}
-\]
+\[IBRATIO = \frac{i_{f,pu}^{exc}}{i_{f,pu}^{mac}}\]
 
 \subsection{Common per unit conventions for IBRATIO}\label{model-sync:common-per-unit-conventions-for-ibratio}
 
 \textbf{Open-circuit unsaturated machine} (most common): \(I_{fB}^{exc}\) is the field current that produces nominal stator voltage (\(V = 1\) pu) at nominal speed (\(\omega = 1\) pu) with the stator open, neglecting saturation:
 
-\[
-IBRATIO = M_d^u = X_d^u - X_\ell
-\]
+\[IBRATIO = M_d^u = X_d^u - X_\ell\]
 
 \textbf{Open-circuit saturated machine}: Same conditions but with saturation:
 
-\[
-IBRATIO = \frac{M_d^u}{1 + m} = \frac{X_d^u - X_\ell}{1 + m}
-\]
+\[IBRATIO = \frac{M_d^u}{1 + m} = \frac{X_d^u - X_\ell}{1 + m}\]
 
 \textbf{Saturated machine at nominal operating conditions}: \(I_{fB}^{exc}\) is the field current when the machine produces nominal active and reactive powers (\(P = \cos\phi_N\), \(Q = \sin\phi_N\)) at nominal voltage and speed, with saturation.
 
@@ -495,9 +427,7 @@ Here the machine G5, connected to bus 5, is in service (\texttt{br\ =\ 1}) and i
   \texttt{delta} is the initial value of the rotor angle \(\delta\), in \textbf{degrees}.
 \item
   \texttt{sat} is the saturation factor
-  \[
-  sat = 1 + m \left( \sqrt{\psi_{ad}^2 + \psi_{aq}^2} \right)^n \geq 1
-  \]
+  \[sat = 1 + m \left( \sqrt{\psi_{ad}^2 + \psi_{aq}^2} \right)^n \geq 1\]
   the ratio between the field current in the saturated machine and the corresponding field current when saturation is neglected, for the same operating conditions. It characterizes the extra excitation current needed in the presence of saturated material (\(sat = 1\) when \texttt{m} is set to zero).
 \item
   \texttt{vf} is the initial field voltage on the \textbf{exciter base}, which is indirectly defined by the \texttt{IBRATIO} parameter of the machine.

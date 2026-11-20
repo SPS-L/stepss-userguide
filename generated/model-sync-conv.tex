@@ -47,51 +47,33 @@ All parameters are in per unit; time constants are entered in seconds and normal
 
 \textbf{Time base}
 
-\[
-t_b = \frac{1}{2\pi f_{nom}}
-\]
+\[t_b = \frac{1}{2\pi f_{nom}}\]
 
 All time constants (TPD0, TSD0, TPQ0, TSQ0) are divided by \(t_b\) before entering the resistance formulas.
 
 \textbf{Unsaturated mutuals}
 
-\[
-M_d^u = X_d - L_\ell, \qquad M_q^u = X_q - L_\ell
-\]
+\[M_d^u = X_d - L_\ell, \qquad M_q^u = X_q - L_\ell\]
 
 \textbf{d axis, two rotor circuits (field + damper, XSD/TSD0 present)}
 
-\[
-T'_d = T'_{d0}\frac{X'_d}{X_d}, \qquad T''_d = \frac{X''_d \, T'_{d0} \, T''_{d0}}{X_d \, T'_d}
-\]
+\[T'_d = T'_{d0}\frac{X'_d}{X_d}, \qquad T''_d = \frac{X''_d \, T'_{d0} \, T''_{d0}}{X_d \, T'_d}\]
 
-\[
-a = \frac{X_d T'_d T''_d - L_\ell T'_{d0} T''_{d0}}{X_d - L_\ell}, \quad
-b = \frac{X_d(T'_d + T''_d) - L_\ell(T'_{d0} + T''_{d0})}{X_d - L_\ell}
-\]
+\[a = \frac{X_d T'_d T''_d - L_\ell T'_{d0} T''_{d0}}{X_d - L_\ell}, \quad
+b = \frac{X_d(T'_d + T''_d) - L_\ell(T'_{d0} + T''_{d0})}{X_d - L_\ell}\]
 
-\[
-c = \frac{X_d(T'_{d0} T''_{d0} - T'_d T''_d)}{(X_d - L_\ell)^2}, \quad
-d = \frac{X_d(T'_{d0} + T''_{d0} - T'_d - T''_d)}{(X_d - L_\ell)^2}
-\]
+\[c = \frac{X_d(T'_{d0} T''_{d0} - T'_d T''_d)}{(X_d - L_\ell)^2}, \quad
+d = \frac{X_d(T'_{d0} + T''_{d0} - T'_d - T''_d)}{(X_d - L_\ell)^2}\]
 
-\[
-T_f = \frac{b + \sqrt{b^2 - 4a}}{2}, \qquad T_{d1} = b - T_f
-\]
+\[T_f = \frac{b + \sqrt{b^2 - 4a}}{2}, \qquad T_{d1} = b - T_f\]
 
-\[
-R_{d1} = \frac{T_f - T_{d1}}{c - d \, T_{d1}}, \qquad R_f = \frac{-R_{d1}}{1 - d \, R_{d1}}
-\]
+\[R_{d1} = \frac{T_f - T_{d1}}{c - d \, T_{d1}}, \qquad R_f = \frac{-R_{d1}}{1 - d \, R_{d1}}\]
 
-\[
-L_{\ell f} = T_f R_f, \qquad L_{\ell d1} = T_{d1} R_{d1}
-\]
+\[L_{\ell f} = T_f R_f, \qquad L_{\ell d1} = T_{d1} R_{d1}\]
 
 \textbf{d axis, single rotor circuit (XSD/TSD0 skipped)}
 
-\[
-L_{ff} = \frac{(M_d^u)^2}{X_d - X'_d}, \qquad L_{\ell f} = L_{ff} - M_d^u, \qquad R_f = \frac{L_{ff}}{T'_{d0}}
-\]
+\[L_{ff} = \frac{(M_d^u)^2}{X_d - X'_d}, \qquad L_{\ell f} = L_{ff} - M_d^u, \qquad R_f = \frac{L_{ff}}{T'_{d0}}\]
 
 \textbf{q axis} is fully symmetric to the d axis. Two circuits (XPQ/TPQ0 and XSQ/TSQ0) use the same quadratic with \(X_q, L_\ell, T'_{q0}, T''_{q0}, X'_q, X''_q\). Single-circuit fallbacks:
 
@@ -105,9 +87,7 @@ L_{ff} = \frac{(M_d^u)^2}{X_d - X'_d}, \qquad L_{\ell f} = L_{ff} - M_d^u, \qqua
 
 \textbf{Field base scaling}
 
-\[
-p_{uf} = R_f \,/\, \text{IBRATIO}
-\]
+\[p_{uf} = R_f \,/\, \text{IBRATIO}\]
 
 The field current is then reconstructed internally as \(i_f = (\psi_f - \psi_{ad}) \cdot (R_f/p_{uf}) / L_{\ell f}\).
 

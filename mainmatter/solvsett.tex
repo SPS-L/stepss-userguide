@@ -118,7 +118,29 @@ assigned to each thread.
 
  \$NET\_FREQ\_UPD T/F ;
 
-Check \href{file:models/freq_upd_vminmax.pdf}{Network update with frequency}.
+Default: F. With F, every network admittance is computed once at the nominal
+frequency, which is the usual quasi-static phasor assumption. With T, each
+network element is rescaled at every time step with the per-unit center of
+inertia speed of its island, $\nu = \omega_{COI}/\omega_N$, taken from the
+previous time step, under both reference frames. Reactances and susceptances
+follow their physical dependence on frequency, and resistances are unchanged:
+
+\begin{itemize}
+\item the series reactance $X$ of a line or transformer becomes $\nu X$ when
+inductive ($X > 0$) and $X/\nu$ when capacitive ($X < 0$);
+\item the shunt susceptance $B$ of a branch end or of a SHUNT becomes $\nu B$
+when capacitive ($B > 0$) and $B/\nu$ when inductive ($B < 0$);
+\item the reactance of an IMPLOAD follows the same rule as a series reactance.
+\end{itemize}
+
+A series admittance $g + jb$ is converted to $R + jX$ with
+$R = g/(g^2+b^2)$ and $X = -b/(g^2+b^2)$, its reactance is rescaled, and the
+result is converted back. The origin side of a branch uses the speed of the
+island of its origin bus, and the extremity side that of its extremity bus. The
+branch flows reported as observables, shown in the run-time display and read by
+discrete controllers use the same rescaled admittances, so they agree with the
+network solution. The network Jacobian keeps the nominal admittances, which
+affects the Newton iterations only, not the converged solution.
 
 
 \section{\index{CALLGP@CALL\_GP}Call Gnuplot}

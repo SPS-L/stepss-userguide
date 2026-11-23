@@ -276,7 +276,7 @@ direction,vc_pu,pc_mw,qc_mvar,pstation_mw,pconv_mw
 
 (one line in the file), where {\tt loss\_mw} is $P_{AC} - P_{DC}$, the sum of the station and converter losses.
 
-When the data are dumped, constant-voltage and island-reference converters are written with their solved {\tt PAC} and {\tt PDC}, which read back as starting guesses, so a dumped case solves to the same point. A droop converter keeps its $P_{SET}$ in {\tt PDC}; its solved power appears in the converter table only.
+When the data are dumped, constant-voltage and island-reference converters are written with their solved {\tt PAC} and {\tt PDC}, which read back as starting guesses, so a dumped case solves to the same point. A droop converter keeps its $P_{SET}$ in {\tt PDC}; its solved power appears in the converter table, and from Python in {\tt get\_converter\_info()} (Section~\ref{py-helios:acdc-converters}).
 
 \subsection{Solver outcomes}\label{sec-pf-acdc-status}
 
@@ -286,7 +286,7 @@ Two outcomes are specific to AC-DC cases. Both end the solve as not converged, w
 \item CONVERTER\_INFEASIBLE: a converter cannot deliver the {\tt PDC} it must through its losses and station, or free converter powers form a ring. For the first cause the message gives the {\tt PDC} asked for and the largest the converter can deliver at the PCC voltage reached. The status line on stderr reads {\tt NOT\_CONVERGED (converter power infeasible)}.
 \end{itemize}
 
-In the C API, {\tt helios\_get\_solver\_status} returns 5 for NO\_DC\_REGULATION and 6 for CONVERTER\_INFEASIBLE, and {\tt helios\_get\_last\_error} carries the message. A DC bus reports bus type 4 (DC).
+In the C API, {\tt helios\_get\_solver\_status} returns 5 for NO\_DC\_REGULATION and 6 for CONVERTER\_INFEASIBLE, and {\tt helios\_get\_last\_error} carries the message. A DC bus reports bus type 4 (DC). From Helios 1.7.0 the C API also reports each converter ({\tt helios\_get\_converter\_info}, {\tt helios\_get\_converter\_state} and {\tt helios\_copy\_converter\_outputs}), with the columns of the converter table.
 
 \subsection{Example}
 

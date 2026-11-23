@@ -52,7 +52,56 @@ names = pf.bus_names()
 print(f"lowest voltage: {v_pu.min():.4f} pu at {names[v_pu.argmin()]}")
 \end{Verbatim}
 
-Per-element dataclasses are available via \texttt{get\_bus\_info()}, \texttt{get\_branch\_info()}, and \texttt{get\_generator\_info()}.
+Per-element dataclasses are available via \texttt{get\_bus\_info()}, \texttt{get\_branch\_info()}, \texttt{get\_generator\_info()}, and \texttt{get\_converter\_info()}.
+
+\section{AC/DC Converters}\label{py-helios:acdc-converters}
+
+A case with \texttt{BUSDC} and \texttt{ACDC} records (see \hyperref[ch-pf]{AC/DC Converters (ACDC)}) solves like any other, and its DC buses appear in \texttt{bus\_names()} with \texttt{bus\_type} \texttt{BusType.DC}. The converters have their own getters, which need \texttt{stepss} 3.85.2 or later (Helios 1.7.0):
+
+\begin{Verbatim}
+from stepss.helios import ConverterMode
+
+with HeliosSession() as pf:
+    pf.load_file('case5_mtdc_droop.dat')
+    pf.solve()
+
+    for name in pf.converter_names():
+        c = pf.get_converter_info(name)
+        print(f"{c.name} {c.mode.name:5} PAC {c.pac_mw:8.2f} MW  "
+              f"PDC {c.pdc_mw:8.2f} MW  loss {c.converter_loss_mw:5.2f} MW")
+
+    pac, qac, pdc, status = pf.get_converter_outputs()   # NumPy arrays
+\end{Verbatim}
+
+\texttt{get\_converter\_info()} returns a \texttt{ConverterInfo} with the same quantities as the converter table of the power-flow menu:
+
+\begin{small}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3465}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6535}}
+@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Field
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{ac\_bus}, \texttt{dc\_bus}, \texttt{in\_service} & Connection and status \\
+\texttt{pac\_mw}, \texttt{qac\_mvar} & Power at the AC bus: \texttt{PAC} drawn from it, \texttt{QAC} injected into it \\
+\texttt{pdc\_mw} & Power delivered into the DC bus; \texttt{PAC} and \texttt{PDC} are positive when rectifying \\
+\texttt{mode} & \texttt{ConverterMode}: \texttt{PQ}, \texttt{PV}, \texttt{VDC}, \texttt{DROOP}, \texttt{LIMIT} or \texttt{REF}, as the table's mode column \\
+\texttt{q\_control} & \texttt{-2} holding \texttt{VAC}, \texttt{1} fixed Q, \texttt{2} at \texttt{QMAX}, \texttt{3} at \texttt{QMIN} \\
+\texttt{rectifying} & Direction of the active power \\
+\texttt{vc\_pu}, \texttt{pc\_mw}, \texttt{qc\_mvar} & Converter node behind the station; without a station they equal the AC bus voltage, \texttt{PAC} and \texttt{-QAC} \\
+\texttt{station\_loss\_mw}, \texttt{converter\_loss\_mw} & \texttt{PAC\ -\ Pc} lost in the station and \texttt{Pc\ -\ PDC} in the converter \\
+\end{longtable}\end{small}
+
+An out-of-service converter reports zero powers. A case that fails on its DC side ends with \texttt{pf.solver\_status} set to \texttt{SolverStatus.NO\_DC\_REGULATION} or \texttt{SolverStatus.CONVERTER\_INFEASIBLE}, and \texttt{pf.last\_error} names the element (see \hyperref[ch-pf]{Solver Outcomes}).
+
+With an older bundled Helios, \texttt{pf.has\_converter\_api} is \texttt{False} and the converter getters raise \texttt{HeliosError}; the rest of the session works as before.
 
 \section{Modifying the System}\label{py-helios:modifying-the-system}
 

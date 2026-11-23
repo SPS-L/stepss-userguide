@@ -9,10 +9,10 @@ All STEPSS repositories are hosted under the \href{https://github.com/SPS-L}{SPS
 \section{Repository Index}\label{res-repos:repository-index}
 
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2382}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.4382}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1642}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1594}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2374}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.4402}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1633}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1591}}
 @{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
@@ -31,7 +31,6 @@ Visibility
 \href{https://github.com/SPS-L/stepss-java-ui}{stepss-java-ui} & Java-based GUI front-end, bundling the whole toolchain & Java & Public \\
 \href{https://github.com/SPS-L/stepss-python-ui}{stepss-python-ui} & Python API/wrapper for RAMSES and the Helios power-flow engine & Python & Public \\
 \href{https://github.com/SPS-L/stepss-userguide}{stepss-userguide} & LaTeX user documentation and models reference & LaTeX & Public \\
-\href{https://github.com/SPS-L/stepss-uramses}{stepss-uramses} & User-defined device models framework & Fortran & Public \\
 \href{https://github.com/SPS-L/stepss-eigenanalysis}{stepss-eigenanalysis} & Reference data and validation suite for small-signal analysis & Python & Public \\
 \href{https://github.com/SPS-L/stepss-cg-studio}{stepss-cg-studio} & Visual block diagram editor for CODEGEN models & Python/JS & Public \\
 \href{https://github.com/SPS-L/homebrew-stepss}{homebrew-stepss} & Homebrew tap that installs STEPSS GUI on macOS & Ruby & Public \\
@@ -92,26 +91,6 @@ The original LaTeX source for the STEPSS documentation (models reference and use
   \textbf{Build}: \texttt{pdflatex\ stepss\_doc.tex} (run twice)
 \item
   \textbf{Main file}: \texttt{stepss\_doc.tex}
-\end{itemize}
-
-\subsection{stepss-uramses}\label{res-repos:stepss-uramses}
-
-Framework for compiling and linking custom Fortran models with RAMSES.
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Repository}: \href{https://github.com/SPS-L/stepss-uramses}{github.com/SPS-L/stepss-uramses}
-\item
-  \textbf{Platforms}: Linux (gfortran), macOS (gfortran, Apple Silicon), Windows (MinGW gfortran or Intel Fortran)
-\item
-  \textbf{Build (Linux)}: \texttt{make\ -f\ build/Makefile.linux\ all}
-\item
-  \textbf{Build (macOS)}: \texttt{make\ -f\ build/Makefile.macos\ all}
-\item
-  \textbf{Build (Windows/MinGW)}: \texttt{make\ -f\ build/Makefile.windows\ all}
-\item
-  \textbf{Build (Windows/Intel)}: Visual Studio with \texttt{build/msvs/URAMSES.sln}
 \end{itemize}
 
 \subsection{stepss-eigenanalysis}\label{res-repos:stepss-eigenanalysis}

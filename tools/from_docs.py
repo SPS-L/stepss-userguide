@@ -97,7 +97,6 @@ MANIFEST: list[tuple[str, str, str]] = [
     ("python/examples", "py-examples", "Python examples"),
     ("python/api-reference", "py-api", "Python API reference"),
     ("python/helios", "py-helios", "Power flow from Python"),
-    ("developer/uramses", "uramses", "uRAMSES, the C and Fortran interface"),
     # Part: reference
     ("test-systems/index", "ts-index", "Test systems"),
     ("test-systems/5bus", "ts-5bus", "The 5-bus tutorial system"),

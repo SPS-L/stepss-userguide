@@ -1,6 +1,7 @@
 The following records, documented in Chapter \ref{ch-network} are used by Helios:
 \begin{itemize}
 \item[] BUS
+\item[] BUSDC
 \item[] LINE
 \item[] SWITCH
 \item[] TRANSFO
@@ -80,13 +81,15 @@ where {\tt PMIN} (resp. {\tt PMAX}) is the minimum (resp. maximum) active power 
 
 
 %----------------------------------------------------------------------------------
-\section{Slack-bus specification}
+\section{Slack-bus specification}\label{sec-pf-slack}
 
 The presence of a slack-bus is mandatory in power flow computations: indeed, not all buses can be of the PV or PQ type, since this would entail specifying the active power losses in the network, which are not known before performing the power flow calculation.
 
 A generator of the PV type must be connected to the slack-bus. Its voltage magnitude, specified in its GENER record, is imposed at the bus, while the voltage phase angle is set to zero.
 
-Helios can handle only one connected network (or island). If the network graph is not connected, {\sl \large only the connected sub-network including the slack-bus is treated}; the rest of the network is ignored with a warning message.
+A SLACK record may appear once per AC island, where an island is a set of AC buses joined by in-service branches; two SLACK records in one island are an error. SLACK records in separate AC islands are each solved, each slack generator balancing its own island, and the power balance reports the sum over all slack generators.
+
+An island without a SLACK takes as its reference the first in-service AC/DC converter on it (Section~\ref{sec-pf-acdc}), in record order, with {\tt VAC} given; that converter must have {\tt VDC} {\tt *}, and the log names it. Islands with neither a SLACK nor such a converter are ignored with a warning. Only islands with a reference, and the DC grids their converters energise, are solved.
 
 The SLACK record allows specifying which bus is the slack-bus. The syntax is as follows:
 
@@ -94,7 +97,7 @@ The SLACK record allows specifying which bus is the slack-bus. The syntax is as 
 
 where {\tt NAME} is the name of the bus. This is a string of at most 8 characters.
 
-There must be exactly one SLACK record in the whole set of data.
+At least one SLACK record is required.
 
 %----------------------------------------------------------------------------------
 \section{Static Var Compensators}
@@ -159,6 +162,161 @@ It is not allowed to connect both a generator and an SVC to the same bus.
 All SVCs are memorized, even those which are disconnected. A disconnected SVC is not involved (it appears in the output results with a zero power output) but it can be put into service in the
 dynamic simulation.
 
+
+%----------------------------------------------------------------------------------
+\section{AC/DC converters}\label{sec-pf-acdc}
+
+Helios solves a combined AC-DC power flow: the AC network, the DC buses (Section~\ref{sec-netw-busdc}) and DC lines (Section~\ref{sec-netw-dcline}) of one or more DC grids, and the static converters joining them are solved together in the same Newton iteration. The ACDC record describes a voltage-source converter between an AC bus and a DC bus, with optional DC voltage droop, quadratic converter losses and a converter station. It is read from Helios 1.6.0 onward.
+
+\subsection{Modelling}
+
+The AC bus of the record is the point of common coupling (PCC), where the AC set-points apply. Without a station the converter sits directly at the PCC. With a station, a transformer ($R_{TF} + jX_{TF}$) runs from the PCC to a filter node carrying the filter susceptance $B_F$, and a phase reactor ($R_C + jX_C$) runs from the filter node to the converter node, whose voltage is $V_c$ and whose power into the converter is $P_c + jQ_c$. The losses of the conversion itself sit between the converter node and the DC bus.
+
+\subsection{Data format}
+
+The record always carries all 26 fields. A {\tt *} marks a field that is free or absent; what {\tt *} means is given for each field.
+
+\hspace*{5ex}{\tt ACDC NAME ACBUS DCBUS PAC QAC VAC PDC VDC EFF QMIN QMAX KDROOP DVDB}\\
+\hspace*{10ex}{\tt PMIN PMAX LOSSA LOSSB LOSSCR LOSSCI KVC RTF XTF BF RC XC BR ;}
+
+where:
+\begin{itemize}
+\item {\tt NAME} is the converter name, unique (required)
+\item {\tt ACBUS} is the AC bus, the PCC (required)
+\item {\tt DCBUS} is the DC bus, declared by a BUSDC record (required)
+\item {\tt PAC} is the active power drawn from the AC grid at the PCC, in MW, positive when rectifying ({\tt *}: free)
+\item {\tt QAC} is the reactive power injected into the AC grid at the PCC, in Mvar ({\tt *}: 0 when fixed)
+\item {\tt VAC} is the AC voltage set-point at the PCC, in pu ({\tt *}: no AC voltage control)
+\item {\tt PDC} is the active power delivered into the DC bus, in MW, positive when rectifying; for a droop converter, the power set-point $P_{SET}$ ({\tt *}: free)
+\item {\tt VDC} is the DC voltage set-point, in pu; for a droop converter, the voltage set-point $V_{SET}$ ({\tt *}: no DC voltage control)
+\item {\tt EFF} is the efficiency, in pu, with $0 < \mbox{EFF} \le 1$ ({\tt *}: use the LOSS fields)
+\item {\tt QMIN}, {\tt QMAX} are the lower and upper reactive limits at the PCC, in Mvar, used with {\tt VAC} ({\tt *}: no limit on that side)
+\item {\tt KDROOP} is the droop gain, in MW of {\tt PDC} change per pu of DC voltage, $> 0$ ({\tt *}: no droop)
+\item {\tt DVDB} is the symmetric deadband around {\tt VDC}, in pu, $\ge 0$ ({\tt *}: 0)
+\item {\tt PMIN}, {\tt PMAX} are the lower and upper {\tt PDC} limits of a droop converter, in MW ({\tt *}: no limit on that side)
+\item {\tt LOSSA} is the constant loss, in MW ({\tt *}: use {\tt EFF})
+\item {\tt LOSSB} is the linear loss coefficient, in kV, which multiplies the converter current ({\tt *}: use {\tt EFF})
+\item {\tt LOSSCR}, {\tt LOSSCI} are the quadratic loss coefficients, in ohm, which multiply the current squared, when the converter is physically rectifying and inverting respectively ({\tt *}: use {\tt EFF})
+\item {\tt KVC} is the converter-side line voltage base for the loss current, in kV, $> 0$ ({\tt *}: VNOM of {\tt ACBUS})
+\item {\tt RTF}, {\tt XTF} are the station transformer resistance and reactance, PCC to filter node, in pu ({\tt *}: absent)
+\item {\tt BF} is the filter susceptance at the filter node, in pu, capacitive positive ({\tt *}: absent)
+\item {\tt RC}, {\tt XC} are the phase reactor resistance and reactance, filter node to converter node, in pu ({\tt *}: absent)
+\item {\tt BR} is the status: 1 in service, 0 out of service (required).
+\end{itemize}
+
+Powers are divided by the base power $S_B$ ({\tt \$SBASE}). The station impedances and {\tt BF} are in pu on $S_B$ and the VNOM of {\tt ACBUS}. With every station field {\tt *}, the converter node is the PCC.
+
+\subsection{Control modes}
+
+{\bf AC side}, from {\tt VAC}. With {\tt VAC} {\tt *}, {\tt QAC} is fixed (PQ). With {\tt VAC} given, the PCC is a PV bus and {\tt QAC} floats between {\tt QMIN} and {\tt QMAX}. {\tt QMIN} greater than {\tt QMAX} is an error.
+
+{\bf DC side}, from {\tt VDC} and {\tt KDROOP}:
+\begin{itemize}
+\item both {\tt *}: {\sl fixed power}. One of {\tt PAC} and {\tt PDC} is given and the other follows;
+\item {\tt VDC} given, {\tt KDROOP} {\tt *}: {\sl constant DC voltage}. The DC bus is held at {\tt VDC} and the power floats; any {\tt PAC} or {\tt PDC} given is only a starting guess;
+\item {\tt VDC} and {\tt KDROOP} given: {\sl droop}. {\tt PDC} (as $P_{SET}$) must be given, and the converter follows
+\begin{equation}
+P_{DC} = P_{SET} - K_{DROOP}\, d(V_{DC} - V_{SET})
+\end{equation}
+where the deadband function $d(x)$ is $0$ for $|x| \le \mbox{DVDB}$, $x - \mbox{DVDB}$ above it and $x + \mbox{DVDB}$ below it. At {\tt PMIN} or {\tt PMAX} the converter holds that power.
+\end{itemize}
+
+The DC-side fields are refused when they do not form one of these modes: {\tt KDROOP} with {\tt VDC} {\tt *}; {\tt DVDB}, {\tt PMIN} or {\tt PMAX} without {\tt KDROOP}; {\tt PMIN} greater than {\tt PMAX}; {\tt KDROOP} $\le 0$; {\tt DVDB} $< 0$; and a droop converter with {\tt PDC} {\tt *}.
+
+\subsection{Losses}
+
+The coupling between the converter node and the DC bus takes exactly one of two forms. Any other combination of {\tt EFF} and the four LOSS fields (both, neither, or only some of the four LOSS fields) is an error naming the record.
+
+{\bf Efficiency only}: {\tt EFF} given and the four LOSS fields {\tt *}. With $P_c$ the power flowing into the converter at the converter node, rectifying $P_{DC} = \mbox{EFF}\cdot P_c$ and inverting $P_c = \mbox{EFF}\cdot P_{DC}$.
+
+{\bf Quadratic losses}: {\tt LOSSA}, {\tt LOSSB}, {\tt LOSSCR} and {\tt LOSSCI} all given and {\tt EFF} {\tt *}:
+\begin{equation}
+P_c - P_{DC} = \mbox{LOSSA} + \mbox{LOSSB}\cdot I + \mbox{LOSSC}\cdot I^2, \qquad I = \frac{|S_c|}{\sqrt{3}\,|V_c|\,\mbox{KVC}} \;\; \mbox{(kA)}
+\end{equation}
+where LOSSC is {\tt LOSSCR} when the converter is physically rectifying ($P_c > 0$) and {\tt LOSSCI} when it is inverting. Internally the coefficients are converted to pu as $a = \mbox{LOSSA}/S_B$, $b = \mbox{LOSSB}/(\sqrt{3}\,\mbox{KVC})$ and $c = \mbox{LOSSC}\cdot S_B/(3\,\mbox{KVC}^2)$, and the droop gain as $K = K_{DROOP}/S_B$.
+
+A converter whose {\tt PAC} is free (fixed {\tt PDC}, constant DC voltage or droop) can deliver at most a certain {\tt PDC}: beyond it the losses grow faster than the power. A solve that ends with a converter asked for more stops with the status CONVERTER\_INFEASIBLE (Section~\ref{sec-pf-acdc-status}).
+
+\subsection{Which powers to give}
+
+{\bf Efficiency-only converter without a station, fixed power} ({\tt VDC} {\tt *}): {\tt PAC}, {\tt PDC} and {\tt EFF} form a triplet, and two of the three must be given; the third is filled in from rectifying $P_{DC} = \mbox{EFF}\cdot P_{AC}$ or inverting $P_{AC} = \mbox{EFF}\cdot P_{DC}$. With both powers given, the direction follows their sign (zero counts as rectifying), the two must not have opposite signs, and the smaller magnitude must be the one leaving the converter, which fixes {\tt EFF}. With all three given, the efficiency the two powers imply must match {\tt EFF} within $10^{-4}$, or the record is refused. A record with only one of the three is refused. {\tt PAC} and {\tt PDC} both zero with {\tt EFF} {\tt *} is accepted with {\tt EFF} = 1; exactly one of them zero with {\tt EFF} {\tt *} is refused, since the efficiency cannot be determined.
+
+{\bf Efficiency-only converter with {\tt VDC} given}: the solver finds the power. {\tt EFF} must be given, unless {\tt PAC} and {\tt PDC} are both given and non-zero, in which case their ratio fixes it. {\tt PAC} and {\tt PDC} both zero with {\tt EFF} {\tt *} is refused.
+
+{\bf Converter with LOSS fields or a station}: PDC/PAC is no efficiency, so no ratio, sign or {\tt EFF} inference applies.
+\begin{itemize}
+\item A free-power converter (constant DC voltage, droop, or the reference of its AC island) takes {\tt PAC} and {\tt PDC} as starting guesses only, with any values and signs. A droop converter's {\tt PDC} is still its $P_{SET}$.
+\item A fixed-power converter takes exactly one of {\tt PAC} and {\tt PDC} as its set-point; the other follows through the station and the losses. Giving both is an error, except for a converter with {\tt VAC} given and {\tt VDC} {\tt *} that becomes the reference of its AC island.
+\item With a station and no LOSS fields, {\tt EFF} must be given, and it relates {\tt PDC} to the converter-node power $P_c$, not to {\tt PAC}.
+\end{itemize}
+
+A converter with {\tt VAC} given and {\tt VDC} {\tt *} may leave both {\tt PAC} and {\tt PDC} as {\tt *} when it becomes the reference of its AC island: its power then balances the island. If it does not become the reference, the record is refused, because nothing else fixes its power.
+
+\subsection{DC grids and AC islands}
+
+\begin{itemize}
+\item Every DC grid needs at least one in-service converter with {\tt VDC} given, constant voltage or droop. Two constant-voltage converters on one DC bus are refused; two droop converters on one DC bus are allowed.
+\item A DC bus carries no equipment of its own: a SLACK, GENER or SVC on a DC bus is an error. Power enters and leaves a DC grid only through ACDC converters. LFRESV on a DC bus sets the voltage magnitude and ignores the angle.
+\item {\tt VAC} is refused on a bus whose voltage something else already holds: the slack bus, a bus with an in-service PV generator, a bus whose voltage an SVC controls, or a bus where another converter sets {\tt VAC}.
+\item A converter with {\tt VAC} given can be the reference of an AC island that has no SLACK record (Section~\ref{sec-pf-slack}). Such a converter must not also hold the DC voltage, so a converter with {\tt VDC} given, constant or droop, cannot be an island reference, and a droop converter that would become one is refused.
+\end{itemize}
+
+\subsection{Converter results}
+
+In the Helios text interface, the display menu offers {\tt C : AC/DC Converters} when the case has converters, and asks for a converter name or {\tt A} for all. For each converter the table gives {\tt PAC}, {\tt QAC} and {\tt PDC}, the converter-node voltage $V_c$ and powers $P_c$ and $Q_c$, the station loss $P_{AC} - P_c$, the converter loss $P_c - P_{DC}$ and their sum. Its mode column names how each converter's power is set: {\tt PQ} (fixed power, fixed {\tt QAC}), {\tt PV} (fixed power, {\tt VAC} given), {\tt VDC} (constant DC voltage), {\tt REF} (reference of its AC island), {\tt DROOP} (droop converter on its law, inside or outside its deadband) and {\tt LIMIT} (droop converter held at {\tt PMIN} or {\tt PMAX}).
+
+The export command {\tt X} then writes the table to a file; a name ending in {\tt .csv} gives the columns
+
+{\small
+\begin{verbatim}
+name,ac_bus,dc_bus,status,mode,qctl,pac_mw,qac_mvar,pdc_mw,loss_mw,
+direction,vc_pu,pc_mw,qc_mvar,pstation_mw,pconv_mw
+\end{verbatim}
+}
+
+(one line in the file), where {\tt loss\_mw} is $P_{AC} - P_{DC}$, the sum of the station and converter losses.
+
+When the data are dumped, constant-voltage and island-reference converters are written with their solved {\tt PAC} and {\tt PDC}, which read back as starting guesses, so a dumped case solves to the same point. A droop converter keeps its $P_{SET}$ in {\tt PDC}; its solved power appears in the converter table only.
+
+\subsection{Solver outcomes}\label{sec-pf-acdc-status}
+
+Two outcomes are specific to AC-DC cases. Both end the solve as not converged, with process exit status 2 in non-interactive use, and print a message naming the element:
+\begin{itemize}
+\item NO\_DC\_REGULATION: a DC grid has no converter regulating its voltage, because there is no constant-voltage converter and every droop converter is inside its deadband or at {\tt PMIN} or {\tt PMAX}. The message names a DC bus of that grid. The status line on stderr reads {\tt NOT\_CONVERGED (no DC voltage regulation)};
+\item CONVERTER\_INFEASIBLE: a converter cannot deliver the {\tt PDC} it must through its losses and station, or free converter powers form a ring. For the first cause the message gives the {\tt PDC} asked for and the largest the converter can deliver at the PCC voltage reached. The status line on stderr reads {\tt NOT\_CONVERGED (converter power infeasible)}.
+\end{itemize}
+
+In the C API, {\tt helios\_get\_solver\_status} returns 5 for NO\_DC\_REGULATION and 6 for CONVERTER\_INFEASIBLE, and {\tt helios\_get\_last\_error} carries the message. A DC bus reports bus type 4 (DC).
+
+\subsection{Example}
+
+The DC link of the MatACDC case {\tt case5\_ptp}: converter C1 at AC bus 2 draws 60~MW from the AC grid and injects $-40$~Mvar, while C2 at AC bus 3 holds the DC voltage at 1~pu and the voltage of its PCC at 1~pu, starting from a {\tt PAC} guess of 0. Both use quadratic losses and a station.
+
+{\small
+\begin{verbatim}
+BUSDC D1 345 ;
+BUSDC D2 345 ;
+LINE LD1-2 D1 D2 61.893 0. 0. 0. 1 ;
+ACDC C1 2 D1 60 -40 * * * * * * * * * * 1.103 0.887 4.371 2.885 345
+     0.0015 0.1121 0.0887 0.0001 0.16428 1 ;
+ACDC C2 3 D2 0 * 1 * 1 * * * * * * * 1.103 0.887 4.371 2.885 345
+     0.0015 0.1121 0.0887 0.0001 0.16428 1 ;
+\end{verbatim}
+}
+
+\subsection{Validation and conversion of MatACDC data}
+
+The Helios AC-DC power flow is validated against MatACDC 1.0 (J. Beerten, KU Leuven) on its four published DC cases, run as published with converter stations, quadratic losses and droop: {\tt case5\_stagg\_HVDCptp}, {\tt case5\_stagg\_MTDCslack}, {\tt case5\_stagg\_MTDCdroop} and {\tt case24\_ieee\_rts1996\_MTDC}. The largest differences are $9.1\times10^{-13}$~pu on AC, DC and converter-node voltages, $8.8\times10^{-11}$ degrees, $6.7\times10^{-12}$~MW and $1.2\times10^{-10}$~Mvar.
+
+A MatACDC case maps onto the ACDC record field by field:
+\begin{itemize}
+\item {\tt rtf xtf bf rc xc} go to {\tt RTF XTF BF RC XC}, multiplied by {\tt baseMVA/baseMVAac}, the factor MatACDC applies itself when it converts station data to the AC base (it is 1 in the four published cases). {\tt basekVac} goes to {\tt KVC}, and {\tt LossA LossB} to {\tt LOSSA LOSSB};
+\item {\tt LossCrec} goes to {\tt LOSSCI} and {\tt LossCinv} to {\tt LOSSCR}: MatACDC applies {\tt LossCrec} when the converter-node power it injects into the AC grid is positive, which is inverter operation, while {\tt LOSSCR} here means physical rectification;
+\item {\tt P\_g} and {\tt Q\_g} are injections into the AC grid, so {\tt PAC} $= -${\tt P\_g} and {\tt QAC} $=$ {\tt Q\_g}; {\tt Vtar} goes to {\tt VAC};
+\item a DC slack converter holds {\tt VDC} at the {\tt busdc} voltage. A droop converter takes {\tt KDROOP} $= 1/${\tt DROOP} (MatACDC's unit is pu of voltage per MW), {\tt PDC} $= -${\tt Pdcset}, {\tt VDC} $=$ {\tt Vdcset} and {\tt DVDB} $=$ {\tt dVdcset};
+\item a PV converter on a bus with a PV generator becomes fixed {\tt QAC} $= 0$, which is what MatACDC does with it internally;
+\item BUSDC VNOM is MatACDC's {\tt basekVdc}. With {\tt pol = 2} a DC line's R is {\tt r * basekVdc\^{}2 / baseMVAdc} ohm; with {\tt pol = 1} it is twice that, because the pole-to-neutral base $2\,V_{NOM}^2/S_B$ equals MatACDC's {\tt pol = 2}.
+\end{itemize}
 
 %----------------------------------------------------------------------------------
 \section{Transformer ratio adjustment for voltage control}\label{sec-pf-ltc}
@@ -286,6 +444,7 @@ A summary of the records used by respectively Helios and RAMSES is given in Tabl
 \hline
 record & in Helios & in RAMSES \\ \hline \hline
 BUS & all 6 fields used & only first two fields used \\ \hline
+BUSDC & used & used \\ \hline
 LINE & used & used \\ \hline
 SWITCH & used & used \\ \hline
 NRTP & used & used \\ \hline
@@ -294,6 +453,7 @@ TRFO & used & only fields 1 to 9 and 15 used \\ \hline
 SHUNT & ignored & used \\ \hline
 GENER &  used & ignored \\ \hline
 SVC & used & ignored \\ \hline
+ACDC & used & ignored \\ \hline
 SLACK & used & used \\ \hline
 LFRESV & used & used \\ \hline
 LTC-V & used & ignored \\ \hline

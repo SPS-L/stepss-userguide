@@ -4,16 +4,16 @@
 
 \chapter{Test systems}\label{doc:ts-index}
 
-Four benchmark networks ship as ready-to-run RAMSES data sets, each in its own
+Five benchmark networks ship as ready-to-run RAMSES data sets, each in its own
 repository. They are ordered here from smallest to largest, which is also the
 order in which they are worth meeting.
 
 \begin{small}\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2178}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1164}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1258}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1810}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3589}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2132}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1156}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1194}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1741}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3776}}
 @{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
@@ -34,7 +34,8 @@ Best for
 \hyperref[doc:ts-5bus]{5-Bus} & 5 & 1 & 50 Hz & Learning the tools \\
 \hyperref[doc:ts-kundur]{Kundur Two-Area} & 11 & 4 & 60 Hz & Inter-area oscillations, PSS tuning \\
 \hyperref[doc:ts-nordic]{Nordic} & 74 & 20 & 50 Hz & Long-term voltage stability \\
-\hyperref[doc:ts-gb]{GB Network} & 87 & 37 & 50 Hz & HVDC, wide-area monitoring \\
+\hyperref[doc:ts-gb]{GB Network} & 87 & 36 & 50 Hz & HVDC, wide-area monitoring \\
+Victorian & 125 & 14 & 50 Hz & Fast frequency response, high renewable shares \\
 \end{longtable}\end{small}
 
 \section{Which One to Start With}\label{ts-index:which-one-to-start-with}
@@ -59,11 +60,20 @@ Best for
   \textbf{Converter-dominated and HVDC studies}: the
   \hyperref[doc:ts-gb]{GB network} models its interconnections as two-port
   converters and carries ready-made disturbance templates.
+\item
+  \textbf{Frequency response with high renewable shares}: the
+  Victorian system pairs 23 wind and solar plants with
+  thermal and hydro units, and its scripts generate operating points across a day
+  and three levels of heating electrification.
 \end{itemize}
+
+\section{Power-Flow Benchmarks}\label{ts-index:power-flow-benchmarks}
+
+\textbf{MatACDC cases.} The four DC test cases published with MatACDC 1.0 (J. Beerten, KU Leuven), converted for the Helios \hyperref[ch-pf]{AC/DC converter} model, with MatACDC's own solution of each: a point-to-point link and a three-terminal grid with a DC slack and with droop, all on the 5-bus Stagg and El-Abiad system, and two DC grids joining the three zones of the IEEE RTS-96. Each case comes as published, with converter stations, quadratic losses and droop, and as a lossless twin. They are power-flow cases only, with no dynamic data, and are the regression check of the converter model. MatACDC's licence forbids redistributing works derived from it without permission, so the repository, \href{https://github.com/SPS-L/stepss-MatACDC-Cases}{SPS-L/stepss-MatACDC-Cases}, is private.
 
 \section{Running Any of Them}\label{ts-index:running-any-of-them}
 
-All four follow the same pattern: clone the repository, then point a stepss
+All five follow the same pattern: clone the repository, then point a stepss
 \texttt{cfg} at its data files.
 
 \begin{Verbatim}

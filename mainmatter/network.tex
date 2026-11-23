@@ -40,7 +40,9 @@ where:
 
 Because VNOM is a pole-to-neutral voltage, the impedance base of a DC line is $Z_B = 2\,V_{NOM}^2/S_B$ instead of the $V_{NOM}^2/S_B$ of an AC line.
 
-AC and DC buses share one set of names: a BUSDC record must not reuse the name of a BUS, and the reverse. A DC bus is joined to other DC buses by DC lines (Section~\ref{sec-netw-dcline}), and to the AC network only through a converter, such as the DC side of the {\tt HVDC\_VSC} two-port model.
+AC and DC buses share one set of names: a BUSDC record must not reuse the name of a BUS, and the reverse. A DC bus is joined to other DC buses by DC lines (Section~\ref{sec-netw-dcline}), and to the AC network only through a converter: in the power flow an ACDC record (Section~\ref{sec-pf-acdc}), in RAMSES a converter model such as the DC side of the {\tt HVDC\_VSC} two-port model.
+
+In the power flow a DC bus has no load, shunt or angle, and carries no generator, SVC or SLACK: power enters and leaves a DC grid only through ACDC converters, and each DC grid needs one converter regulating its voltage.
 
 %----------------------------------------------------------------------------------
 \section{Lines and cables}
@@ -94,6 +96,8 @@ G = \frac{1}{R}, \qquad R \mbox{ in per unit on } Z_B = \frac{2\,V_{NOM}^2}{S_B}
 X and WC2 are ignored, and RAMSES writes one line per DC line that sets either, {\tt X and WC2 ignored in the DC network}, to the log. A resistance below the minimum series impedance is raised to it and logged as {\tt resistance changed to}.
 
 A LINE joining an AC bus to a DC bus is refused with the message {\tt links an AC with a DC bus}.
+
+The power flow builds DC lines the same way, on the same base, and writes one warning per DC line that sets X or WC2. It requires R greater than zero (at least $10^{-9}$~pu) and does not apply the minimum series impedance of AC lines. A TRANSFO, TRFO or SWITCH between two DC buses is an error in the power flow, and so is any branch with one AC end and one DC end.
 
 {\bf \large Caveat}. Up to RAMSES 3.85 a DC line was built with the AC formulas, so a nonzero X lowered its conductance and WC2 added a susceptance to the DC bus equations. A case whose DC lines carry X or WC2 starts from a different DC operating point on 3.85 and earlier than on later releases. Setting both to zero gives the same result on every release.
 
